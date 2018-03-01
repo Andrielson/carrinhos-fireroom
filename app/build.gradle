@@ -1,0 +1,81 @@
+apply plugin: 'com.android.application'
+
+ext {
+    archRoomVersion = '1.0.0'
+    archLifecycleVersion = '1.1.0'
+    supportLibraryVersion = '27.1.0'
+    stethoVersion = '1.5.0'
+    uniqueVersionCode = { version, suffix -> Integer.parseInt(String.format("%s%02d", version.replaceAll("[^0-9]", ""), suffix)) }
+}
+
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        applicationId "tk.andrielson.carrinhos.androidapp"
+        minSdkVersion 19
+        targetSdkVersion 27
+        versionCode 1
+        versionName "0.0.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    flavorDimensions "CLIENTE", "VERSAO"
+    productFlavors {
+        CasaDoSorvete {
+            dimension "CLIENTE"
+            applicationIdSuffix = "casadosorvete"
+        }
+        TESTE {
+            dimension "VERSAO"
+            applicationIdSuffix = "teste"
+            buildConfigField("boolean", "TESTE", 'true')
+        }
+        PRODUCAO {
+            dimension "VERSAO"
+            buildConfigField("boolean", "TESTE", 'false')
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField("boolean", "DESENVOLVIMENTO", 'false')
+        }
+        debug {
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField("boolean", "DESENVOLVIMENTO", 'true')
+        }
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def cliente = variant.productFlavors[0].name
+            def modo = variant.productFlavors[1].name
+            def version = variant.versionName
+            output.outputFileName = cliente + "_" + modo + "_" + version + ".apk"
+        }
+    }
+    dataBinding {
+        enabled = true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Android Support Libraries
+    implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
+
+    // Android Architeture Room Persistence Library
+    implementation "android.arch.persistence.room:runtime:$archRoomVersion"
+    annotationProcessor "android.arch.persistence.room:compiler:$archRoomVersion"
+
+    // Facebook Stetho
+    implementation "com.facebook.stetho:stetho:$stethoVersion"
+
+    // Ferramentas de teste
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+}
