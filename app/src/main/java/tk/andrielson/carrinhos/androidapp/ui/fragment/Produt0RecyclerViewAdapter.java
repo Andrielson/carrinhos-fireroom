@@ -9,20 +9,20 @@ import android.widget.TextView;
 import java.util.List;
 
 import tk.andrielson.carrinhos.androidapp.R;
+import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ProdutoFragment.OnListFragmentInteractionListener;
-import tk.andrielson.carrinhos.androidapp.ui.fragment.dummy.DummyContent.DummyItem;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link Produto} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class ProdutoRecyclerViewAdapter extends RecyclerView.Adapter<ProdutoRecyclerViewAdapter.ViewHolder> {
+public class Produt0RecyclerViewAdapter extends RecyclerView.Adapter<Produt0RecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<Produto> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public ProdutoRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public Produt0RecyclerViewAdapter(List<Produto> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -37,8 +37,8 @@ public class ProdutoRecyclerViewAdapter extends RecyclerView.Adapter<ProdutoRecy
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mIdView.setText(mValues.get(position).getNome());
+        holder.mContentView.setText(mValues.get(position).getSigla());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,13 +61,13 @@ public class ProdutoRecyclerViewAdapter extends RecyclerView.Adapter<ProdutoRecy
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public DummyItem mItem;
+        public Produto mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mIdView = (TextView) view.findViewById(R.id.fragment_produto_nome);
+            mContentView = (TextView) view.findViewById(R.id.fragment_produto_valor);
         }
 
         @Override

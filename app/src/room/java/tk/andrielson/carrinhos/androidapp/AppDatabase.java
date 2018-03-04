@@ -1,12 +1,12 @@
-package tk.andrielson.carrinhos.androidapp.data.room;
+package tk.andrielson.carrinhos.androidapp;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-import tk.andrielson.carrinhos.androidapp.data.room.dao.ProdutoRoomDao;
-import tk.andrielson.carrinhos.androidapp.data.room.model.ProdutoRoom;
+import tk.andrielson.carrinhos.androidapp.dao.ProdutoRoomDao;
+import tk.andrielson.carrinhos.androidapp.data.model.ProdutoRoom;
 
 /**
  * Created by Andrielson on 02/03/2018.

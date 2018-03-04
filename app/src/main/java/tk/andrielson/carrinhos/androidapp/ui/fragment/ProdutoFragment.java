@@ -2,17 +2,20 @@ package tk.andrielson.carrinhos.androidapp.ui.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import tk.andrielson.carrinhos.androidapp.DI;
 import tk.andrielson.carrinhos.androidapp.R;
-import tk.andrielson.carrinhos.androidapp.ui.fragment.dummy.DummyContent;
-import tk.andrielson.carrinhos.androidapp.ui.fragment.dummy.DummyContent.DummyItem;
+import tk.andrielson.carrinhos.androidapp.adapter.ProdutoFirestoreRecyclerAdapter;
+import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 
 /**
  * A fragment representing a list of Items.
@@ -22,17 +25,21 @@ import tk.andrielson.carrinhos.androidapp.ui.fragment.dummy.DummyContent.DummyIt
  */
 public class ProdutoFragment extends Fragment {
 
+    private static final String TAG = ProdutoFragment.class.getSimpleName();
+
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private ProdutoFirestoreRecyclerAdapter adapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public ProdutoFragment() {
+        Log.d(TAG, "ProdutoFragment");
     }
 
     // TODO: Customize parameter initialization
@@ -42,6 +49,7 @@ public class ProdutoFragment extends Fragment {
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
+        Log.d(TAG, "newInstance");
         return fragment;
     }
 
@@ -52,10 +60,25 @@ public class ProdutoFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+        Log.d(TAG, "onCreate");
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public void onStart() {
+        super.onStart();
+        adapter.startListening();
+        Log.d(TAG, "onStart");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        adapter.stopListening();
+        Log.d(TAG, "onStop");
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_produto_list, container, false);
 
@@ -68,7 +91,9 @@ public class ProdutoFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new ProdutoRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            adapter = (ProdutoFirestoreRecyclerAdapter) DI.newProdutoRecyclerViewAdapter(mListener);
+            recyclerView.setAdapter(adapter);
+            Log.d(TAG, "onCreateView");
         }
         return view;
     }
@@ -83,12 +108,14 @@ public class ProdutoFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
         }
+        Log.d(TAG, "onAttach");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        Log.d(TAG, "onDetach");
     }
 
     /**
@@ -103,6 +130,6 @@ public class ProdutoFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Produto item);
     }
 }

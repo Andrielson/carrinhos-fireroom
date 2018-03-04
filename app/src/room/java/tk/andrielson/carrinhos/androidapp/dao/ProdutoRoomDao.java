@@ -1,4 +1,4 @@
-package tk.andrielson.carrinhos.androidapp.data.room.dao;
+package tk.andrielson.carrinhos.androidapp.dao;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
@@ -9,7 +9,7 @@ import android.arch.persistence.room.Update;
 import java.util.List;
 
 import tk.andrielson.carrinhos.androidapp.data.dao.ProdutoDao;
-import tk.andrielson.carrinhos.androidapp.data.room.model.ProdutoRoom;
+import tk.andrielson.carrinhos.androidapp.data.model.ProdutoRoom;
 
 /**
  * Created by Andrielson on 02/03/2018.

@@ -1,9 +1,13 @@
 <resources>
     <string name="app_name">Carrinhos</string>
     <string name="title_activity_main">MainActivity</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
     <string name="action_settings">Settings</string>
+
+    <!--Menu da Navigation Drawer-->
+    <string name="activity_main_drawer_menu_inicio">Início</string>
+    <string name="activity_main_drawer_menu_vendas">Vendas</string>
+    <string name="activity_main_drawer_menu_produtos">Produtos</string>
+    <string name="activity_main_drawer_menu_vendedores">Vendedores</string>
 </resources>

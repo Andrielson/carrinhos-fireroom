@@ -1,9 +1,9 @@
-package tk.andrielson.carrinhos.androidapp.data.room;
+package tk.andrielson.carrinhos.androidapp;
 
 import java.math.BigDecimal;
 
 import tk.andrielson.carrinhos.androidapp.CarrinhosApp;
-import tk.andrielson.carrinhos.androidapp.data.room.model.ProdutoRoom;
+import tk.andrielson.carrinhos.androidapp.data.model.ProdutoRoom;
 
 /**
  * Created by Andrielson on 02/03/2018.
@@ -17,7 +17,7 @@ public final class CarregaDadosIniciais {
         for (long i = 1; i < 30; i++) {
             ProdutoRoom produto = new ProdutoRoom();
             produto.setCodigo(i);
-            produto.setNome("Produto " + i);
+            produto.setNome("ProdutoImpl " + i);
             produto.setSigla("P" + i);
             produto.setPreco(new BigDecimal(i));
             database.produtoRoomDao().insert(produto);

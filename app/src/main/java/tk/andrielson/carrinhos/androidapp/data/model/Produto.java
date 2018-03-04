@@ -21,13 +21,13 @@ public interface Produto extends Parcelable {
 
     public void setSigla(String sigla);
 
-    public BigDecimal getPreco();
+    public Double getPreco();
 
-    public void setPreco(BigDecimal preco);
+    public void setPreco(Double preco);
 
-    public BigDecimal getCusto();
+    public Double getCusto();
 
-    public void setCusto(BigDecimal custo);
+    public void setCusto(Double custo);
 
     public Boolean getAtivo();
 

@@ -1,25 +1,30 @@
 package tk.andrielson.carrinhos.androidapp.ui.activity;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import tk.andrielson.carrinhos.androidapp.R;
-import tk.andrielson.carrinhos.androidapp.data.room.CarregaDadosIniciais;
+import tk.andrielson.carrinhos.androidapp.data.model.Produto;
+import tk.andrielson.carrinhos.androidapp.ui.fragment.ProdutoFragment;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ProdutoFragment.OnListFragmentInteractionListener {
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +50,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        new InicializaBancoTask().execute();
     }
 
     @Override
@@ -82,17 +86,21 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
+        Log.d(TAG, "onNavigationItemSelected");
+        if (id == R.id.nav_inicio) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_vendas) {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_produtos) {
+            Log.d(TAG, "onNavigationItemSelected: R.id.nav_produtos");
+            Fragment fragment = ProdutoFragment.newInstance(1);
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.commit();
+        } else if (id == R.id.nav_vendedores) {
 
         } else if (id == R.id.nav_share) {
 
@@ -105,12 +113,15 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private static final class InicializaBancoTask extends AsyncTask<Void, Void, Void> {
-        @Nullable
-        @Override
-        protected Void doInBackground(Void... voids) {
-            CarregaDadosIniciais.produtos();
-            return null;
-        }
+    private void carregaFragment(int id) {
+        Fragment fragment;
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//        ft.replace(R.id.content_frame, fragment);
+        ft.commit();
+    }
+
+    @Override
+    public void onListFragmentInteraction(Produto item) {
+        Toast.makeText(this, "Clicou!", Toast.LENGTH_SHORT).show();
     }
 }

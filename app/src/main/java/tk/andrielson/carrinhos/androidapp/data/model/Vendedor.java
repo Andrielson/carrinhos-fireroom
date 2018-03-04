@@ -9,9 +9,6 @@ import java.math.BigDecimal;
  */
 
 public interface Vendedor extends Parcelable {
-    public Long getId();
-
-    public void setId(Long id);
 
     public Long getCodigo();
 

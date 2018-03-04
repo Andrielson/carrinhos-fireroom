@@ -1,4 +1,4 @@
-package tk.andrielson.carrinhos.androidapp.data.room.model;
+package tk.andrielson.carrinhos.androidapp.data.model;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Index;
@@ -10,7 +10,7 @@ import android.os.Parcelable;
 import java.math.BigDecimal;
 
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
-import tk.andrielson.carrinhos.androidapp.data.room.converter.BigDecimalToLongConverter;
+import tk.andrielson.carrinhos.androidapp.converter.BigDecimalToLongConverter;
 
 /**
  * Created by Andrielson on 02/03/2018.

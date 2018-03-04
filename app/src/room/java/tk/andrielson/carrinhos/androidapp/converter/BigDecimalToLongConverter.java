@@ -1,4 +1,4 @@
-package tk.andrielson.carrinhos.androidapp.data.room.converter;
+package tk.andrielson.carrinhos.androidapp.converter;
 
 import android.arch.persistence.room.TypeConverter;
 
