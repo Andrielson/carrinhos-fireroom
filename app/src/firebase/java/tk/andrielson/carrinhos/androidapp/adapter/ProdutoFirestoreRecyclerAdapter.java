@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
+import java.util.Locale;
+
 import tk.andrielson.carrinhos.androidapp.R;
 import tk.andrielson.carrinhos.androidapp.data.model.ProdutoImpl;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ProdutoFragment;
@@ -34,7 +36,7 @@ public class ProdutoFirestoreRecyclerAdapter extends FirestoreRecyclerAdapter<Pr
     public void onBindViewHolder(@NonNull final ProdutoViewHolder holder, int position, @NonNull ProdutoImpl model) {
         holder.mItem = model;
         holder.mNomeView.setText(model.getNome());
-        holder.mValorView.setText(String.valueOf(model.getPreco()));
+        holder.mValorView.setText(String.format(Locale.getDefault(), "R$ %.2f", model.getPreco()));
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -122,6 +122,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Produto item) {
-        Toast.makeText(this, "Clicou!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Clicou em: " + item.getNome(), Toast.LENGTH_SHORT).show();
     }
 }

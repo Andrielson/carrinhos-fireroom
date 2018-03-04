@@ -1,5 +1,6 @@
 package tk.andrielson.carrinhos.androidapp;
 
+import android.arch.lifecycle.LifecycleOwner;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -28,7 +29,7 @@ public final class DI {
         return new ProdutoImpl();
     }
 
-    public static RecyclerView.Adapter newProdutoRecyclerViewAdapter(ProdutoFragment.OnListFragmentInteractionListener listener, Lyfe) {
+    public static RecyclerView.Adapter newProdutoRecyclerViewAdapter(ProdutoFragment.OnListFragmentInteractionListener listener, LifecycleOwner lifecycleOwner) {
         CollectionReference produtosReference = FirebaseFirestore.getInstance()
                 .collection("produtos");
         Query query = produtosReference.limit(50);
@@ -37,6 +38,7 @@ public final class DI {
         //  * Chat.class instructs the adapter to convert each DocumentSnapshot to a Chat object
         FirestoreRecyclerOptions<ProdutoImpl> options = new FirestoreRecyclerOptions.Builder<ProdutoImpl>()
                 .setQuery(query, ProdutoImpl.class)
+                .setLifecycleOwner(lifecycleOwner)
                 .build();
         Log.d("DI.RecyclerViewAdapter", "Passou por aqui");
         return new ProdutoFirestoreRecyclerAdapter(options, listener);

@@ -63,19 +63,19 @@ public class ProdutoFragment extends Fragment {
         Log.d(TAG, "onCreate");
     }
 
-    @Override
+    /*@Override
     public void onStart() {
         super.onStart();
         adapter.startListening();
         Log.d(TAG, "onStart");
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void onStop() {
         super.onStop();
         adapter.stopListening();
         Log.d(TAG, "onStop");
-    }
+    }*/
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -91,7 +91,7 @@ public class ProdutoFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            adapter = (ProdutoFirestoreRecyclerAdapter) DI.newProdutoRecyclerViewAdapter(mListener);
+            adapter = (ProdutoFirestoreRecyclerAdapter) DI.newProdutoRecyclerViewAdapter(mListener, getActivity());
             recyclerView.setAdapter(adapter);
             Log.d(TAG, "onCreateView");
         }

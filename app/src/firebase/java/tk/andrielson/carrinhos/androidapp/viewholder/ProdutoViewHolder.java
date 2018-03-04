@@ -23,7 +23,7 @@ public class ProdutoViewHolder extends RecyclerView.ViewHolder {
 
     public ProdutoViewHolder(View itemView) {
         super(itemView);
-        mView = itemView;
+        mView = itemView.findViewById(R.id.fragment_produto_item);
         mNomeView = itemView.findViewById(R.id.fragment_produto_nome);
         mValorView = itemView.findViewById(R.id.fragment_produto_valor);
         Log.d(TAG, "ProdutoViewHolder");
