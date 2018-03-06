@@ -95,7 +95,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_vendas) {
 
         } else if (id == R.id.nav_produtos) {
-            Log.d(TAG, "onNavigationItemSelected: R.id.nav_produtos");
             Fragment fragment = ProdutoFragment.newInstance(1);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, fragment);
