@@ -18,7 +18,6 @@ public class CarregaDadosIniciais {
             produto.setCodigo(i);
             produto.setNome("ProdutoImpl " + i);
             produto.setSigla("P" + i);
-            produto.setCusto(1.0);
             produto.setPreco(2.0);
             mFirestore.collection(ProdutoImpl.COLLECTION).add(produto);
         }

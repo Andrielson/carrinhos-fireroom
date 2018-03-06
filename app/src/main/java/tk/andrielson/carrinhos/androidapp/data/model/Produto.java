@@ -25,10 +25,6 @@ public interface Produto extends Parcelable {
 
     public void setPreco(Double preco);
 
-    public Double getCusto();
-
-    public void setCusto(Double custo);
-
     public Boolean getAtivo();
 
     public void setAtivo(Boolean ativo);

@@ -14,7 +14,6 @@ public class ProdutoImpl implements Produto {
     public static final String CODIGO = "codigo";
     public static final String NOME = "nome";
     public static final String SIGLA = "sigla";
-    public static final String CUSTO = "custo";
     public static final String PRECO = "preco";
     public static final String ATIVO = "ativo";
     //</editor-fold>
@@ -34,26 +33,23 @@ public class ProdutoImpl implements Produto {
     private Long codigo;
     private String nome;
     private String sigla;
-    private Double custo;
     private Double preco;
     private Boolean ativo = Boolean.TRUE;
 
     public ProdutoImpl() {
     }
 
-    public ProdutoImpl(Long codigo, String nome, String sigla, Double custo, Double preco) {
+    public ProdutoImpl(Long codigo, String nome, String sigla, Double preco) {
         this.codigo = codigo;
         this.nome = nome;
         this.sigla = sigla;
-        this.custo = custo;
         this.preco = preco;
     }
 
-    protected ProdutoImpl(Parcel in) {
+    private ProdutoImpl(Parcel in) {
         codigo = in.readByte() == 0x00 ? null : in.readLong();
         nome = in.readString();
         sigla = in.readString();
-        custo = in.readByte() == 0x00 ? null : in.readDouble();
         preco = in.readByte() == 0x00 ? null : in.readDouble();
         byte ativoVal = in.readByte();
         ativo = ativoVal == 0x02 ? null : ativoVal != 0x00;
@@ -87,16 +83,6 @@ public class ProdutoImpl implements Produto {
     @Override
     public void setSigla(String sigla) {
         this.sigla = sigla;
-    }
-
-    @Override
-    public Double getCusto() {
-        return custo;
-    }
-
-    @Override
-    public void setCusto(Double custo) {
-        this.custo = custo;
     }
 
     @Override
@@ -134,12 +120,6 @@ public class ProdutoImpl implements Produto {
         }
         dest.writeString(nome);
         dest.writeString(sigla);
-        if (custo == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeDouble(custo);
-        }
         if (preco == null) {
             dest.writeByte((byte) (0x00));
         } else {

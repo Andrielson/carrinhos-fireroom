@@ -7,14 +7,12 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import tk.andrielson.carrinhos.androidapp.DI;
 import tk.andrielson.carrinhos.androidapp.R;
-import tk.andrielson.carrinhos.androidapp.adapter.ProdutoFirestoreRecyclerAdapter;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 
 /**
@@ -32,14 +30,12 @@ public class ProdutoFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-    private ProdutoFirestoreRecyclerAdapter adapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public ProdutoFragment() {
-        Log.d(TAG, "ProdutoFragment");
     }
 
     // TODO: Customize parameter initialization
@@ -49,7 +45,6 @@ public class ProdutoFragment extends Fragment {
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
-        Log.d(TAG, "newInstance");
         return fragment;
     }
 
@@ -60,7 +55,6 @@ public class ProdutoFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
-        Log.d(TAG, "onCreate");
     }
 
     /*@Override
@@ -91,9 +85,8 @@ public class ProdutoFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            adapter = (ProdutoFirestoreRecyclerAdapter) DI.newProdutoRecyclerViewAdapter(mListener, getActivity());
+            RecyclerView.Adapter adapter = DI.newProdutoRecyclerViewAdapter(mListener, getActivity());
             recyclerView.setAdapter(adapter);
-            Log.d(TAG, "onCreateView");
         }
         return view;
     }
@@ -108,14 +101,12 @@ public class ProdutoFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
         }
-        Log.d(TAG, "onAttach");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        Log.d(TAG, "onDetach");
     }
 
     /**
@@ -129,7 +120,6 @@ public class ProdutoFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onListFragmentInteraction(Produto item);
     }
 }
