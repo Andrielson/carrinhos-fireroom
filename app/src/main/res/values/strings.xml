@@ -11,4 +11,10 @@
     <string name="activity_main_drawer_menu_vendas">Vendas</string>
     <string name="activity_main_drawer_menu_produtos">Produtos</string>
     <string name="activity_main_drawer_menu_vendedores">Vendedores</string>
+
+    <string name="fragment_produto_lista_carregando_produtos">Carregando produtos…</string>
+    <string name="fragment_produto_lista_vazia">Nenhum produto adicionado</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

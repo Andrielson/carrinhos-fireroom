@@ -132,4 +132,28 @@ public class ProdutoImpl implements Produto {
             dest.writeByte((byte) (ativo ? 0x01 : 0x00));
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ProdutoImpl produto = (ProdutoImpl) o;
+
+        if (!getCodigo().equals(produto.getCodigo())) return false;
+        if (!getNome().equals(produto.getNome())) return false;
+        if (!getSigla().equals(produto.getSigla())) return false;
+        if (!getPreco().equals(produto.getPreco())) return false;
+        return getAtivo().equals(produto.getAtivo());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getCodigo().hashCode();
+        result = 31 * result + getNome().hashCode();
+        result = 31 * result + getSigla().hashCode();
+        result = 31 * result + getPreco().hashCode();
+        result = 31 * result + getAtivo().hashCode();
+        return result;
+    }
 }

@@ -1,19 +1,26 @@
 package tk.andrielson.carrinhos.androidapp.ui.fragment;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import tk.andrielson.carrinhos.androidapp.DI;
+import java.util.List;
+
 import tk.andrielson.carrinhos.androidapp.R;
+import tk.andrielson.carrinhos.androidapp.data.dao.ProdutoDaoImpl;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
+import tk.andrielson.carrinhos.androidapp.data.model.ProdutoImpl;
+import tk.andrielson.carrinhos.androidapp.databinding.FragmentProdutoListaBinding;
+import tk.andrielson.carrinhos.androidapp.ui.adapter.ProdutoRecyclerViewAdapter;
 
 /**
  * A fragment representing a list of Items.
@@ -21,30 +28,29 @@ import tk.andrielson.carrinhos.androidapp.data.model.Produto;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class ProdutoFragment extends Fragment {
+public class ListaProdutoFragment extends Fragment {
 
-    private static final String TAG = ProdutoFragment.class.getSimpleName();
+    private static final String TAG = ListaProdutoFragment.class.getSimpleName();
 
     // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
-    private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private ProdutoRecyclerViewAdapter adapter;
+    private FragmentProdutoListaBinding binding;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ProdutoFragment() {
+    public ListaProdutoFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static ProdutoFragment newInstance(int columnCount) {
-        ProdutoFragment fragment = new ProdutoFragment();
+    public static ListaProdutoFragment newInstance() {
+        ListaProdutoFragment fragment = new ListaProdutoFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
+//        fragment.setArguments(args);
         return fragment;
     }
 
@@ -52,43 +58,27 @@ public class ProdutoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
+        /*if (getArguments() != null) {
+            //TODO: adicionar possíveis parâmetros
+        }*/
+        ProdutoDaoImpl dao = new ProdutoDaoImpl();
+        LiveData<List<ProdutoImpl>> listaProdutos = dao.listaProdutos();
+        listaProdutos.observe(this, new Observer<List<ProdutoImpl>>() {
+            @Override
+            public void onChanged(@Nullable List<ProdutoImpl> produtos) {
+                if (produtos != null)
+                    Log.v("DI->testaDao", produtos.toString());
+            }
+        });
     }
-
-    /*@Override
-    public void onStart() {
-        super.onStart();
-        adapter.startListening();
-        Log.d(TAG, "onStart");
-    }*/
-
-    /*@Override
-    public void onStop() {
-        super.onStop();
-        adapter.stopListening();
-        Log.d(TAG, "onStop");
-    }*/
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_produto_list, container, false);
-
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            RecyclerView.Adapter adapter = DI.newProdutoRecyclerViewAdapter(mListener, getActivity());
-            recyclerView.setAdapter(adapter);
-        }
-        return view;
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_produto_lista, container, false);
+        adapter = new ProdutoRecyclerViewAdapter(mListener);
+        binding.list.setAdapter(adapter);
+        return binding.getRoot();
     }
 
 

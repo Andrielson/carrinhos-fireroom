@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:locale="pt-BR"
-    tools:showIn="@layout/fragment_produto_list">
+    tools:showIn="@layout/fragment_produto_lista">
 
     <data>
 
@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:background="@color/colorAccent"
+        android:background="#EEE8AA"
         android:onClick="@{handler::onClickProduto}"
         android:orientation="horizontal">
 
@@ -35,7 +35,7 @@
             android:text="@{produto.nome}"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textStyle="bold"
-            tools:text="Picolé de leite" />
+            tools:text="Produto" />
 
         <TextView
             android:id="@+id/fragment_produto_valor"

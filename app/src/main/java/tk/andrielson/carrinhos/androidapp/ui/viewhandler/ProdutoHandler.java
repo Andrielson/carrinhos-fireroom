@@ -3,16 +3,16 @@ package tk.andrielson.carrinhos.androidapp.ui.viewhandler;
 import android.view.View;
 
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
-import tk.andrielson.carrinhos.androidapp.ui.fragment.ProdutoFragment;
+import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaProdutoFragment;
 
 /**
  * Created by Andrielson on 05/03/2018.
  */
 public class ProdutoHandler {
-    private final ProdutoFragment.OnListFragmentInteractionListener mListener;
+    private final ListaProdutoFragment.OnListFragmentInteractionListener mListener;
     private final Produto produto;
 
-    public ProdutoHandler(ProdutoFragment.OnListFragmentInteractionListener mListener, Produto produto) {
+    public ProdutoHandler(ListaProdutoFragment.OnListFragmentInteractionListener mListener, Produto produto) {
         this.mListener = mListener;
         this.produto = produto;
     }

@@ -2,30 +2,29 @@ package tk.andrielson.carrinhos.androidapp.data.model;
 
 import android.os.Parcelable;
 
-import java.math.BigDecimal;
-
 /**
  * Created by Andrielson on 02/03/2018.
  */
 
 public interface Produto extends Parcelable {
-    public Long getCodigo();
+    Long getCodigo();
 
-    public void setCodigo(Long codigo);
+    void setCodigo(Long codigo);
 
-    public String getNome();
+    String getNome();
 
-    public void setNome(String nome);
+    void setNome(String nome);
 
-    public String getSigla();
+    String getSigla();
 
-    public void setSigla(String sigla);
+    void setSigla(String sigla);
 
-    public Double getPreco();
+    Double getPreco();
 
-    public void setPreco(Double preco);
+    void setPreco(Double preco);
 
-    public Boolean getAtivo();
+    Boolean getAtivo();
 
-    public void setAtivo(Boolean ativo);
+    void setAtivo(Boolean ativo);
+
 }

@@ -18,12 +18,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import tk.andrielson.carrinhos.androidapp.DI;
 import tk.andrielson.carrinhos.androidapp.R;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
-import tk.andrielson.carrinhos.androidapp.ui.fragment.ProdutoFragment;
+import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaProdutoFragment;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ProdutoFragment.OnListFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ListaProdutoFragment.OnListFragmentInteractionListener {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_vendas) {
 
         } else if (id == R.id.nav_produtos) {
-            Fragment fragment = ProdutoFragment.newInstance(1);
+            Fragment fragment = ListaProdutoFragment.newInstance();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, fragment);
             ft.commit();

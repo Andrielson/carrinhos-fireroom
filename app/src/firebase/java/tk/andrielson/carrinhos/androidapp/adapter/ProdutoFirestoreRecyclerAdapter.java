@@ -9,7 +9,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 import tk.andrielson.carrinhos.androidapp.data.model.ProdutoImpl;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentProdutoBinding;
-import tk.andrielson.carrinhos.androidapp.ui.fragment.ProdutoFragment;
+import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaProdutoFragment;
 import tk.andrielson.carrinhos.androidapp.ui.viewholder.ProdutoViewHolder;
 
 /**
@@ -20,9 +20,9 @@ public class ProdutoFirestoreRecyclerAdapter extends FirestoreRecyclerAdapter<Pr
 
     private static final String TAG = ProdutoFirestoreRecyclerAdapter.class.getSimpleName();
 
-    private final ProdutoFragment.OnListFragmentInteractionListener mListener;
+    private final ListaProdutoFragment.OnListFragmentInteractionListener mListener;
 
-    public ProdutoFirestoreRecyclerAdapter(@NonNull FirestoreRecyclerOptions<ProdutoImpl> options, ProdutoFragment.OnListFragmentInteractionListener listener) {
+    public ProdutoFirestoreRecyclerAdapter(@NonNull FirestoreRecyclerOptions<ProdutoImpl> options, ListaProdutoFragment.OnListFragmentInteractionListener listener) {
         super(options);
         mListener = listener;
     }
