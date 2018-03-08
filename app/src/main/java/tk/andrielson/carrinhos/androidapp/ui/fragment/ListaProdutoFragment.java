@@ -57,7 +57,7 @@ public class ListaProdutoFragment extends Fragment {
         /*if (getArguments() != null) {
             //TODO: adicionar possíveis parâmetros
         }*/
-        new Thread(DI::testaDao).start();
+        DI.testaDao();
     }
 
     @Override
@@ -94,17 +94,14 @@ public class ListaProdutoFragment extends Fragment {
     }
 
     private void configuraUI(ListaProdutoViewModel viewModel) {
-        viewModel.getProdutos().observe(this, new Observer<List<Produto>>() {
-            @Override
-            public void onChanged(@Nullable List<Produto> produtos) {
-                if (produtos != null) {
-                    binding.setIsLoading(false);
-                    adapter.setListaProduto(produtos);
-                } else {
-                    binding.setIsLoading(true);
-                }
-                binding.executePendingBindings();
+        viewModel.getProdutos().observe(this, produtos -> {
+            if (produtos != null) {
+                binding.setIsLoading(false);
+                adapter.setListaProduto(produtos);
+            } else {
+                binding.setIsLoading(true);
             }
+            binding.executePendingBindings();
         });
     }
 

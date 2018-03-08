@@ -56,7 +56,9 @@ public final class DI {
 //        p.setNome("Produto novo");
 //        p.setSigla("PN");
 //        p.setPreco(5.30);
-//        ProdutoDaoImpl dao = new ProdutoDaoImpl();
+        ProdutoDaoImpl dao = new ProdutoDaoImpl();
+        dao.testaTeste();
 //        dao.insert(p);
+
     }
 }
