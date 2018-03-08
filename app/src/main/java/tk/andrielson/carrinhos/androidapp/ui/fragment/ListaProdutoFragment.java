@@ -57,7 +57,6 @@ public class ListaProdutoFragment extends Fragment {
         /*if (getArguments() != null) {
             //TODO: adicionar possíveis parâmetros
         }*/
-        DI.testaDao();
     }
 
     @Override

@@ -3,6 +3,7 @@ package tk.andrielson.carrinhos.androidapp;
 import android.arch.lifecycle.LifecycleOwner;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
@@ -52,13 +53,12 @@ public final class DI {
     }
 
     public static void testaDao() {
-//        Produto p = newProduto();
-//        p.setNome("Produto novo");
-//        p.setSigla("PN");
-//        p.setPreco(5.30);
+        Produto p = newProduto();
+        p.setNome("Produto novo");
+        p.setSigla("PN");
+        p.setPreco(5.30);
         ProdutoDaoImpl dao = new ProdutoDaoImpl();
-        dao.testaTeste();
-//        dao.insert(p);
-
+        dao.insert(p);
+        Log.d("DI->testaDao", "passou por aqui");
     }
 }

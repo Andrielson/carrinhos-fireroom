@@ -1,6 +1,5 @@
 package tk.andrielson.carrinhos.androidapp.data.dao;
 
-import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 import android.support.annotation.NonNull;
@@ -8,9 +7,10 @@ import android.util.ArrayMap;
 import android.util.Log;
 
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 import org.jetbrains.annotations.Contract;
 
@@ -22,6 +22,8 @@ import java.util.Map;
 public abstract class FirestoreDao {
 
     private static final InnerSingleton viewModel = InnerSingleton.getInstance();
+    private static final String COLECAOIDS = "StringIDs";
+    private static final String CAMPOID = "ultimo_id";
     protected final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     protected CollectionReference collection;
@@ -32,24 +34,22 @@ public abstract class FirestoreDao {
         return (map != null && map.containsKey(colecao)) ? map.get(colecao) : "0";
     }
 
-    private static class Deserializer implements Function<QuerySnapshot, Map<String, String>> {
-        @Override
-        public Map<String, String> apply(QuerySnapshot input) {
-            Map<String, String> map = new ArrayMap<>(1);
-            for (DocumentSnapshot doc : input.getDocuments()) {
-                map.put(doc.getId(), doc.getString("ultimo_id"));
-            }
-            return map;
-        }
+    protected WriteBatch setColecaoID(@NonNull String colecao, String novoID) {
+        WriteBatch batch = db.batch();
+        DocumentReference doc = db.collection(COLECAOIDS).document(colecao);
+        return batch.update(doc, CAMPOID, novoID);
     }
 
     private static class InnerSingleton {
         private static final String TAG = InnerSingleton.class.getSimpleName();
-        private static final InnerSingleton ourInstance = new InnerSingleton();
+
+        private static class StaticHolder {
+            static final InnerSingleton INSTANCE = new InnerSingleton();
+        }
 
         @Contract(pure = true)
         static InnerSingleton getInstance() {
-            return ourInstance;
+            return StaticHolder.INSTANCE;
         }
 
         private final LiveData<Map<String, String>> liveDataIDs;
@@ -57,8 +57,14 @@ public abstract class FirestoreDao {
         private Map<String, String> stringIDs;
 
         private InnerSingleton() {
-            FirestoreQueryLiveData queryLiveData = new FirestoreQueryLiveData(FirebaseFirestore.getInstance().collection("StringIDs"));
-            liveDataIDs = Transformations.map(queryLiveData, new Deserializer());
+            FirestoreQueryLiveData queryLiveData = new FirestoreQueryLiveData(FirebaseFirestore.getInstance().collection(COLECAOIDS), true);
+            liveDataIDs = Transformations.map(queryLiveData, input -> {
+                Map<String, String> map = new ArrayMap<>(1);
+                for (DocumentSnapshot doc : input.getDocuments()) {
+                    map.put(doc.getId(), doc.getString(CAMPOID));
+                }
+                return map;
+            });
             liveDataIDs.observeForever(map -> {
                 stringIDs = map;
                 Log.v(TAG, "LiveDataIDs mudou!");
@@ -68,7 +74,7 @@ public abstract class FirestoreDao {
 
         @Contract(pure = true)
         private Map<String, String> getIDs() {
-            return stringIDs;
+            return liveDataIDs.getValue();
         }
     }
 }

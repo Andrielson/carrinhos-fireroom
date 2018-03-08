@@ -6,9 +6,11 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 import android.util.Log;
 
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +29,9 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao {
     private final Query queryPadrao;
 
     public ProdutoDaoImpl() {
+        super();
         collection = db.collection(COLECAO);
         queryPadrao = collection.whereEqualTo(ProdutoImpl.ATIVO, true);
-    }
-
-    public void testaTeste() {
-        Log.d(TAG, getColecaoID(COLECAO));
-        Log.d(TAG, getColecaoID("vendedores"));
     }
 
     /**
@@ -47,8 +45,14 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao {
         String ultimoID = getColecaoID(COLECAO);
         Long novoCodigo = Long.valueOf(ultimoID) + 1;
         produto.setCodigo(novoCodigo);
-        String id = String.format("%020d", novoCodigo);
-        collection.document(id).set(produto);
+        final String id = String.format("%020d", novoCodigo);
+        DocumentReference novoDocumento = collection.document(id);
+        WriteBatch batch = setColecaoID(COLECAO, id);
+        batch.set(novoDocumento, produto);
+        batch.commit().addOnSuccessListener(aVoid -> Log.i(TAG, "Novo produto " + id + " adicionado com sucesso!")).addOnFailureListener(e -> {
+            Log.e(TAG, "Falha ao adicionar o produto " + id);
+            Log.e(TAG, e.getMessage());
+        });
         return novoCodigo;
     }
 
@@ -60,6 +64,14 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao {
      */
     @Override
     public int update(Produto produto) {
+        final String id = String.format("%020d", produto.getCodigo());
+        DocumentReference documento = collection.document(id);
+        WriteBatch batch = db.batch();
+        batch.set(documento, produto);
+        batch.commit().addOnSuccessListener(aVoid -> Log.i(TAG, "Produto " + id + " atualizado com sucesso!")).addOnFailureListener(e -> {
+            Log.e(TAG, "Falha ao atualizar o produto " + id);
+            Log.e(TAG, e.getMessage());
+        });
         return 0;
     }
 
