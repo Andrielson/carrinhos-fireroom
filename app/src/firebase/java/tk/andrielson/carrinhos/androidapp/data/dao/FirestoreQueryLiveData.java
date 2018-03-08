@@ -37,9 +37,12 @@ public class FirestoreQueryLiveData extends LiveData<QuerySnapshot> {
 
     @Override
     protected void onActive() {
-        if (query != null)
+        /*if (query != null)
             registration = query.addSnapshotListener(Executors.newSingleThreadExecutor(), listener);
-        if (task != null) task.addOnCompleteListener(Executors.newSingleThreadExecutor(), listener);
+        if (task != null) task.addOnCompleteListener(Executors.newSingleThreadExecutor(), listener);*/
+        if (query != null)
+            registration = query.addSnapshotListener(listener);
+        if (task != null) task.addOnCompleteListener(listener);
     }
 
     @Override
@@ -47,10 +50,11 @@ public class FirestoreQueryLiveData extends LiveData<QuerySnapshot> {
         if (registration != null) registration.remove();
     }
 
+    //TODO: implementar flag para diferenciar se deve executar setValue ou postValue
     private class LiveDataEventListener implements EventListener<QuerySnapshot>, OnCompleteListener<QuerySnapshot> {
         @Override
         public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-            postValue(documentSnapshots);
+            setValue(documentSnapshots);
         }
 
         @Override

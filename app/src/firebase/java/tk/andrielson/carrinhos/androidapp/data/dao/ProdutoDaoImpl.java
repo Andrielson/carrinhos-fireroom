@@ -27,9 +27,13 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao {
     private final Query queryPadrao;
 
     public ProdutoDaoImpl() {
-        super();
         collection = db.collection(COLECAO);
         queryPadrao = collection.whereEqualTo(ProdutoImpl.ATIVO, true);
+    }
+
+    public void testaTeste() {
+        Log.d(TAG, getColecaoID(COLECAO));
+        Log.d(TAG, getColecaoID("vendedores"));
     }
 
     /**
