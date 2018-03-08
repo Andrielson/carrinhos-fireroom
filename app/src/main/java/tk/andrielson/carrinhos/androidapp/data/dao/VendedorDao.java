@@ -1,5 +1,7 @@
 package tk.andrielson.carrinhos.androidapp.data.dao;
 
+import android.arch.lifecycle.LiveData;
+
 import java.util.List;
 
 import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
@@ -15,9 +17,9 @@ public interface VendedorDao {
 
     int delete(Vendedor vendedor);
 
-    List<Vendedor> getAll();
+    LiveData<List<Vendedor>> getAll();
 
-    Vendedor getByCodigo(Long codigo);
+    LiveData<Vendedor> getByCodigo(Long codigo);
 
     void deleteAll();
 }

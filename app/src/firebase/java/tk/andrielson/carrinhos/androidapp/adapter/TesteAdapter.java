@@ -20,7 +20,6 @@ import com.google.firebase.firestore.Query;
 import tk.andrielson.carrinhos.androidapp.data.model.ProdutoImpl;
 import tk.andrielson.carrinhos.androidapp.ui.adapter.ProdutoRecyclerViewAdapter;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaProdutoFragment;
-import tk.andrielson.carrinhos.androidapp.ui.viewholder.ProdutoViewHolder;
 
 /**
  * Created by Andrielson on 06/03/2018.

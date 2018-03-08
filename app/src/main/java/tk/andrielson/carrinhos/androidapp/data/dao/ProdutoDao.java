@@ -1,5 +1,7 @@
 package tk.andrielson.carrinhos.androidapp.data.dao;
 
+import android.arch.lifecycle.LiveData;
+
 import java.util.List;
 
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
@@ -8,16 +10,16 @@ import tk.andrielson.carrinhos.androidapp.data.model.Produto;
  * Created by Andrielson on 02/03/2018.
  */
 
-public interface ProdutoDao<T extends Produto> {
-    long insert(T produto);
+public interface ProdutoDao {
+    long insert(Produto produto);
 
-    int update(T produto);
+    int update(Produto produto);
 
-    int delete(T produto);
+    int delete(Produto produto);
 
-    List<T> getAll();
+    LiveData<List<Produto>> getAll();
 
-    T getByCodigo(Long codigo);
+    LiveData<Produto> getByCodigo(Long codigo);
 
     void deleteAll();
 }

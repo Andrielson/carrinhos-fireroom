@@ -1,96 +1,73 @@
 package tk.andrielson.carrinhos.androidapp.data.dao;
 
+import android.annotation.SuppressLint;
 import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.util.Log;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutionException;
 
+import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.data.model.ProdutoImpl;
 
 /**
  * Created by anfesilva on 07/03/2018.
  */
-
-public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao<ProdutoImpl> {
+@SuppressLint("DefaultLocale")
+public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao {
 
     private static final String COLECAO = ProdutoImpl.COLLECTION;
     private static final String TAG = ProdutoDaoImpl.class.getSimpleName();
+    private final Query queryPadrao;
 
     public ProdutoDaoImpl() {
         super();
         collectionReference = db.collection(COLECAO);
+        queryPadrao = collectionReference.whereEqualTo(ProdutoImpl.ATIVO, true);
     }
 
     @Override
-    public long insert(ProdutoImpl produto) {
+    public long insert(Produto produto) {
+        //TODO: implementar coleção para armazenar e recuperar IDs
+        Task<QuerySnapshot> task = collectionReference.get();
+        QuerySnapshot snapshot;
+        try {
+            //FIXME: não se pode executar Tasks.await da thread principal
+            snapshot = Tasks.await(task);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+            return 0;
+        }
+        Long novoCodigo = snapshot.isEmpty() ? Long.valueOf("1") : Long.valueOf(snapshot.size() + 1);
+        produto.setCodigo(novoCodigo);
+        String id = String.format("%020d", novoCodigo);
+        collectionReference.document(id).set(produto);
+        return novoCodigo;
+    }
+
+    @Override
+    public int update(Produto produto) {
         return 0;
     }
 
     @Override
-    public int update(ProdutoImpl produto) {
+    public int delete(Produto produto) {
         return 0;
     }
 
     @Override
-    public int delete(ProdutoImpl produto) {
-        return 0;
-    }
-
-    @Override
-    public List<ProdutoImpl> getAll() {
-        final List<ProdutoImpl> lista = new ArrayList<>();
-        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (DocumentSnapshot document : task.getResult()) {
-                        lista.add(document.toObject(ProdutoImpl.class));
-                        Log.d(TAG, document.getId() + " => " + document.getData());
-                    }
-                } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
-                }
-            }
-        });
-        return lista;
-    }
-
-    @Override
-    public ProdutoImpl getByCodigo(final Long codigo) {
-        final ProdutoImpl produto = new ProdutoImpl();
-        Query query = collectionReference.whereEqualTo("codigo", codigo);
-        query.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value,
-                                @Nullable FirebaseFirestoreException e) {
-                if (e != null || value == null) {
-                    Log.w(TAG, "Listen failed.", e);
-                    return;
-                }
-                Map<String, Object> map = value.getDocuments().get(0).getData();
-                produto.setCodigo((Long) map.get(ProdutoImpl.CODIGO));
-                produto.setNome((String) map.get(ProdutoImpl.NOME));
-                produto.setSigla((String) map.get(ProdutoImpl.SIGLA));
-                produto.setPreco((Double) map.get(ProdutoImpl.PRECO));
-                produto.setAtivo((Boolean) map.get(ProdutoImpl.ATIVO));
-            }
-        });
-        return produto;
+    public LiveData<Produto> getByCodigo(final Long codigo) {
+        Query query = queryPadrao.whereEqualTo("codigo", codigo);
+        FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(query);
+        return Transformations.map(liveData, new ObjetoDeserializer());
     }
 
     @Override
@@ -98,20 +75,28 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao<Pro
 
     }
 
-    public LiveData<List<ProdutoImpl>> listaProdutos() {
-        Query query = collectionReference.whereEqualTo("ativo", true);
-        FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(query);
-        return Transformations.map(liveData, new Deserializer());
+    @Override
+    public LiveData<List<Produto>> getAll() {
+        FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(queryPadrao);
+        return Transformations.map(liveData, new ListaDeserializer());
     }
 
-    private class Deserializer implements Function<QuerySnapshot, List<ProdutoImpl>> {
+    private class ListaDeserializer implements Function<QuerySnapshot, List<Produto>> {
         @Override
-        public List<ProdutoImpl> apply(QuerySnapshot input) {
-            List<ProdutoImpl> lista = new ArrayList<>();
+        public List<Produto> apply(QuerySnapshot input) {
+            List<Produto> lista = new ArrayList<>();
             for (DocumentSnapshot doc : input.getDocuments()) {
                 lista.add(doc.toObject(ProdutoImpl.class));
             }
             return lista;
         }
     }
+
+    private class ObjetoDeserializer implements Function<QuerySnapshot, Produto> {
+        @Override
+        public ProdutoImpl apply(QuerySnapshot input) {
+            return input.getDocuments().get(0).toObject(ProdutoImpl.class);
+        }
+    }
+
 }

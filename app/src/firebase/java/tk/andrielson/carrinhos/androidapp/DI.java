@@ -1,19 +1,16 @@
 package tk.andrielson.carrinhos.androidapp;
 
 import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-import java.util.List;
-
 import tk.andrielson.carrinhos.androidapp.adapter.ProdutoFirestoreRecyclerAdapter;
+import tk.andrielson.carrinhos.androidapp.data.dao.ProdutoDao;
 import tk.andrielson.carrinhos.androidapp.data.dao.ProdutoDaoImpl;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.data.model.ProdutoImpl;
@@ -34,6 +31,11 @@ public final class DI {
     }
 
     @NonNull
+    public static ProdutoDao newProdutoDao() {
+        return new ProdutoDaoImpl();
+    }
+
+    @NonNull
     public static RecyclerView.Adapter newProdutoRecyclerViewAdapter(ListaProdutoFragment.OnListFragmentInteractionListener listener, LifecycleOwner lifecycleOwner) {
         CollectionReference produtosReference = FirebaseFirestore.getInstance()
                 .collection("produtos");
@@ -50,12 +52,11 @@ public final class DI {
     }
 
     public static void testaDao() {
-        ProdutoDaoImpl dao = new ProdutoDaoImpl();
-        List<ProdutoImpl> produtoList = dao.listaProdutos().getValue();
-        Log.v("DI->testaDao", produtoList.toString());
-        for (Produto p : produtoList) {
-            Log.v("DI->testaDao", p.getNome());
-            Log.v("DI->testaDao", p.getSigla());
-        }
+//        Produto p = newProduto();
+//        p.setNome("Produto novo");
+//        p.setSigla("PN");
+//        p.setPreco(5.30);
+//        ProdutoDaoImpl dao = new ProdutoDaoImpl();
+//        dao.insert(p);
     }
 }

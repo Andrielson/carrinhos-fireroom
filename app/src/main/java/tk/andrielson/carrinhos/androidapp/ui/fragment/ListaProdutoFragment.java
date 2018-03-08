@@ -1,26 +1,25 @@
 package tk.andrielson.carrinhos.androidapp.ui.fragment;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
 
+import tk.andrielson.carrinhos.androidapp.DI;
 import tk.andrielson.carrinhos.androidapp.R;
-import tk.andrielson.carrinhos.androidapp.data.dao.ProdutoDaoImpl;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
-import tk.andrielson.carrinhos.androidapp.data.model.ProdutoImpl;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentProdutoListaBinding;
 import tk.andrielson.carrinhos.androidapp.ui.adapter.ProdutoRecyclerViewAdapter;
+import tk.andrielson.carrinhos.androidapp.viewmodel.ListaProdutoViewModel;
 
 /**
  * A fragment representing a list of Items.
@@ -31,9 +30,6 @@ import tk.andrielson.carrinhos.androidapp.ui.adapter.ProdutoRecyclerViewAdapter;
 public class ListaProdutoFragment extends Fragment {
 
     private static final String TAG = ListaProdutoFragment.class.getSimpleName();
-
-    // TODO: Customize parameter argument names
-    // TODO: Customize parameters
     private OnListFragmentInteractionListener mListener;
     private ProdutoRecyclerViewAdapter adapter;
     private FragmentProdutoListaBinding binding;
@@ -61,15 +57,7 @@ public class ListaProdutoFragment extends Fragment {
         /*if (getArguments() != null) {
             //TODO: adicionar possíveis parâmetros
         }*/
-        ProdutoDaoImpl dao = new ProdutoDaoImpl();
-        LiveData<List<ProdutoImpl>> listaProdutos = dao.listaProdutos();
-        listaProdutos.observe(this, new Observer<List<ProdutoImpl>>() {
-            @Override
-            public void onChanged(@Nullable List<ProdutoImpl> produtos) {
-                if (produtos != null)
-                    Log.v("DI->testaDao", produtos.toString());
-            }
-        });
+        new Thread(DI::testaDao).start();
     }
 
     @Override
@@ -81,6 +69,12 @@ public class ListaProdutoFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        final ListaProdutoViewModel viewModel = ViewModelProviders.of(this).get(ListaProdutoViewModel.class);
+        configuraUI(viewModel);
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -97,6 +91,21 @@ public class ListaProdutoFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private void configuraUI(ListaProdutoViewModel viewModel) {
+        viewModel.getProdutos().observe(this, new Observer<List<Produto>>() {
+            @Override
+            public void onChanged(@Nullable List<Produto> produtos) {
+                if (produtos != null) {
+                    binding.setIsLoading(false);
+                    adapter.setListaProduto(produtos);
+                } else {
+                    binding.setIsLoading(true);
+                }
+                binding.executePendingBindings();
+            }
+        });
     }
 
     /**

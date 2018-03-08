@@ -2,10 +2,13 @@ package tk.andrielson.carrinhos.androidapp.data.dao;
 
 import android.arch.lifecycle.LiveData;
 
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.concurrent.Executors;
 
 /**
  * Created by anfesilva on 07/03/2018.
@@ -15,22 +18,22 @@ public class FirestoreQueryLiveData extends LiveData<QuerySnapshot> {
     private static final String TAG = FirestoreQueryLiveData.class.getSimpleName();
 
     private final Query query;
-    private final TesteEventListener listener;
+    private final LiveDataEventListener listener;
 
     public FirestoreQueryLiveData(Query query) {
         this.query = query;
-        this.listener = new TesteEventListener();
+        this.listener = new LiveDataEventListener();
     }
 
     @Override
     protected void onActive() {
-        query.addSnapshotListener(listener);
+        query.addSnapshotListener(Executors.newSingleThreadExecutor(), listener);
     }
 
-    private class TesteEventListener implements EventListener<QuerySnapshot> {
+    private class LiveDataEventListener implements EventListener<QuerySnapshot> {
         @Override
         public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-            setValue(documentSnapshots);
+            postValue(documentSnapshots);
         }
     }
 }
