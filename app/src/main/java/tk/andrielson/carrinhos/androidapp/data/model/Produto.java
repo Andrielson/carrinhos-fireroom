@@ -1,12 +1,11 @@
 package tk.andrielson.carrinhos.androidapp.data.model;
 
-import android.os.Parcelable;
-
 /**
  * Created by Andrielson on 02/03/2018.
  */
 
-public interface Produto extends Parcelable {
+public interface Produto {
+
     Long getCodigo();
 
     void setCodigo(Long codigo);

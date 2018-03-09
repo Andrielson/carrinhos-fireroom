@@ -22,16 +22,20 @@
             android:title="@string/activity_main_drawer_menu_vendedores" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="@string/activity_main_drawer_menu_aplicativo">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/nav_atualizar"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:title="@string/activity_main_drawer_menu_atualizar" />
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_backup"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="@string/activity_main_drawer_menu_backup" />
+            <item
+                android:id="@+id/nav_sobre"
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/activity_main_drawer_menu_sobre" />
         </menu>
     </item>
 

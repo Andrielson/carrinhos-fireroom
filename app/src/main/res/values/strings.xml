@@ -14,6 +14,10 @@
     <string name="activity_main_drawer_menu_vendas">Vendas</string>
     <string name="activity_main_drawer_menu_produtos">Produtos</string>
     <string name="activity_main_drawer_menu_vendedores">Vendedores</string>
+    <string name="activity_main_drawer_menu_aplicativo">Aplicativo</string>
+    <string name="activity_main_drawer_menu_atualizar">Atualizar</string>
+    <string name="activity_main_drawer_menu_backup">Backup</string>
+    <string name="activity_main_drawer_menu_sobre">Sobre</string>
     <!--</editor-fold>-->
 
     <!--<editor-fold desc="Fragment Lista de Produtos">-->
@@ -25,6 +29,7 @@
     <string name="activity_produto_label">Produto</string>
 
     <!--<editor-fold desc="Fragment Cadastro de Produto">-->
+    <string name="fragment_cadastro_produto_label_codigo">Código:</string>
     <string name="fragment_cadastro_produto_label_nome">Nome do produto:</string>
     <string name="fragment_cadastro_produto_label_sigla">Sigla:</string>
     <string name="fragment_cadastro_produto_label_preco">Preço:</string>

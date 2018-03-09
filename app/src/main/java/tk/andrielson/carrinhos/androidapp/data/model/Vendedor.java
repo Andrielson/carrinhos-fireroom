@@ -8,7 +8,7 @@ import java.math.BigDecimal;
  * Created by Andrielson on 02/03/2018.
  */
 
-public interface Vendedor extends Parcelable {
+public interface Vendedor {
 
     public Long getCodigo();
 

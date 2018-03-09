@@ -22,6 +22,7 @@ public class CadastroProdutoViewModel extends ViewModel {
     public CadastroProdutoViewModel(@Nullable Long codigo) {
         if (codigo == null) {
             produtoLiveData = new MutableLiveData<>();
+            produtoLiveData.setValue(DI.newProduto());
         } else {
             ProdutoDao produtoDao = DI.newProdutoDao();
             produtoLiveData = (MutableLiveData<Produto>) produtoDao.getByCodigo(codigo);

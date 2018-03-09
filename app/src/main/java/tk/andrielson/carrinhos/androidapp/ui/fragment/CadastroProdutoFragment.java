@@ -12,10 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import tk.andrielson.carrinhos.androidapp.DI;
 import tk.andrielson.carrinhos.androidapp.R;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentCadastroProdutoBinding;
+import tk.andrielson.carrinhos.androidapp.ui.viewhandler.CadastroProdutoHandler;
 import tk.andrielson.carrinhos.androidapp.viewmodel.CadastroProdutoViewModel;
 
 /**
@@ -68,17 +68,19 @@ public class CadastroProdutoFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cadastro_produto, container, false);
-        binding.fragmentCadastroProdutoBotaoSalvar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Produto p = DI.newProduto();
-                p.setCodigo(produtoCodigo);
-                p.setNome(binding.fragmentCadastroProdutoInputNome.getText().toString());
-                p.setSigla(binding.fragmentCadastroProdutoInputSigla.getText().toString());
-                p.setPreco(Double.valueOf(binding.fragmentCadastroProdutoInputPreco.getText().toString().replace(",", ".")));
-                mListener.onFragmentInteraction(p, produtoCodigo == null);
-            }
-        });
+//        binding.fragmentCadastroProdutoBotaoSalvar.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Produto p = DI.newProduto();
+//                p.setCodigo(produtoCodigo);
+//                p.setNome(binding.fragmentCadastroProdutoInputNome.getText().toString());
+//                p.setSigla(binding.fragmentCadastroProdutoInputSigla.getText().toString());
+//                p.setPreco(Double.valueOf(binding.fragmentCadastroProdutoInputPreco.getText().toString().replace(",", ".")));
+//                mListener.onFragmentInteraction(p, produtoCodigo == null);
+//            }
+//        });
+        CadastroProdutoHandler handler = new CadastroProdutoHandler(mListener);
+        binding.setHandler(handler);
         return binding.getRoot();
     }
 
@@ -93,12 +95,11 @@ public class CadastroProdutoFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
+        if (!(context instanceof OnFragmentInteractionListener)) {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+        mListener = (OnFragmentInteractionListener) context;
     }
 
     @Override
@@ -111,7 +112,6 @@ public class CadastroProdutoFragment extends Fragment {
         viewModel.getProduto().observe(this, new Observer<Produto>() {
             @Override
             public void onChanged(@Nullable Produto produto) {
-                //TODO: set Produto no binding
                 binding.setProduto(produto);
             }
         });

@@ -13,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,10 +21,12 @@ import android.view.View;
 import tk.andrielson.carrinhos.androidapp.R;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaProdutoFragment;
+import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         ListaProdutoFragment.OnListFragmentInteractionListener {
+
     private static final String TAG = MainActivity.class.getSimpleName();
     private Fragmentos fragmentoAtivo;
 
@@ -42,9 +45,8 @@ public class MainActivity extends AppCompatActivity
                 if (fragmentoAtivo == Fragmentos.PRODUTO) {
                     Intent intent = new Intent(MainActivity.this, ProdutoActivity.class);
                     startActivity(intent);
-                    fragmentoAtivo = Fragmentos.CADASTRO_PRODUTO;
                 }
-                Snackbar.make(view, "Novo produto criado", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, fragmentoAtivo.toString(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -57,9 +59,38 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        LogUtil.Log(TAG, "onCreate", Log.VERBOSE);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        LogUtil.Log(TAG, "onStart", Log.VERBOSE);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        LogUtil.Log(TAG, "onResume", Log.VERBOSE);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        LogUtil.Log(TAG, "onPause", Log.VERBOSE);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        LogUtil.Log(TAG, "onStop", Log.VERBOSE);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        LogUtil.Log(TAG, "onDestroy", Log.VERBOSE);
+    }
 
     @Override
     public void onBackPressed() {
@@ -110,9 +141,11 @@ public class MainActivity extends AppCompatActivity
             fragmentoAtivo = Fragmentos.PRODUTO;
         } else if (id == R.id.nav_vendedores) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_atualizar) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_backup) {
+
+        } else if (id == R.id.nav_sobre) {
 
         }
 
@@ -122,9 +155,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void carregaFragment(int id) {
-        Fragment fragment;
+        Fragment fragment = new Fragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//        ft.replace(R.id.content_frame, fragment);
+        ft.replace(R.id.content_frame, fragment);
         ft.commit();
     }
 
@@ -133,13 +166,11 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(MainActivity.this, ProdutoActivity.class);
         intent.putExtra("produtoCodigo", item.getCodigo());
         startActivity(intent);
-        fragmentoAtivo = Fragmentos.CADASTRO_PRODUTO;
     }
 
     private enum Fragmentos {
         INICIO,
         PRODUTO,
-        CADASTRO_PRODUTO,
         VENDEDOR,
         VENDA
     }

@@ -20,7 +20,7 @@ import tk.andrielson.carrinhos.androidapp.data.model.ProdutoImpl;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
 /**
- * The type Produto dao.
+ * Implementação de ProdutoDao para o banco Firestore.
  */
 @SuppressLint("DefaultLocale")
 public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao {
@@ -29,6 +29,9 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao {
     private static final String TAG = ProdutoDaoImpl.class.getSimpleName();
     private final Query queryPadrao;
 
+    /**
+     * O construtor configura a coleção do Firestore que irá utilizar e implementa a query padrão.
+     */
     public ProdutoDaoImpl() {
         super();
         collection = db.collection(COLECAO);
