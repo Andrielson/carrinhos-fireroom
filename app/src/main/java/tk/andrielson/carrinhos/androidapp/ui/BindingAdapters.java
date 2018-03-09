@@ -7,9 +7,11 @@ import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Locale;
 import java.util.Objects;
 
 import tk.andrielson.carrinhos.androidapp.textinputmoeda.CurrencyTextInputEditText;
@@ -29,26 +31,34 @@ public class BindingAdapters {
         }
     }
 
-    @BindingAdapter(value = "valorReal")
-    public static void setValorRealTextView(TextView textView, double valor) {
+    @BindingAdapter("valorReal")
+    public static void setValorReal(TextView textView, Long valor) {
         if (textView instanceof CurrencyTextInputEditText)
             setValorRealCurrencyTextInputEditText((CurrencyTextInputEditText) textView, valor);
         else
-            textView.setText(String.valueOf(valor * 10));
+            setValorRealTextView(textView, valor);
     }
 
-    @BindingAdapter(value = "valorReal")
-    public static void setValorRealCurrencyTextInputEditText(CurrencyTextInputEditText editText, double valor) {
+    @BindingAdapter("android:checked")
+    public static void setChecked(CompoundButton view, Boolean valor) {
+        view.setChecked(valor);
+    }
+
+    private static void setValorRealTextView(TextView textView, Long valor) {
+        textView.setText(String.format(Locale.getDefault(), "R$ %.2f", (double) valor / 100));
+    }
+
+    private static void setValorRealCurrencyTextInputEditText(CurrencyTextInputEditText editText, Long valor) {
         if (Objects.equals(valor, getValorReal(editText)))
             return;
-        editText.setText(String.valueOf(valor * 10));
+        editText.setText(String.valueOf(valor));
     }
 
     @NonNull
     @InverseBindingAdapter(attribute = "valorReal")
-    public static Double getValorReal(CurrencyTextInputEditText editText) {
+    public static Long getValorReal(CurrencyTextInputEditText editText) {
         LogUtil.Log(TAG, "Dígitos decimais: " + editText.getDecimalDigits(), Log.DEBUG);
-        return ((double) editText.getRawValue()) / 100;
+        return editText.getRawValue();
     }
 
     private static class InverseBindingTextChangedListener implements TextWatcher {

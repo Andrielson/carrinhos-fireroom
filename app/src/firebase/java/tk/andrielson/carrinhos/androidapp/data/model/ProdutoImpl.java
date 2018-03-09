@@ -35,13 +35,13 @@ public class ProdutoImpl
     private Long codigo;
     private String nome;
     private String sigla;
-    private Double preco;
+    private Long preco;
     private Boolean ativo = Boolean.TRUE;
 
     public ProdutoImpl() {
     }
 
-    public ProdutoImpl(Long codigo, String nome, String sigla, Double preco) {
+    public ProdutoImpl(Long codigo, String nome, String sigla, Long preco) {
         this.codigo = codigo;
         this.nome = nome;
         this.sigla = sigla;
@@ -52,7 +52,7 @@ public class ProdutoImpl
         codigo = in.readByte() == 0x00 ? null : in.readLong();
         nome = in.readString();
         sigla = in.readString();
-        preco = in.readByte() == 0x00 ? null : in.readDouble();
+        preco = in.readByte() == 0x00 ? null : in.readLong();
         byte ativoVal = in.readByte();
         ativo = ativoVal == 0x02 ? null : ativoVal != 0x00;
     }
@@ -88,12 +88,12 @@ public class ProdutoImpl
     }
 
     @Override
-    public Double getPreco() {
+    public Long getPreco() {
         return preco;
     }
 
     @Override
-    public void setPreco(Double preco) {
+    public void setPreco(Long preco) {
         this.preco = preco;
     }
 
@@ -126,7 +126,7 @@ public class ProdutoImpl
             dest.writeByte((byte) (0x00));
         } else {
             dest.writeByte((byte) (0x01));
-            dest.writeDouble(preco);
+            dest.writeLong(preco);
         }
         if (ativo == null) {
             dest.writeByte((byte) (0x02));

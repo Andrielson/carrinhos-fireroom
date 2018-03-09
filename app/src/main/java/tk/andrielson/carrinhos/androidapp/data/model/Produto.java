@@ -18,9 +18,9 @@ public interface Produto {
 
     void setSigla(String sigla);
 
-    Double getPreco();
+    Long getPreco();
 
-    void setPreco(Double preco);
+    void setPreco(Long preco);
 
     Boolean getAtivo();
 

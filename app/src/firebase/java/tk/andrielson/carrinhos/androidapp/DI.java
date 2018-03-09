@@ -51,14 +51,4 @@ public final class DI {
         return new ProdutoFirestoreRecyclerAdapter(options, listener);
 //        return new TesteAdapter(listener,lifecycleOwner);
     }
-
-    public static void testaDao() {
-        Produto p = newProduto();
-        p.setNome("Produto novo");
-        p.setSigla("PN");
-        p.setPreco(5.30);
-        ProdutoDaoImpl dao = new ProdutoDaoImpl();
-        dao.insert(p);
-        Log.d("DI->testaDao", "passou por aqui");
-    }
 }
