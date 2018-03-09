@@ -36,7 +36,8 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/HintText">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/fragment_cadastro_produto_input_nome"
@@ -46,14 +47,16 @@
                 android:imeOptions="actionNext"
                 android:inputType="textCapCharacters"
                 android:maxLength="20"
-                android:text="@={produto.nome}" />
+                android:text="@={produto.nome}"
+                tools:text="Produto baum" />
 
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/text_margin">
+            android:layout_marginTop="@dimen/text_margin"
+            app:hintTextAppearance="@style/HintText">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/fragment_cadastro_produto_input_sigla"
@@ -63,14 +66,16 @@
                 android:imeOptions="actionNext"
                 android:inputType="textCapCharacters"
                 android:maxLength="3"
-                android:text="@={produto.sigla}" />
+                android:text="@={produto.sigla}"
+                tools:text="PBA" />
 
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/text_margin">
+            android:layout_marginTop="@dimen/text_margin"
+            app:hintTextAppearance="@style/HintText">
 
             <tk.andrielson.carrinhos.androidapp.textinputmoeda.CurrencyTextInputEditText
                 android:id="@+id/fragment_cadastro_produto_input_preco"
@@ -78,7 +83,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/fragment_cadastro_produto_label_preco"
                 android:maxLength="27"
-                app:valorReal="@={produto.preco}" />
+                app:valorReal="@={produto.preco}"
+                tools:text="10" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -86,7 +92,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/text_margin"
-            android:text="@string/fragment_cadastro_produto_label_ativo" />
+            android:checked="@={produto.ativo}"
+            android:text="@string/fragment_cadastro_produto_label_habilitado"
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/fragment_cadastro_produto_botao_salvar"

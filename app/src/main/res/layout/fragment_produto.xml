@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:locale="pt-BR"
     tools:showIn="@layout/fragment_produto_lista">
@@ -40,12 +41,12 @@
 
         <TextView
             android:id="@+id/fragment_produto_valor"
-            valorReal="@{produto.preco}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
             android:layout_weight="1"
             android:textAppearance="?attr/textAppearanceListItem"
+            app:valorReal="@{produto.preco}"
             tools:text="R$ 2,50" />
     </LinearLayout>
 </layout>

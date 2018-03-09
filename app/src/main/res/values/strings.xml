@@ -29,11 +29,12 @@
     <string name="activity_produto_label">Produto</string>
 
     <!--<editor-fold desc="Fragment Cadastro de Produto">-->
-    <string name="fragment_cadastro_produto_label_codigo">Código:</string>
-    <string name="fragment_cadastro_produto_label_nome">Nome do produto:</string>
-    <string name="fragment_cadastro_produto_label_sigla">Sigla:</string>
-    <string name="fragment_cadastro_produto_label_preco">Preço:</string>
-    <string name="fragment_cadastro_produto_label_ativo">Ativo para venda: &#032;&#032;</string>
+    <string name="fragment_cadastro_produto_label_codigo">Código</string>
+    <string name="fragment_cadastro_produto_label_nome">Nome do produto</string>
+    <string name="fragment_cadastro_produto_label_sigla">Sigla</string>
+    <string name="fragment_cadastro_produto_label_preco">Preço</string>
+    <string name="fragment_cadastro_produto_label_habilitado">Habilitado &#032;&#032;</string>
+    <string name="fragment_cadastro_produto_label_desabilitado">Desabilitado &#032;&#032;</string>
     <string name="fragment_cadastro_produto_label_botao_salvar">Salvar</string>
     <!--</editor-fold>-->
 </resources>
