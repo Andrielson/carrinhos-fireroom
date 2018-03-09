@@ -16,6 +16,8 @@ import org.jetbrains.annotations.Contract;
 
 import java.util.Map;
 
+import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
+
 /**
  * The type Firestore dao.
  */
@@ -42,19 +44,7 @@ public abstract class FirestoreDao {
 
     private static class InnerSingleton {
         private static final String TAG = InnerSingleton.class.getSimpleName();
-
-        private static class StaticHolder {
-            static final InnerSingleton INSTANCE = new InnerSingleton();
-        }
-
-        @Contract(pure = true)
-        static InnerSingleton getInstance() {
-            return StaticHolder.INSTANCE;
-        }
-
         private final LiveData<Map<String, String>> liveDataIDs;
-
-        private Map<String, String> stringIDs;
 
         private InnerSingleton() {
             FirestoreQueryLiveData queryLiveData = new FirestoreQueryLiveData(FirebaseFirestore.getInstance().collection(COLECAOIDS), true);
@@ -66,15 +56,22 @@ public abstract class FirestoreDao {
                 return map;
             });
             liveDataIDs.observeForever(map -> {
-                stringIDs = map;
-                Log.v(TAG, "LiveDataIDs mudou!");
+                LogUtil.Log(TAG, "Lista de IDs das coleções atualizada!", Log.INFO);
             });
-            Log.d(TAG, "Singleton TESTE criado, aparentemente, com sucesso!");
+        }
+
+        @Contract(pure = true)
+        static InnerSingleton getInstance() {
+            return StaticHolder.INSTANCE;
         }
 
         @Contract(pure = true)
         private Map<String, String> getIDs() {
             return liveDataIDs.getValue();
+        }
+
+        private static class StaticHolder {
+            static final InnerSingleton INSTANCE = new InnerSingleton();
         }
     }
 }

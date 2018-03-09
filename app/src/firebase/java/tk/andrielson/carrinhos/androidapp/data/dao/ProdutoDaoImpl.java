@@ -17,6 +17,7 @@ import java.util.List;
 
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.data.model.ProdutoImpl;
+import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
 /**
  * The type Produto dao.
@@ -49,9 +50,9 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao {
         DocumentReference novoDocumento = collection.document(id);
         WriteBatch batch = setColecaoID(COLECAO, id);
         batch.set(novoDocumento, produto);
-        batch.commit().addOnSuccessListener(aVoid -> Log.i(TAG, "Novo produto " + id + " adicionado com sucesso!")).addOnFailureListener(e -> {
-            Log.e(TAG, "Falha ao adicionar o produto " + id);
-            Log.e(TAG, e.getMessage());
+        batch.commit().addOnSuccessListener(aVoid -> LogUtil.Log(TAG, "Novo produto " + id + " adicionado com sucesso!", Log.INFO)).addOnFailureListener(e -> {
+            LogUtil.Log(TAG, "Falha ao adicionar o produto " + id, Log.ERROR);
+            LogUtil.Log(TAG, e.getMessage(), Log.ERROR);
         });
         return novoCodigo;
     }
@@ -68,9 +69,9 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao {
         DocumentReference documento = collection.document(id);
         WriteBatch batch = db.batch();
         batch.set(documento, produto);
-        batch.commit().addOnSuccessListener(aVoid -> Log.i(TAG, "Produto " + id + " atualizado com sucesso!")).addOnFailureListener(e -> {
-            Log.e(TAG, "Falha ao atualizar o produto " + id);
-            Log.e(TAG, e.getMessage());
+        batch.commit().addOnSuccessListener(aVoid -> LogUtil.Log(TAG, "Produto " + id + " atualizado com sucesso!", Log.INFO)).addOnFailureListener(e -> {
+            LogUtil.Log(TAG, "Falha ao atualizar o produto " + id, Log.ERROR);
+            LogUtil.Log(TAG, e.getMessage(), Log.ERROR);
         });
         return 0;
     }

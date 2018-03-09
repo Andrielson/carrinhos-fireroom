@@ -25,8 +25,13 @@
         </activity>
         <activity
             android:name=".ui.activity.MainActivity"
-            android:label="@string/title_activity_main"
+            android:label="@string/activity_main_label"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activity.ProdutoActivity"
+            android:label="@string/activity_produto_label"
+            android:parentActivityName=".ui.activity.MainActivity"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
     </application>
 
 </manifest>

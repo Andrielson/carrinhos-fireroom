@@ -1,5 +1,6 @@
 package tk.andrielson.carrinhos.androidapp.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -12,25 +13,25 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
-import tk.andrielson.carrinhos.androidapp.DI;
 import tk.andrielson.carrinhos.androidapp.R;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaProdutoFragment;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ListaProdutoFragment.OnListFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        ListaProdutoFragment.OnListFragmentInteractionListener {
     private static final String TAG = MainActivity.class.getSimpleName();
+    private Fragmentos fragmentoAtivo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        fragmentoAtivo = Fragmentos.INICIO;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -38,7 +39,11 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DI.testaDao();
+                if (fragmentoAtivo == Fragmentos.PRODUTO) {
+                    Intent intent = new Intent(MainActivity.this, ProdutoActivity.class);
+                    startActivity(intent);
+                    fragmentoAtivo = Fragmentos.CADASTRO_PRODUTO;
+                }
                 Snackbar.make(view, "Novo produto criado", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
@@ -53,6 +58,8 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
+
 
     @Override
     public void onBackPressed() {
@@ -91,7 +98,6 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        Log.d(TAG, "onNavigationItemSelected");
         if (id == R.id.nav_inicio) {
             // Handle the camera action
         } else if (id == R.id.nav_vendas) {
@@ -101,6 +107,7 @@ public class MainActivity extends AppCompatActivity
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, fragment);
             ft.commit();
+            fragmentoAtivo = Fragmentos.PRODUTO;
         } else if (id == R.id.nav_vendedores) {
 
         } else if (id == R.id.nav_share) {
@@ -123,6 +130,17 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Produto item) {
-        Toast.makeText(this, "Clicou em: " + item.getNome(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(MainActivity.this, ProdutoActivity.class);
+        intent.putExtra("produtoCodigo", item.getCodigo());
+        startActivity(intent);
+        fragmentoAtivo = Fragmentos.CADASTRO_PRODUTO;
+    }
+
+    private enum Fragmentos {
+        INICIO,
+        PRODUTO,
+        CADASTRO_PRODUTO,
+        VENDEDOR,
+        VENDA
     }
 }

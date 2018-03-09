@@ -1,20 +1,34 @@
 <resources>
     <string name="app_name">Carrinhos</string>
     <string name="app_label">Carrinhos Novo</string>
-    <string name="title_activity_main">MainActivity</string>
+
+    <!--<editor-fold desc="Activity Main">-->
+    <string name="activity_main_label">MainActivity</string>
     <string name="navigation_drawer_open">Abrir menu lateral</string>
     <string name="navigation_drawer_close">Fechar menu lateral</string>
     <string name="action_settings">Configurações</string>
+    <!--</editor-fold>-->
 
-    <!--Menu da Navigation Drawer-->
+    <!--<editor-fold desc="Menu da Navigation Drawer">-->
     <string name="activity_main_drawer_menu_inicio">Início</string>
     <string name="activity_main_drawer_menu_vendas">Vendas</string>
     <string name="activity_main_drawer_menu_produtos">Produtos</string>
     <string name="activity_main_drawer_menu_vendedores">Vendedores</string>
+    <!--</editor-fold>-->
 
+    <!--<editor-fold desc="Fragment Lista de Produtos">-->
     <string name="fragment_produto_lista_carregando_produtos">Carregando produtos…</string>
     <string name="fragment_produto_lista_vazia">Nenhum produto adicionado</string>
+    <!--</editor-fold>-->
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--Activity Produto-->
+    <string name="activity_produto_label">Produto</string>
+
+    <!--<editor-fold desc="Fragment Cadastro de Produto">-->
+    <string name="fragment_cadastro_produto_label_nome">Nome do produto:</string>
+    <string name="fragment_cadastro_produto_label_sigla">Sigla:</string>
+    <string name="fragment_cadastro_produto_label_preco">Preço:</string>
+    <string name="fragment_cadastro_produto_label_ativo">Ativo para venda: &#032;&#032;</string>
+    <string name="fragment_cadastro_produto_label_botao_salvar">Salvar</string>
+    <!--</editor-fold>-->
 </resources>

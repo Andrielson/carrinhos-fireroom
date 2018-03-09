@@ -1,13 +1,95 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="tk.andrielson.carrinhos.androidapp.ui.fragment.CadastroProdutoFragment">
+    tools:context="tk.andrielson.carrinhos.androidapp.ui.fragment.CadastroProdutoFragment"
+    tools:locale="pt-BR">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+
+        <variable
+            name="produto"
+            type="tk.andrielson.carrinhos.androidapp.data.model.Produto" />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical"
+        android:padding="8dp">
 
-</FrameLayout>
+<!--        <TextView
+            android:id="@+id/codigo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{produto.codigo.toString()}"
+            android:visibility="gone" />-->
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/fragment_cadastro_produto_input_nome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/fragment_cadastro_produto_label_nome"
+                android:imeOptions="actionNext"
+                android:inputType="textCapCharacters"
+                android:maxLength="20"
+                android:text="@{produto.nome}" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_margin">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/fragment_cadastro_produto_input_sigla"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/fragment_cadastro_produto_label_sigla"
+                android:imeOptions="actionNext"
+                android:inputType="textCapCharacters"
+                android:maxLength="3"
+                android:text="@{produto.sigla}" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_margin">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/fragment_cadastro_produto_input_preco"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/fragment_cadastro_produto_label_preco"
+                android:inputType="numberDecimal"
+                android:text='@{produto.preco != null ? String.format("%.2f", produto.preco) : ""}' />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_margin"
+            android:text="@string/fragment_cadastro_produto_label_ativo" />
+
+        <Button
+            android:id="@+id/fragment_cadastro_produto_botao_salvar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/text_margin"
+            android:background="@color/colorPrimaryDark"
+            android:padding="10dp"
+            android:text="@string/fragment_cadastro_produto_label_botao_salvar"
+            android:textAllCaps="true"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+    </LinearLayout>
+</layout>

@@ -53,10 +53,6 @@ public class ListaProdutoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        /*if (getArguments() != null) {
-            //TODO: adicionar possíveis parâmetros
-        }*/
     }
 
     @Override
