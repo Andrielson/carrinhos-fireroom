@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
-import tk.andrielson.carrinhos.androidapp.databinding.FragmentProdutoBinding;
+import tk.andrielson.carrinhos.androidapp.databinding.FragmentProdutoListaItemBinding;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaProdutoFragment;
 import tk.andrielson.carrinhos.androidapp.ui.viewhandler.ProdutoHandler;
 
@@ -31,7 +31,7 @@ public class ProdutoRecyclerViewAdapter extends RecyclerView.Adapter<ProdutoRecy
     @NonNull
     public ProdutoViewHolder onCreateViewHolder(@NonNull ViewGroup group, int i) {
         LayoutInflater layoutInflater = LayoutInflater.from(group.getContext());
-        FragmentProdutoBinding binding = FragmentProdutoBinding.inflate(layoutInflater, group, false);
+        FragmentProdutoListaItemBinding binding = FragmentProdutoListaItemBinding.inflate(layoutInflater, group, false);
         return new ProdutoViewHolder(binding);
     }
 
@@ -96,9 +96,9 @@ public class ProdutoRecyclerViewAdapter extends RecyclerView.Adapter<ProdutoRecy
     public class ProdutoViewHolder extends RecyclerView.ViewHolder {
 
         private final String TAG = ProdutoViewHolder.class.getSimpleName();
-        private final FragmentProdutoBinding binding;
+        private final FragmentProdutoListaItemBinding binding;
 
-        public ProdutoViewHolder(FragmentProdutoBinding binding) {
+        public ProdutoViewHolder(FragmentProdutoListaItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

@@ -48,7 +48,7 @@
             android:layout_marginRight="8dp"
             app:layoutManager="LinearLayoutManager"
             tools:context="tk.andrielson.carrinhos.androidapp.ui.fragment.ListaProdutoFragment"
-            tools:listitem="@layout/fragment_produto"
+            tools:listitem="@layout/fragment_produto_lista_item"
             tools:visibility="visible" />
     </LinearLayout>
 </layout>

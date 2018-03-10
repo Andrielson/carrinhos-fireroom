@@ -15,7 +15,7 @@
             name="handler"
             type="tk.andrielson.carrinhos.androidapp.ui.viewhandler.ProdutoHandler" />
 
-        <import type="java.util.Locale" />
+        <import type="tk.andrielson.carrinhos.androidapp.R" />
     </data>
 
     <LinearLayout
@@ -23,9 +23,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:background="#EEE8AA"
+        android:background="#F5F5F5"
         android:onClick="@{handler::onClickProduto}"
         android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/icone_habilitado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:tint="@color/produtoDesabilitado"
+            app:produtoHabilitado="@{produto.ativo}"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_shopping_cart_black_32dp" />
 
         <TextView
             android:id="@+id/fragment_produto_nome"

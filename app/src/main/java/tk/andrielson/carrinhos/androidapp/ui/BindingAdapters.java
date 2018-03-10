@@ -1,21 +1,25 @@
 package tk.andrielson.carrinhos.androidapp.ui;
 
+import android.content.res.ColorStateList;
 import android.databinding.BindingAdapter;
 import android.databinding.InverseBindingAdapter;
 import android.databinding.InverseBindingListener;
 import android.support.annotation.NonNull;
+import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.content.res.AppCompatResources;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Locale;
 import java.util.Objects;
 
+import tk.andrielson.carrinhos.androidapp.CarrinhosApp;
+import tk.andrielson.carrinhos.androidapp.R;
 import tk.andrielson.carrinhos.androidapp.textinputmoeda.CurrencyTextInputEditText;
-import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
 /**
  * Created by anfesilva on 09/03/2018.
@@ -24,11 +28,37 @@ import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 public class BindingAdapters {
     private static final String TAG = BindingAdapters.class.getSimpleName();
 
+    @BindingAdapter("android:checked")
+    public static void setChecked(CompoundButton view, Boolean valor) {
+        view.setChecked(valor != null ? valor : false);
+    }
+
+    @BindingAdapter("produtoHabilitado")
+    public static void setProdutoListaItemImagemHabilitado(ImageView imageView, Boolean habilitado) {
+        ColorStateList csl;
+        if (habilitado != null && habilitado) {
+            imageView.setImageResource(R.drawable.ic_shopping_cart_black_32dp);
+            imageView.setContentDescription("Produto habilitado");
+            csl = AppCompatResources.getColorStateList(CarrinhosApp.getContext(), R.color.produtoHabilitado);
+        } else {
+            imageView.setImageResource(R.drawable.ic_remove_shopping_cart_black_32dp);
+            imageView.setContentDescription("Produto desabilitado");
+            csl = AppCompatResources.getColorStateList(CarrinhosApp.getContext(), R.color.produtoDesabilitado);
+        }
+        DrawableCompat.setTintList(imageView.getDrawable(), csl);
+    }
+
     @BindingAdapter(value = "valorRealAttrChanged")
     public static void setListenerOnEditTextMoeda(EditText editText, final InverseBindingListener listener) {
         if (listener != null) {
             editText.addTextChangedListener(new InverseBindingTextChangedListener(listener));
         }
+    }
+
+    @NonNull
+    @InverseBindingAdapter(attribute = "valorReal")
+    public static Long getValorReal(CurrencyTextInputEditText editText) {
+        return editText.getRawValue();
     }
 
     @BindingAdapter("valorReal")
@@ -39,11 +69,6 @@ public class BindingAdapters {
             setValorRealTextView(textView, valor);
     }
 
-    @BindingAdapter("android:checked")
-    public static void setChecked(CompoundButton view, Boolean valor) {
-        view.setChecked(valor);
-    }
-
     private static void setValorRealTextView(TextView textView, Long valor) {
         textView.setText(String.format(Locale.getDefault(), "R$ %.2f", (double) valor / 100));
     }
@@ -52,13 +77,6 @@ public class BindingAdapters {
         if (Objects.equals(valor, getValorReal(editText)))
             return;
         editText.setText(String.valueOf(valor));
-    }
-
-    @NonNull
-    @InverseBindingAdapter(attribute = "valorReal")
-    public static Long getValorReal(CurrencyTextInputEditText editText) {
-        LogUtil.Log(TAG, "Dígitos decimais: " + editText.getDecimalDigits(), Log.DEBUG);
-        return editText.getRawValue();
     }
 
     private static class InverseBindingTextChangedListener implements TextWatcher {

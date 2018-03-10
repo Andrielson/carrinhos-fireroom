@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
+import android.support.v4.util.SimpleArrayMap;
 import android.util.Log;
 
 import com.google.firebase.firestore.DocumentReference;
@@ -35,7 +36,7 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao {
     public ProdutoDaoImpl() {
         super();
         collection = db.collection(COLECAO);
-        queryPadrao = collection.whereEqualTo(ProdutoImpl.ATIVO, true);
+        queryPadrao = collection;
     }
 
     /**
@@ -120,7 +121,19 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao {
      */
     @Override
     public LiveData<List<Produto>> getAll() {
-        FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(queryPadrao);
+        Query query = queryPadrao.orderBy(ProdutoImpl.NOME);
+        FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(query);
+        return Transformations.map(liveData, new ListaProdutoDeserializer());
+    }
+
+    public LiveData<List<Produto>> getAll(SimpleArrayMap<String, String> ordenacao) {
+        Query query = queryPadrao;
+        for (int i = 0; i < ordenacao.size(); i++) {
+            String orderBy = ordenacao.keyAt(i);
+            String direcao = ordenacao.valueAt(i) != null ? ordenacao.valueAt(i) : "ASC";
+            query = query.orderBy(orderBy, direcao.equals("ASC") ? Query.Direction.ASCENDING : Query.Direction.DESCENDING);
+        }
+        FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(query);
         return Transformations.map(liveData, new ListaProdutoDeserializer());
     }
 
