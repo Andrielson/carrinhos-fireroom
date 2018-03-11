@@ -12,7 +12,7 @@ import java.util.Objects;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentProdutoListaItemBinding;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaProdutoFragment;
-import tk.andrielson.carrinhos.androidapp.ui.viewhandler.ProdutoHandler;
+import tk.andrielson.carrinhos.androidapp.ui.viewhandler.ListaProdutoItemHandler;
 
 /**
  * Created by Andrielson on 06/03/2018.
@@ -101,7 +101,7 @@ public class ProdutoRecyclerViewAdapter extends RecyclerView.Adapter<ProdutoRecy
 
         public void bind(final Produto produto, final ListaProdutoFragment.OnListFragmentInteractionListener listener) {
             binding.setProduto(produto);
-            binding.setHandler(new ProdutoHandler(listener, produto));
+            binding.setHandler(new ListaProdutoItemHandler(listener, produto));
             binding.executePendingBindings();
         }
 

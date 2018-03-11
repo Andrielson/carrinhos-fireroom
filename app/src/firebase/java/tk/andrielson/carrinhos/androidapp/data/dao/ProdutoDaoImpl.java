@@ -1,6 +1,5 @@
 package tk.andrielson.carrinhos.androidapp.data.dao;
 
-import android.annotation.SuppressLint;
 import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
@@ -24,20 +23,16 @@ import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 /**
  * Implementação de ProdutoDao para o banco Firestore.
  */
-@SuppressLint("DefaultLocale")
 public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao {
 
     private static final String COLECAO = ProdutoImpl.COLLECTION;
     private static final String TAG = ProdutoDaoImpl.class.getSimpleName();
-    private final Query queryPadrao;
 
     /**
      * O construtor configura a coleção do Firestore que irá utilizar e implementa a query padrão.
      */
     public ProdutoDaoImpl() {
-        super();
-        collection = db.collection(COLECAO);
-        queryPadrao = collection;
+        super(COLECAO);
     }
 
     /**
@@ -134,6 +129,14 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao {
         return Transformations.map(liveData, new ListaProdutoDeserializer());
     }
 
+    /**
+     * Consulta todos os produtos do banco de dados, ordenando pelos parâmetros de ordenação,
+     * encapsulada numa LiveData observável, para manter a lista sempre atualizada.
+     *
+     * @param ordenacao uma mapa no qual a chave indica por qual atributo deve ser ordenado e o valor
+     *                  indica a direção (ascendente ou descendente) da ordenação.
+     * @return a lista de produtos encapsulada em uma LiveData
+     */
     @NonNull
     public LiveData<List<Produto>> getAll(SimpleArrayMap<String, String> ordenacao) {
         Query query = queryPadrao;

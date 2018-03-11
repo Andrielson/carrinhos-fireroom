@@ -3,26 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:locale="pt-BR"
-    tools:showIn="@layout/fragment_produto_lista">
+    tools:showIn="@layout/fragment_vendedor_lista">
 
     <data>
 
         <variable
-            name="produto"
-            type="tk.andrielson.carrinhos.androidapp.data.model.Produto" />
+            name="vendedor"
+            type="tk.andrielson.carrinhos.androidapp.data.model.Vendedor" />
 
         <variable
             name="handler"
-            type="tk.andrielson.carrinhos.androidapp.ui.viewhandler.ListaProdutoItemHandler" />
+            type="tk.andrielson.carrinhos.androidapp.ui.viewhandler.ListaVendedorItemHandler" />
     </data>
 
     <LinearLayout
-        android:id="@+id/fragment_produto_item"
+        android:id="@+id/fragment_vendedor_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="#F5F5F5"
-        android:onClick="@{handler::onClickProduto}"
+        android:onClick="@{handler::onClickVendedor}"
         android:orientation="horizontal">
 
         <ImageView
@@ -30,32 +30,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            app:carrinhoHabilitado="@{produto.ativo}"
+            app:carrinhoHabilitado="@{vendedor.ativo}"
             tools:ignore="ContentDescription"
             tools:src="@drawable/ic_shopping_cart_black_32dp"
             tools:tint="@color/carrinhoHabilitado" />
 
         <TextView
-            android:id="@+id/fragment_produto_nome"
+            android:id="@+id/fragment_vendedor_nome"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
-            android:layout_weight="2"
-            android:text='@{String.format("%s (%s)", produto.nome, produto.sigla)}'
+            android:layout_weight="3"
+            android:text="@{vendedor.nome}"
             android:textAllCaps="true"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textStyle="bold"
-            tools:text="Produto" />
+            tools:text="Vendedor" />
 
         <TextView
-            android:id="@+id/fragment_produto_valor"
+            android:id="@+id/fragment_vendedor_comissao"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
             android:layout_weight="1"
+            android:textAllCaps="true"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textStyle="bold"
-            app:valorReal="@{produto.preco}"
-            tools:text="R$ 2,50" />
+            app:valorInteiro="@{vendedor.comissao}"
+            tools:text="40 %" />
     </LinearLayout>
 </layout>

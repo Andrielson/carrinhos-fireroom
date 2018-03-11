@@ -159,12 +159,12 @@ public class ProdutoImpl
 
     @Override
     public int hashCode() {
-        int result = getCodigo().hashCode();
-        result = 31 * result + getNome().hashCode();
-        result = 31 * result + getSigla().hashCode();
-        result = 31 * result + getPreco().hashCode();
-        result = 31 * result + getAtivo().hashCode();
-        result = 31 * result + excluido.hashCode();
+        int result = getCodigo() != null ? getCodigo().hashCode() : 0;
+        result = 31 * result + (getNome() != null ? getNome().hashCode() : 0);
+        result = 31 * result + (getSigla() != null ? getSigla().hashCode() : 0);
+        result = 31 * result + (getPreco() != null ? getPreco().hashCode() : 0);
+        result = 31 * result + (getAtivo() != null ? getAtivo().hashCode() : 0);
+        result = 31 * result + (excluido != null ? excluido.hashCode() : 0);
         return result;
     }
 }

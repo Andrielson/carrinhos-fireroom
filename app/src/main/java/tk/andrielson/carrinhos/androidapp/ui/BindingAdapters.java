@@ -5,10 +5,12 @@ import android.databinding.BindingAdapter;
 import android.databinding.InverseBindingAdapter;
 import android.databinding.InverseBindingListener;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.content.res.AppCompatResources;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,6 +22,7 @@ import java.util.Objects;
 import tk.andrielson.carrinhos.androidapp.CarrinhosApp;
 import tk.andrielson.carrinhos.androidapp.R;
 import tk.andrielson.carrinhos.androidapp.textinputmoeda.CurrencyTextInputEditText;
+import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
 /**
  * Created by anfesilva on 09/03/2018.
@@ -33,26 +36,61 @@ public class BindingAdapters {
         view.setChecked(valor != null ? valor : false);
     }
 
-    @BindingAdapter("produtoHabilitado")
-    public static void setProdutoListaItemImagemHabilitado(ImageView imageView, Boolean habilitado) {
+    @BindingAdapter("carrinhoHabilitado")
+    public static void setCarrinhoImagemHabilitado(ImageView imageView, Boolean habilitado) {
         ColorStateList csl;
         if (habilitado != null && habilitado) {
             imageView.setImageResource(R.drawable.ic_shopping_cart_black_32dp);
-            imageView.setContentDescription("Produto habilitado");
-            csl = AppCompatResources.getColorStateList(CarrinhosApp.getContext(), R.color.produtoHabilitado);
+            imageView.setContentDescription("Habilitado");
+            csl = AppCompatResources.getColorStateList(CarrinhosApp.getContext(), R.color.carrinhoHabilitado);
         } else {
             imageView.setImageResource(R.drawable.ic_remove_shopping_cart_black_32dp);
-            imageView.setContentDescription("Produto desabilitado");
-            csl = AppCompatResources.getColorStateList(CarrinhosApp.getContext(), R.color.produtoDesabilitado);
+            imageView.setContentDescription("Desabilitado");
+            csl = AppCompatResources.getColorStateList(CarrinhosApp.getContext(), R.color.carrinhoDesabilitado);
         }
         DrawableCompat.setTintList(imageView.getDrawable(), csl);
     }
 
+    @BindingAdapter(value = "valorInteiroAttrChanged")
+    public static void setListenerOnEditTextInteiro(EditText editText, final InverseBindingListener listener) {
+        if (listener != null)
+            editText.addTextChangedListener(new InverseBindingTextChangedListener(listener));
+    }
+
+    @InverseBindingAdapter(attribute = "valorInteiro")
+    public static Integer getValorInteiro(EditText editText) {
+        String texto = editText.getText().toString();
+        try {
+            return texto.isEmpty() ? 0 : Integer.valueOf(texto);
+        } catch (NumberFormatException e) {
+            LogUtil.Log(TAG, texto, Log.DEBUG);
+            LogUtil.Log(TAG, e.getLocalizedMessage(), Log.ERROR);
+            return 0;
+        }
+    }
+
+    @BindingAdapter("valorInteiro")
+    public static void setValorInteiro(TextView textView, Integer valor) {
+        if (textView instanceof TextInputEditText)
+            setValorInteiroEditText((TextInputEditText) textView, valor);
+        else
+            setValorInteiroTextView(textView, valor);
+    }
+
+    private static void setValorInteiroTextView(TextView textView, Integer valor) {
+        textView.setText(String.format(Locale.getDefault(), "%d %%", valor));
+    }
+
+    private static void setValorInteiroEditText(TextInputEditText editText, Integer valor) {
+        if (Objects.equals(valor, getValorInteiro(editText)))
+            return;
+        editText.setText(valor == null ? "" : String.valueOf(valor));
+    }
+
     @BindingAdapter(value = "valorRealAttrChanged")
     public static void setListenerOnEditTextMoeda(EditText editText, final InverseBindingListener listener) {
-        if (listener != null) {
+        if (listener != null)
             editText.addTextChangedListener(new InverseBindingTextChangedListener(listener));
-        }
     }
 
     @NonNull

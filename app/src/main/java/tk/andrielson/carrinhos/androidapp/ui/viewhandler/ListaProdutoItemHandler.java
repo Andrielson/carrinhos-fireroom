@@ -8,11 +8,11 @@ import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaProdutoFragment;
 /**
  * Created by Andrielson on 05/03/2018.
  */
-public class ProdutoHandler {
+public class ListaProdutoItemHandler {
     private final ListaProdutoFragment.OnListFragmentInteractionListener mListener;
     private final Produto produto;
 
-    public ProdutoHandler(ListaProdutoFragment.OnListFragmentInteractionListener mListener, Produto produto) {
+    public ListaProdutoItemHandler(ListaProdutoFragment.OnListFragmentInteractionListener mListener, Produto produto) {
         this.mListener = mListener;
         this.produto = produto;
     }

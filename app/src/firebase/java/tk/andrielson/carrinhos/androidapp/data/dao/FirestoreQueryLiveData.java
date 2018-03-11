@@ -59,10 +59,9 @@ public class FirestoreQueryLiveData extends LiveData<QuerySnapshot> {
 
     @Override
     protected void onInactive() {
-//        if (registration != null) registration.remove();
+        if (registration != null) registration.remove();
     }
 
-    //TODO: implementar flag para diferenciar se deve executar setValue ou postValue
     private class LiveDataEventListener implements EventListener<QuerySnapshot>, OnCompleteListener<QuerySnapshot> {
         private final boolean mainThread;
 

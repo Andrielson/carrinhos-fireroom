@@ -11,6 +11,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.WriteBatch;
 
 import org.jetbrains.annotations.Contract;
@@ -31,6 +32,12 @@ public abstract class FirestoreDao {
     protected final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     protected CollectionReference collection;
+    protected final Query queryPadrao;
+
+    protected FirestoreDao(String colecao) {
+        collection = db.collection(colecao);
+        queryPadrao = collection;
+    }
 
     @NonNull
     protected String getColecaoID(@NonNull String colecao) {

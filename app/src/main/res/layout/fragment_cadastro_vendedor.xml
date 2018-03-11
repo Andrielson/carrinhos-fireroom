@@ -2,18 +2,18 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="tk.andrielson.carrinhos.androidapp.ui.fragment.CadastroProdutoFragment"
+    tools:context="tk.andrielson.carrinhos.androidapp.ui.fragment.CadastroVendedorFragment"
     tools:locale="pt-BR">
 
     <data>
 
         <variable
-            name="produto"
-            type="tk.andrielson.carrinhos.androidapp.data.model.Produto" />
+            name="vendedor"
+            type="tk.andrielson.carrinhos.androidapp.data.model.Vendedor" />
 
         <variable
             name="handler"
-            type="tk.andrielson.carrinhos.androidapp.ui.viewhandler.CadastroProdutoHandler" />
+            type="tk.andrielson.carrinhos.androidapp.ui.viewhandler.CadastroVendedorHandler" />
     </data>
 
     <ScrollView
@@ -41,51 +41,31 @@
                         android:id="@+id/input_nome"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/fragment_cadastro_produto_label_nome"
+                        android:hint="@string/fragment_cadastro_vendedor_label_nome"
                         android:imeOptions="actionNext"
                         android:inputType="textCapCharacters"
-                        android:maxLength="32"
-                        android:text="@={produto.nome}"
-                        tools:text="PICOLÉ DE FRUTA" />
+                        android:maxLength="48"
+                        android:text="@={vendedor.nome}"
+                        tools:text="TEXEIRA" />
 
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/text_margin"
                     app:errorEnabled="true"
                     app:hintTextAppearance="@style/HintText">
 
                     <android.support.design.widget.TextInputEditText
-                        android:id="@+id/input_sigla"
+                        android:id="@+id/input_comissao"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:afterTextChanged="@{handler::afterTextChangedSigla}"
-                        android:hint="@string/fragment_cadastro_produto_label_sigla"
-                        android:imeOptions="actionNext"
-                        android:inputType="textCapCharacters"
-                        android:maxLength="3"
-                        android:text="@={produto.sigla}"
-                        tools:text="PF" />
-
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/text_margin"
-                    app:errorEnabled="true"
-                    app:hintTextAppearance="@style/HintText">
-
-                    <tk.andrielson.carrinhos.androidapp.textinputmoeda.CurrencyTextInputEditText
-                        android:id="@+id/input_preco"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/fragment_cadastro_produto_label_preco"
+                        android:hint="@string/fragment_cadastro_vendedor_label_comissao"
                         android:imeOptions="actionDone"
-                        android:maxLength="20"
-                        app:valorReal="@={produto.preco}" />
+                        android:inputType="numberPassword"
+                        android:maxLength="2"
+                        app:valorInteiro="@={vendedor.comissao}"
+                        tools:text="80" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -98,7 +78,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/fragment_cadastro_produto_label_habilitado"
+                        android:contentDescription="@string/fragment_cadastro_vendedor_label_habilitado"
                         android:src="@drawable/ic_remove_shopping_cart_black_32dp"
                         android:tint="@color/carrinhoDesabilitado" />
 
@@ -107,26 +87,26 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
                         android:layout_marginStart="16dp"
-                        android:checked="@={produto.ativo}" />
+                        android:checked="@={vendedor.ativo}" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/fragment_cadastro_produto_label_desabilitado"
+                        android:contentDescription="@string/fragment_cadastro_vendedor_label_desabilitado"
                         android:src="@drawable/ic_shopping_cart_black_32dp"
                         android:tint="@color/carrinhoHabilitado" />
                 </LinearLayout>
 
                 <Button
-                    android:id="@+id/fragment_cadastro_produto_botao_salvar"
+                    android:id="@+id/fragment_cadastro_vendedor_botao_salvar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/text_margin"
+                    android:layout_marginTop="32dp"
                     android:background="@color/colorPrimaryDark"
-                    android:onClick="@{(view) -> handler.onBotaoSalvarClick(view, produto)}"
+                    android:onClick="@{(view) -> handler.onBotaoSalvarClick(view, vendedor)}"
                     android:padding="10dp"
-                    android:text="@string/fragment_cadastro_produto_label_botao_salvar"
+                    android:text="@string/fragment_cadastro_vendedor_label_botao_salvar"
                     android:textAllCaps="true"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@android:color/white"
@@ -138,9 +118,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="32dp"
-                    android:onClick="@{(view) -> handler.onBotaoExcluirClick(view, produto)}"
+                    android:onClick="@{(view) -> handler.onBotaoExcluirClick(view, vendedor)}"
                     android:padding="8dp"
-                    android:text="@string/fragment_cadastro_produto_label_botao_excluir"
+                    android:text="@string/fragment_cadastro_vendedor_label_botao_excluir"
                     android:textAllCaps="true"
                     android:textColor="#FF0000" />
             </LinearLayout>

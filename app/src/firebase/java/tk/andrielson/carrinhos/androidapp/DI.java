@@ -4,8 +4,12 @@ import android.support.annotation.NonNull;
 
 import tk.andrielson.carrinhos.androidapp.data.dao.ProdutoDao;
 import tk.andrielson.carrinhos.androidapp.data.dao.ProdutoDaoImpl;
+import tk.andrielson.carrinhos.androidapp.data.dao.VendedorDao;
+import tk.andrielson.carrinhos.androidapp.data.dao.VendedorDaoImpl;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.data.model.ProdutoImpl;
+import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
+import tk.andrielson.carrinhos.androidapp.data.model.VendedorImpl;
 
 /**
  * Created by Andrielson on 02/03/2018.
@@ -24,6 +28,16 @@ public final class DI {
     @NonNull
     public static ProdutoDao newProdutoDao() {
         return new ProdutoDaoImpl();
+    }
+
+    @NonNull
+    public static Vendedor newVendedor() {
+        return new VendedorImpl();
+    }
+
+    @NonNull
+    public static VendedorDao newVendedorDao() {
+        return new VendedorDaoImpl();
     }
 
 }

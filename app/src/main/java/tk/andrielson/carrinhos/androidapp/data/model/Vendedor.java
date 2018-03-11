@@ -18,9 +18,9 @@ public interface Vendedor {
 
     public void setNome(String nome);
 
-    public BigDecimal getComissao();
+    public Integer getComissao();
 
-    public void setComissao(BigDecimal comissao);
+    public void setComissao(Integer comissao);
 
     public Boolean getAtivo();
 

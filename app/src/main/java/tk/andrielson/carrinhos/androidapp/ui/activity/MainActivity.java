@@ -16,51 +16,56 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-
-import java.io.Serializable;
 
 import tk.andrielson.carrinhos.androidapp.R;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
+import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaProdutoFragment;
+import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaVendedorFragment;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        ListaProdutoFragment.OnListFragmentInteractionListener {
-
+        ListaProdutoFragment.OnListFragmentInteractionListener,
+        ListaVendedorFragment.OnListFragmentInteractionListener {
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String STATE_FRAGMENTOS = "FRAGMENTOS";
     private Fragmentos fragmentoAtivo;
+    private DrawerLayout drawer;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (fragmentoAtivo == Fragmentos.PRODUTO) {
-                    Intent intent = new Intent(MainActivity.this, ProdutoActivity.class);
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(view -> {
+            Intent intent;
+            switch (fragmentoAtivo) {
+                case PRODUTO:
+                    intent = new Intent(MainActivity.this, ProdutoActivity.class);
                     startActivity(intent);
-                }
-                Snackbar.make(view, fragmentoAtivo.toString(), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                    break;
+                case VENDEDOR:
+                    intent = new Intent(MainActivity.this, VendedorActivity.class);
+                    startActivity(intent);
+                    break;
+                default:
+                    Snackbar.make(view, fragmentoAtivo.toString(), Snackbar.LENGTH_LONG).show();
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         LogUtil.Log(TAG, "onCreate", Log.VERBOSE);
         fragmentoAtivo = Fragmentos.INICIO;
@@ -146,42 +151,51 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        if (id == R.id.nav_inicio) {
-            // Handle the camera action
-        } else if (id == R.id.nav_vendas) {
-
-        } else if (id == R.id.nav_produtos) {
-            Fragment fragment = ListaProdutoFragment.newInstance();
+        Fragment fragment = null;
+        switch (id) {
+            case R.id.nav_inicio:
+                fragmentoAtivo = Fragmentos.INICIO;
+                break;
+            case R.id.nav_vendas:
+                fragmentoAtivo = Fragmentos.VENDA;
+                break;
+            case R.id.nav_produtos:
+                fragment = ListaProdutoFragment.newInstance();
+                fragmentoAtivo = Fragmentos.PRODUTO;
+                toolbar.setTitle("Produtos");
+                break;
+            case R.id.nav_vendedores:
+                fragment = ListaVendedorFragment.newInstance();
+                fragmentoAtivo = Fragmentos.VENDEDOR;
+                toolbar.setTitle("Vendedores");
+                break;
+            case R.id.nav_atualizar:
+                break;
+            case R.id.nav_backup:
+                break;
+            case R.id.nav_sobre:
+                break;
+        }
+        if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, fragment);
-            fragmentoAtivo = Fragmentos.PRODUTO;
             ft.commit();
-        } else if (id == R.id.nav_vendedores) {
-
-        } else if (id == R.id.nav_atualizar) {
-
-        } else if (id == R.id.nav_backup) {
-
-        } else if (id == R.id.nav_sobre) {
-
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    private void carregaFragment(int id) {
-        Fragment fragment = new Fragment();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_frame, fragment);
-        ft.commit();
     }
 
     @Override
     public void onListFragmentInteraction(Produto item) {
         Intent intent = new Intent(MainActivity.this, ProdutoActivity.class);
         intent.putExtra("produtoCodigo", item.getCodigo());
+        startActivity(intent);
+    }
+
+    @Override
+    public void onListFragmentInteraction(Vendedor item) {
+        Intent intent = new Intent(MainActivity.this, VendedorActivity.class);
+        intent.putExtra("vendedorCodigo", item.getCodigo());
         startActivity(intent);
     }
 

@@ -33,9 +33,27 @@
     <string name="fragment_cadastro_produto_label_nome">Nome do produto</string>
     <string name="fragment_cadastro_produto_label_sigla">Sigla</string>
     <string name="fragment_cadastro_produto_label_preco">Preço</string>
-    <string name="fragment_cadastro_produto_label_habilitado">Habilitado &#032;&#032;</string>
-    <string name="fragment_cadastro_produto_label_desabilitado">Desabilitado &#032;&#032;</string>
+    <string name="fragment_cadastro_produto_label_habilitado">Habilitado</string>
+    <string name="fragment_cadastro_produto_label_desabilitado">Desabilitado</string>
     <string name="fragment_cadastro_produto_label_botao_salvar">Salvar</string>
     <string name="fragment_cadastro_produto_label_botao_excluir">Excluir produto</string>
+    <!--</editor-fold>-->
+
+    <!--<editor-fold desc="Fragment Lista de Vendedors">-->
+    <string name="fragment_vendedor_lista_carregando_vendedores">Carregando vendedores…</string>
+    <string name="fragment_vendedor_lista_vazia">Nenhum vendedor adicionado</string>
+    <!--</editor-fold>-->
+
+    <!--Activity Vendedor-->
+    <string name="activity_vendedor_label">Vendedor</string>
+
+    <!--<editor-fold desc="Fragment Cadastro de Vendedor">-->
+    <string name="fragment_cadastro_vendedor_label_codigo">Código</string>
+    <string name="fragment_cadastro_vendedor_label_nome">Nome do vendedor</string>
+    <string name="fragment_cadastro_vendedor_label_comissao">Comissão (%)</string>
+    <string name="fragment_cadastro_vendedor_label_habilitado">Habilitado</string>
+    <string name="fragment_cadastro_vendedor_label_desabilitado">Desabilitado</string>
+    <string name="fragment_cadastro_vendedor_label_botao_salvar">Salvar</string>
+    <string name="fragment_cadastro_vendedor_label_botao_excluir">Excluir vendedor</string>
     <!--</editor-fold>-->
 </resources>

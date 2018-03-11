@@ -40,9 +40,11 @@ public class ProdutoActivity extends AppCompatActivity implements CadastroProdut
 
     @Override
     public void excluirProduto(Produto produto) {
-        ProdutoDao dao = DI.newProdutoDao();
-        dao.delete(produto);
-        Toast.makeText(this, "Produto excluído!", Toast.LENGTH_SHORT).show();
+        if (produto.getCodigo() != null && produto.getCodigo() != 0) {
+            ProdutoDao dao = DI.newProdutoDao();
+            dao.delete(produto);
+            Toast.makeText(this, "Produto excluído!", Toast.LENGTH_SHORT).show();
+        }
         finish();
     }
 }

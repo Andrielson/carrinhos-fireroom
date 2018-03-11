@@ -49,8 +49,4 @@ public interface VendedorDao {
      */
     LiveData<Vendedor> getByCodigo(Long codigo);
 
-    /**
-     * Delete all.
-     */
-    void deleteAll();
 }
