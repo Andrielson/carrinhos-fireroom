@@ -36,5 +36,6 @@
     <string name="fragment_cadastro_produto_label_habilitado">Habilitado &#032;&#032;</string>
     <string name="fragment_cadastro_produto_label_desabilitado">Desabilitado &#032;&#032;</string>
     <string name="fragment_cadastro_produto_label_botao_salvar">Salvar</string>
+    <string name="fragment_cadastro_produto_label_botao_excluir">Excluir produto</string>
     <!--</editor-fold>-->
 </resources>

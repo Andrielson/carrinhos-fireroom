@@ -18,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.io.Serializable;
+
 import tk.andrielson.carrinhos.androidapp.R;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaProdutoFragment;
@@ -28,13 +30,14 @@ public class MainActivity extends AppCompatActivity
         ListaProdutoFragment.OnListFragmentInteractionListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String STATE_FRAGMENTOS = "FRAGMENTOS";
     private Fragmentos fragmentoAtivo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        fragmentoAtivo = Fragmentos.INICIO;
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -60,6 +63,20 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         LogUtil.Log(TAG, "onCreate", Log.VERBOSE);
+        fragmentoAtivo = Fragmentos.INICIO;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(STATE_FRAGMENTOS, fragmentoAtivo);
+        LogUtil.Log(TAG, "onSaveInstanceState", Log.VERBOSE);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        LogUtil.Log(TAG, "onRestoreInstanceState", Log.DEBUG);
     }
 
     @Override
@@ -137,8 +154,8 @@ public class MainActivity extends AppCompatActivity
             Fragment fragment = ListaProdutoFragment.newInstance();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, fragment);
-            ft.commit();
             fragmentoAtivo = Fragmentos.PRODUTO;
+            ft.commit();
         } else if (id == R.id.nav_vendedores) {
 
         } else if (id == R.id.nav_atualizar) {

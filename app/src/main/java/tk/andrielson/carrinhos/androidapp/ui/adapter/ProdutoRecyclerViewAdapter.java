@@ -85,11 +85,7 @@ public class ProdutoRecyclerViewAdapter extends RecyclerView.Adapter<ProdutoRecy
         public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
             Produto p1 = listaAntiga.get(oldItemPosition);
             Produto p2 = listaNova.get(newItemPosition);
-            //TODO: implementar método hashCode nos objetos
-            //return listaProduto.get(oldItemPosition).equals(novaLista.get(newItemPosition));
-            return areItemsTheSame(oldItemPosition, newItemPosition)
-                    && Objects.equals(p1.getNome(), p2.getNome())
-                    && Objects.equals(p1.getPreco(), p2.getPreco());
+            return p1.hashCode() == p2.hashCode();
         }
     }
     

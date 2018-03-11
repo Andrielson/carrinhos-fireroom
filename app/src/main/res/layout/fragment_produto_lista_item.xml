@@ -32,10 +32,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:tint="@color/produtoDesabilitado"
             app:produtoHabilitado="@{produto.ativo}"
             tools:ignore="ContentDescription"
-            tools:src="@drawable/ic_shopping_cart_black_32dp" />
+            tools:src="@drawable/ic_shopping_cart_black_32dp"
+            tools:tint="@color/produtoHabilitado" />
 
         <TextView
             android:id="@+id/fragment_produto_nome"
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
             android:layout_weight="2"
-            android:text="@{produto.nome}"
+            android:text='@{String.format("%s (%s)", produto.nome, produto.sigla)}'
             android:textAllCaps="true"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textStyle="bold"
@@ -56,6 +56,7 @@
             android:layout_margin="@dimen/text_margin"
             android:layout_weight="1"
             android:textAppearance="?attr/textAppearanceListItem"
+            android:textStyle="bold"
             app:valorReal="@{produto.preco}"
             tools:text="R$ 2,50" />
     </LinearLayout>

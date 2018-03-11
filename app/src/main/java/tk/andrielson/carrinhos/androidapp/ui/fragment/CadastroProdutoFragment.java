@@ -1,6 +1,5 @@
 package tk.andrielson.carrinhos.androidapp.ui.fragment;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -68,18 +67,7 @@ public class CadastroProdutoFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cadastro_produto, container, false);
-//        binding.fragmentCadastroProdutoBotaoSalvar.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Produto p = DI.newProduto();
-//                p.setCodigo(produtoCodigo);
-//                p.setNome(binding.fragmentCadastroProdutoInputNome.getText().toString());
-//                p.setSigla(binding.fragmentCadastroProdutoInputSigla.getText().toString());
-//                p.setPreco(Double.valueOf(binding.fragmentCadastroProdutoInputPreco.getText().toString().replace(",", ".")));
-//                mListener.onFragmentInteraction(p, produtoCodigo == null);
-//            }
-//        });
-        CadastroProdutoHandler handler = new CadastroProdutoHandler(mListener);
+        CadastroProdutoHandler handler = new CadastroProdutoHandler(binding, mListener);
         binding.setHandler(handler);
         return binding.getRoot();
     }
@@ -88,7 +76,8 @@ public class CadastroProdutoFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         CadastroProdutoViewModel.Factory factory = new CadastroProdutoViewModel.Factory(this.produtoCodigo);
-        CadastroProdutoViewModel viewModel = ViewModelProviders.of(this, factory).get(CadastroProdutoViewModel.class);
+        //noinspection ConstantConditions
+        CadastroProdutoViewModel viewModel = ViewModelProviders.of(getActivity(), factory).get(CadastroProdutoViewModel.class);
         configuraViewModel(viewModel);
     }
 
@@ -109,12 +98,7 @@ public class CadastroProdutoFragment extends Fragment {
     }
 
     private void configuraViewModel(CadastroProdutoViewModel viewModel) {
-        viewModel.getProduto().observe(this, new Observer<Produto>() {
-            @Override
-            public void onChanged(@Nullable Produto produto) {
-                binding.setProduto(produto);
-            }
-        });
+        viewModel.getProduto().observe(this, produto -> binding.setProduto(produto));
     }
 
     /**
@@ -128,7 +112,8 @@ public class CadastroProdutoFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Produto produto, boolean insercao);
+        void salvarProduto(Produto produto, boolean insercao);
+
+        void excluirProduto(Produto produto);
     }
 }

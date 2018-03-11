@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
+import android.support.annotation.NonNull;
 import android.support.v4.util.SimpleArrayMap;
 import android.util.Log;
 
@@ -50,7 +51,7 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao {
         String ultimoID = getColecaoID(COLECAO);
         Long novoCodigo = Long.valueOf(ultimoID) + 1;
         produto.setCodigo(novoCodigo);
-        final String id = String.format("%020d", novoCodigo);
+        final String id = getIdFromCodigo(novoCodigo);
         DocumentReference novoDocumento = collection.document(id);
         WriteBatch batch = setColecaoID(COLECAO, id);
         batch.set(novoDocumento, produto);
@@ -69,7 +70,7 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao {
      */
     @Override
     public int update(Produto produto) {
-        final String id = String.format("%020d", produto.getCodigo());
+        final String id = getIdFromCodigo(produto.getCodigo());
         DocumentReference documento = collection.document(id);
         WriteBatch batch = db.batch();
         batch.set(documento, produto);
@@ -88,6 +89,19 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao {
      */
     @Override
     public int delete(Produto produto) {
+        final String id = getIdFromCodigo(produto.getCodigo());
+        DocumentReference documento = collection.document(id);
+        WriteBatch batch = db.batch();
+        //Depois de implementar as vendas, pesquisar se o produto possui relação com alguma venda
+        //se tiver, marcar a flag excluído.
+        //batch.update(documento, ProdutoImpl.EXCLUIDO, true);
+        batch.delete(documento);
+        batch.commit()
+                .addOnSuccessListener(aVoid -> LogUtil.Log(TAG, "Produto " + id + " removido com sucesso!", Log.INFO))
+                .addOnFailureListener(e -> {
+                    LogUtil.Log(TAG, "Falha ao remover o produto " + id, Log.ERROR);
+                    LogUtil.Log(TAG, e.getMessage(), Log.ERROR);
+                });
         return 0;
     }
 
@@ -98,6 +112,7 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao {
      * @param codigo o código do produto a ser procurado/retornado
      * @return o produto encapsulado em uma LiveData
      */
+    @NonNull
     @Override
     public LiveData<Produto> getByCodigo(final Long codigo) {
         Query query = queryPadrao.whereEqualTo("codigo", codigo);
@@ -106,19 +121,12 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao {
     }
 
     /**
-     * Remove todos os produtos do banco de dados
-     */
-    @Override
-    public void deleteAll() {
-
-    }
-
-    /**
      * Consulta todos os produtos do banco de dados e retorna uma lista
      * encapsulada numa LiveData observável, para manter a lista sempre atualizada.
      *
      * @return a lista de produtos encapsulada em uma LiveData
      */
+    @NonNull
     @Override
     public LiveData<List<Produto>> getAll() {
         Query query = queryPadrao.orderBy(ProdutoImpl.NOME);
@@ -126,6 +134,7 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao {
         return Transformations.map(liveData, new ListaProdutoDeserializer());
     }
 
+    @NonNull
     public LiveData<List<Produto>> getAll(SimpleArrayMap<String, String> ordenacao) {
         Query query = queryPadrao;
         for (int i = 0; i < ordenacao.size(); i++) {
@@ -152,7 +161,7 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao {
     private class ProdutoDeserializer implements Function<QuerySnapshot, Produto> {
         @Override
         public ProdutoImpl apply(QuerySnapshot input) {
-            return input.getDocuments().get(0).toObject(ProdutoImpl.class);
+            return input.getDocuments().isEmpty() ? null : input.getDocuments().get(0).toObject(ProdutoImpl.class);
         }
     }
 

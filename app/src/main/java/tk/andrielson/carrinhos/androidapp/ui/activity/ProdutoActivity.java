@@ -19,26 +19,30 @@ public class ProdutoActivity extends AppCompatActivity implements CadastroProdut
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_produto);
-        Fragment fragment;
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("produtoCodigo")) {
-            fragment = CadastroProdutoFragment.newInstance(intent.getLongExtra("produtoCodigo", 0));
-        } else {
-            fragment = CadastroProdutoFragment.newInstance(null);
-        }
+        Long codigoProduto = (intent != null && intent.hasExtra("produtoCodigo")) ? intent.getLongExtra("produtoCodigo", 0) : null;
+        Fragment fragment = CadastroProdutoFragment.newInstance(codigoProduto);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_holder, fragment);
         ft.commit();
     }
 
     @Override
-    public void onFragmentInteraction(Produto produto, boolean insercao) {
+    public void salvarProduto(Produto produto, boolean insercao) {
         ProdutoDao dao = DI.newProdutoDao();
         if (insercao)
             dao.insert(produto);
         else
             dao.update(produto);
         Toast.makeText(this, "Produto " + (insercao ? "adicionado!" : "atualizado!"), Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
+    public void excluirProduto(Produto produto) {
+        ProdutoDao dao = DI.newProdutoDao();
+        dao.delete(produto);
+        Toast.makeText(this, "Produto excluído!", Toast.LENGTH_SHORT).show();
         finish();
     }
 }

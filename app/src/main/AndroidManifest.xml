@@ -26,6 +26,7 @@
         <activity
             android:name=".ui.activity.MainActivity"
             android:label="@string/activity_main_label"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activity.ProdutoActivity"

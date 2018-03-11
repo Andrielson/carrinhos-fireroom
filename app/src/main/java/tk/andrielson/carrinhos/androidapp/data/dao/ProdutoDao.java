@@ -47,9 +47,4 @@ public interface ProdutoDao {
      * @return o produto encapsulado em uma LiveData
      */
     LiveData<Produto> getByCodigo(Long codigo);
-
-    /**
-     * Remove todos os produtos do banco de dados
-     */
-    void deleteAll();
 }

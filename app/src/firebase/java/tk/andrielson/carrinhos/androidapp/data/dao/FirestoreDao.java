@@ -1,5 +1,6 @@
 package tk.andrielson.carrinhos.androidapp.data.dao;
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 import android.support.annotation.NonNull;
@@ -21,6 +22,7 @@ import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 /**
  * The type Firestore dao.
  */
+@SuppressLint("DefaultLocale")
 public abstract class FirestoreDao {
 
     private static final InnerSingleton viewModel = InnerSingleton.getInstance();
@@ -40,6 +42,10 @@ public abstract class FirestoreDao {
         WriteBatch batch = db.batch();
         DocumentReference doc = db.collection(COLECAOIDS).document(colecao);
         return batch.update(doc, CAMPOID, novoID);
+    }
+
+    protected String getIdFromCodigo(@NonNull Long codigo) {
+        return String.format("%018d", codigo);
     }
 
     private static class InnerSingleton {

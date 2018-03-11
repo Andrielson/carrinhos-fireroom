@@ -18,6 +18,7 @@ public class ProdutoImpl
     public static final String SIGLA = "sigla";
     public static final String PRECO = "preco";
     public static final String ATIVO = "ativo";
+    public static final String EXCLUIDO = "excluido";
     //</editor-fold>
 
     @SuppressWarnings("unused")
@@ -37,6 +38,7 @@ public class ProdutoImpl
     private String sigla;
     private Long preco;
     private Boolean ativo = Boolean.TRUE;
+    private Boolean excluido = Boolean.FALSE;
 
     public ProdutoImpl() {
     }
@@ -55,6 +57,8 @@ public class ProdutoImpl
         preco = in.readByte() == 0x00 ? null : in.readLong();
         byte ativoVal = in.readByte();
         ativo = ativoVal == 0x02 ? null : ativoVal != 0x00;
+        byte excluidoVal = in.readByte();
+        excluido = excluidoVal == 0x02 ? null : ativoVal != 0x00;
     }
 
     @Override
@@ -107,6 +111,10 @@ public class ProdutoImpl
         this.ativo = ativo;
     }
 
+    public void setExcluido(Boolean excluido) {
+        this.excluido = excluido;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -156,6 +164,7 @@ public class ProdutoImpl
         result = 31 * result + getSigla().hashCode();
         result = 31 * result + getPreco().hashCode();
         result = 31 * result + getAtivo().hashCode();
+        result = 31 * result + excluido.hashCode();
         return result;
     }
 }
