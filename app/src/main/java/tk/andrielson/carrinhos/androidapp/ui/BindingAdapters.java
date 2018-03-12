@@ -16,11 +16,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
 import tk.andrielson.carrinhos.androidapp.CarrinhosApp;
 import tk.andrielson.carrinhos.androidapp.R;
+import tk.andrielson.carrinhos.androidapp.data.model.Venda;
 import tk.andrielson.carrinhos.androidapp.textinputmoeda.CurrencyTextInputEditText;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
@@ -49,6 +53,17 @@ public class BindingAdapters {
             csl = AppCompatResources.getColorStateList(CarrinhosApp.getContext(), R.color.carrinhoDesabilitado);
         }
         DrawableCompat.setTintList(imageView.getDrawable(), csl);
+    }
+
+    @BindingAdapter("data")
+    public static void setDataToString(TextView textView, Date data) {
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        textView.setText(formatter.format(data));
+    }
+
+    @BindingAdapter("vendedor")
+    public static void setVendedorNome(TextView textView, Venda venda) {
+        textView.setText(venda.getVendedor().getNome());
     }
 
     @BindingAdapter(value = "valorInteiroAttrChanged")

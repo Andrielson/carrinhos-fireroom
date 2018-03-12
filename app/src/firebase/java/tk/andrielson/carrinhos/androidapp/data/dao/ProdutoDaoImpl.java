@@ -20,7 +20,7 @@ import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
  */
 public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao<ProdutoImpl> {
 
-    private static final String COLECAO = ProdutoImpl.COLLECTION;
+    private static final String COLECAO = ProdutoImpl.COLECAO;
     private static final String TAG = ProdutoDaoImpl.class.getSimpleName();
 
     /**

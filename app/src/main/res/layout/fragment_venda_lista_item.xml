@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:grid="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:locale="pt-BR"
+    tools:showIn="@layout/fragment_venda_lista">
+
+    <data>
+
+        <variable
+            name="venda"
+            type="tk.andrielson.carrinhos.androidapp.data.model.VendaImpl" />
+
+        <!--<variable
+            name="handler"
+            type="tk.andrielson.carrinhos.androidapp.ui.viewhandler.ListaVendaItemHandler" />-->
+    </data>
+
+    <android.support.v7.widget.GridLayout
+        android:id="@+id/fragment_venda_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F5F5F5"
+        android:padding="4dp"
+        grid:alignmentMode="alignBounds"
+        grid:columnCount="2"
+        grid:rowOrderPreserved="false"
+        grid:useDefaultMargins="true">
+        <!--android:onClick="@{handler::onClickVenda}"-->
+
+        <!--Linha 1 coluna 1-->
+        <TextView
+            android:id="@+id/nome_vendedor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{venda.vendedor.nome}"
+            android:textAllCaps="true"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textStyle="bold"
+            grid:layout_columnWeight="2"
+            tools:text="TEIXEIRA AMARAL" />
+
+        <!--Linha 1 coluna 2-->
+        <TextView
+            android:id="@+id/data"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textStyle="bold"
+            app:data="@{venda.data}"
+            grid:layout_columnWeight="1"
+            tools:text="12/03/2018" />
+
+        <!--Linha 2 coluna 1-->
+        <TextView
+            android:id="@+id/valor_total"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textStyle="bold"
+            app:valorReal="@{venda.total}"
+            grid:layout_columnWeight="2"
+            tools:text="R$ 34,00" />
+
+        <!--Linha 2 coluna 2-->
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:drawablePadding="6dp"
+            android:drawableStart="@drawable/ic_done_all_black_16dp"
+            android:textAppearance="?attr/textAppearanceListItem"
+            grid:layout_columnWeight="1"
+            tools:text="Finalizada" />
+    </android.support.v7.widget.GridLayout>
+</layout>

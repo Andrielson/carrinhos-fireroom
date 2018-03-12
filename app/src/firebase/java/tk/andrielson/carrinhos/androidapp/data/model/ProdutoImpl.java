@@ -12,7 +12,7 @@ public class ProdutoImpl
         implements Produto {
 
     //<editor-fold desc="Campos do objeto JSON do Firebase">
-    public static final String COLLECTION = "produtos";
+    public static final String COLECAO = "produtos";
     public static final String CODIGO = "codigo";
     public static final String NOME = "nome";
     public static final String SIGLA = "sigla";

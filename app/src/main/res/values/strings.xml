@@ -56,4 +56,23 @@
     <string name="fragment_cadastro_vendedor_label_botao_salvar">Salvar</string>
     <string name="fragment_cadastro_vendedor_label_botao_excluir">Excluir vendedor</string>
     <!--</editor-fold>-->
+
+    <!--<editor-fold desc="Fragment Lista de Vendas">-->
+    <string name="fragment_venda_lista_carregando_vendas">Carregando vendas…</string>
+    <string name="fragment_venda_lista_vazia">Nenhum venda adicionado</string>
+    <!--</editor-fold>-->
+
+    <!--Activity Venda-->
+    <string name="activity_venda_label">Venda</string>
+
+    <!--<editor-fold desc="Fragment Cadastro de Venda">-->
+    <string name="fragment_cadastro_venda_label_codigo">Código</string>
+    <string name="fragment_cadastro_venda_label_nome">Nome do venda</string>
+    <string name="fragment_cadastro_venda_label_sigla">Sigla</string>
+    <string name="fragment_cadastro_venda_label_preco">Preço</string>
+    <string name="fragment_cadastro_venda_label_habilitado">Habilitado</string>
+    <string name="fragment_cadastro_venda_label_desabilitado">Desabilitado</string>
+    <string name="fragment_cadastro_venda_label_botao_salvar">Salvar</string>
+    <string name="fragment_cadastro_venda_label_botao_excluir">Excluir venda</string>
+    <!--</editor-fold>-->
 </resources>

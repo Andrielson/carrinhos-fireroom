@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Contract;
 public class VendedorImpl extends AbsEntidadePadrao implements Vendedor {
 
     //<editor-fold desc="Campos do objeto JSON do Firebase">
-    public static final String COLLECTION = "vendedores";
+    public static final String COLECAO = "vendedores";
     public static final String CODIGO = "codigo";
     public static final String NOME = "nome";
     public static final String COMISSAO = "comissao";

@@ -23,6 +23,7 @@ public class ListaProdutoViewModel extends ViewModel {
         mediatorLiveDataListaProdutos.setValue(null);
 
         ProdutoDao produtoDao = DI.newProdutoDao();
+        //noinspection unchecked
         LiveData<List<Produto>> produtos = produtoDao.getAll();
         mediatorLiveDataListaProdutos.addSource(produtos, mediatorLiveDataListaProdutos::setValue);
     }

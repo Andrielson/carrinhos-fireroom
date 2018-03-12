@@ -19,15 +19,18 @@ import android.view.MenuItem;
 
 import tk.andrielson.carrinhos.androidapp.R;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
+import tk.andrielson.carrinhos.androidapp.data.model.Venda;
 import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaProdutoFragment;
+import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaVendaFragment;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaVendedorFragment;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         ListaProdutoFragment.OnListFragmentInteractionListener,
-        ListaVendedorFragment.OnListFragmentInteractionListener {
+        ListaVendedorFragment.OnListFragmentInteractionListener,
+        ListaVendaFragment.OnListFragmentInteractionListener {
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String STATE_FRAGMENTOS = "FRAGMENTOS";
     private Fragmentos fragmentoAtivo;
@@ -157,6 +160,7 @@ public class MainActivity extends AppCompatActivity
                 fragmentoAtivo = Fragmentos.INICIO;
                 break;
             case R.id.nav_vendas:
+                fragment = ListaVendaFragment.newInstance();
                 fragmentoAtivo = Fragmentos.VENDA;
                 break;
             case R.id.nav_produtos:
@@ -197,6 +201,11 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(MainActivity.this, VendedorActivity.class);
         intent.putExtra("vendedorCodigo", item.getCodigo());
         startActivity(intent);
+    }
+
+    @Override
+    public void onListFragmentInteraction(Venda item) {
+
     }
 
     private enum Fragmentos {
