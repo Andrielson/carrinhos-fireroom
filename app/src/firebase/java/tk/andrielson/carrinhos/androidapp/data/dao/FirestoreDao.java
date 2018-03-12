@@ -1,6 +1,7 @@
 package tk.andrielson.carrinhos.androidapp.data.dao;
 
 import android.annotation.SuppressLint;
+import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 import android.support.annotation.NonNull;
@@ -12,12 +13,16 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
 import org.jetbrains.annotations.Contract;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
+import tk.andrielson.carrinhos.androidapp.data.model.AbsEntidadePadrao;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
 /**
@@ -85,6 +90,36 @@ public abstract class FirestoreDao {
 
         private static class StaticHolder {
             static final InnerSingleton INSTANCE = new InnerSingleton();
+        }
+    }
+
+    protected class ListaDeserializer<T extends AbsEntidadePadrao> implements Function<QuerySnapshot, List<T>> {
+        private final Class<T> tipo;
+
+        public ListaDeserializer(Class<T> tipo) {
+            this.tipo = tipo;
+        }
+
+        @Override
+        public List<T> apply(QuerySnapshot input) {
+            List<T> lista = new ArrayList<>();
+            for (DocumentSnapshot doc : input.getDocuments()) {
+                lista.add(doc.toObject(tipo));
+            }
+            return lista;
+        }
+    }
+
+    protected class Deserializer<T extends AbsEntidadePadrao> implements Function<QuerySnapshot, T> {
+        private final Class<T> tipo;
+
+        public Deserializer(Class<T> tipo) {
+            this.tipo = tipo;
+        }
+
+        @Override
+        public T apply(QuerySnapshot input) {
+            return input.getDocuments().isEmpty() ? null : input.getDocuments().get(0).toObject(tipo);
         }
     }
 }

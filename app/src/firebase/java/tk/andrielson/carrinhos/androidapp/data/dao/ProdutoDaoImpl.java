@@ -1,6 +1,5 @@
 package tk.andrielson.carrinhos.androidapp.data.dao;
 
-import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 import android.support.annotation.NonNull;
@@ -8,22 +7,18 @@ import android.support.v4.util.SimpleArrayMap;
 import android.util.Log;
 
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.data.model.ProdutoImpl;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
 /**
  * Implementação de ProdutoDao para o banco Firestore.
  */
-public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao {
+public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao<ProdutoImpl> {
 
     private static final String COLECAO = ProdutoImpl.COLLECTION;
     private static final String TAG = ProdutoDaoImpl.class.getSimpleName();
@@ -42,7 +37,7 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao {
      * @return o código gerado para o produto
      */
     @Override
-    public long insert(Produto produto) {
+    public long insert(ProdutoImpl produto) {
         String ultimoID = getColecaoID(COLECAO);
         Long novoCodigo = Long.valueOf(ultimoID) + 1;
         produto.setCodigo(novoCodigo);
@@ -64,7 +59,7 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao {
      * @return o número de produtos atualizados
      */
     @Override
-    public int update(Produto produto) {
+    public int update(ProdutoImpl produto) {
         final String id = getIdFromCodigo(produto.getCodigo());
         DocumentReference documento = collection.document(id);
         WriteBatch batch = db.batch();
@@ -83,7 +78,7 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao {
      * @return o número de produto removidos
      */
     @Override
-    public int delete(Produto produto) {
+    public int delete(ProdutoImpl produto) {
         final String id = getIdFromCodigo(produto.getCodigo());
         DocumentReference documento = collection.document(id);
         WriteBatch batch = db.batch();
@@ -109,10 +104,11 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao {
      */
     @NonNull
     @Override
-    public LiveData<Produto> getByCodigo(final Long codigo) {
+    public LiveData<ProdutoImpl> getByCodigo(final Long codigo) {
         Query query = queryPadrao.whereEqualTo("codigo", codigo);
         FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(query);
-        return Transformations.map(liveData, new ProdutoDeserializer());
+        //noinspection unchecked
+        return Transformations.map(liveData, new Deserializer(ProdutoImpl.class));
     }
 
     /**
@@ -123,10 +119,11 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao {
      */
     @NonNull
     @Override
-    public LiveData<List<Produto>> getAll() {
+    public LiveData<List<ProdutoImpl>> getAll() {
         Query query = queryPadrao.orderBy(ProdutoImpl.NOME);
         FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(query);
-        return Transformations.map(liveData, new ListaProdutoDeserializer());
+        //noinspection unchecked
+        return Transformations.map(liveData, new ListaDeserializer(ProdutoImpl.class));
     }
 
     /**
@@ -138,7 +135,7 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao {
      * @return a lista de produtos encapsulada em uma LiveData
      */
     @NonNull
-    public LiveData<List<Produto>> getAll(SimpleArrayMap<String, String> ordenacao) {
+    public LiveData<List<ProdutoImpl>> getAll(SimpleArrayMap<String, String> ordenacao) {
         Query query = queryPadrao;
         for (int i = 0; i < ordenacao.size(); i++) {
             String orderBy = ordenacao.keyAt(i);
@@ -146,26 +143,8 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao {
             query = query.orderBy(orderBy, direcao.equals("ASC") ? Query.Direction.ASCENDING : Query.Direction.DESCENDING);
         }
         FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(query);
-        return Transformations.map(liveData, new ListaProdutoDeserializer());
-    }
-
-    private class ListaProdutoDeserializer implements Function<QuerySnapshot, List<Produto>> {
-
-        @Override
-        public List<Produto> apply(QuerySnapshot input) {
-            List<Produto> lista = new ArrayList<>();
-            for (DocumentSnapshot doc : input.getDocuments()) {
-                lista.add(doc.toObject(ProdutoImpl.class));
-            }
-            return lista;
-        }
-    }
-
-    private class ProdutoDeserializer implements Function<QuerySnapshot, Produto> {
-        @Override
-        public ProdutoImpl apply(QuerySnapshot input) {
-            return input.getDocuments().isEmpty() ? null : input.getDocuments().get(0).toObject(ProdutoImpl.class);
-        }
+        //noinspection unchecked
+        return Transformations.map(liveData, new ListaDeserializer(ProdutoImpl.class));
     }
 
 }

@@ -9,14 +9,14 @@ import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
 /**
  * The interface Vendedor dao.
  */
-public interface VendedorDao {
+public interface VendedorDao<T extends Vendedor> {
     /**
      * Insert long.
      *
      * @param vendedor the vendedor
      * @return the long
      */
-    long insert(Vendedor vendedor);
+    long insert(T vendedor);
 
     /**
      * Update int.
@@ -24,7 +24,7 @@ public interface VendedorDao {
      * @param vendedor the vendedor
      * @return the int
      */
-    int update(Vendedor vendedor);
+    int update(T vendedor);
 
     /**
      * Delete int.
@@ -32,14 +32,14 @@ public interface VendedorDao {
      * @param vendedor the vendedor
      * @return the int
      */
-    int delete(Vendedor vendedor);
+    int delete(T vendedor);
 
     /**
      * Gets all.
      *
      * @return the all
      */
-    LiveData<List<Vendedor>> getAll();
+    LiveData<List<T>> getAll();
 
     /**
      * Gets by codigo.
@@ -47,6 +47,6 @@ public interface VendedorDao {
      * @param codigo the codigo
      * @return the by codigo
      */
-    LiveData<Vendedor> getByCodigo(Long codigo);
+    LiveData<T> getByCodigo(Long codigo);
 
 }

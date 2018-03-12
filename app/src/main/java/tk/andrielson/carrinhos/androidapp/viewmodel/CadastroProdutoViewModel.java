@@ -25,6 +25,7 @@ public class CadastroProdutoViewModel extends ViewModel {
             produtoLiveData.setValue(DI.newProduto());
         } else {
             ProdutoDao produtoDao = DI.newProdutoDao();
+            //noinspection unchecked
             produtoLiveData = (MutableLiveData<Produto>) produtoDao.getByCodigo(codigo);
         }
     }
