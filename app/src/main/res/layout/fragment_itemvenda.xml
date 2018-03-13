@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="LabelFor">
+
+    <data>
+
+        <variable
+            name="itemVenda"
+            type="tk.andrielson.carrinhos.androidapp.data.model.ItemVenda" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="2dp">
+
+        <TextView
+            android:id="@+id/sigla"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:text="@{itemVenda.produto.sigla}"
+            tools:text="WWW" />
+
+        <EditText
+            android:id="@+id/qt_levou"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="3dp"
+            android:layout_marginStart="3dp"
+            android:layout_weight="1"
+            android:imeOptions="actionNext"
+            android:inputType="numberPassword"
+            android:textAppearance="?attr/textAppearanceListItem" />
+
+        <EditText
+            android:id="@+id/qt_voltou"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="3dp"
+            android:layout_marginStart="3dp"
+            android:layout_weight="1"
+            android:imeOptions="actionNext"
+            android:inputType="numberPassword"
+            android:textAppearance="?attr/textAppearanceListItem" />
+
+        <TextView
+            android:id="@+id/qt_vendeu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="3dp"
+            android:layout_marginStart="3dp"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:textAppearance="?attr/textAppearanceListItem"
+            tools:text="20" />
+
+        <TextView
+            android:id="@+id/valor_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceListItem"
+            tools:text="R$ 20,00" />
+    </LinearLayout>
+
+</layout>

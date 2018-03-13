@@ -114,6 +114,8 @@ public class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaImpl> {
             String codigoVendedor = doc.getDocumentReference(VendaImpl.VENDEDOR).getId();
             VendedorImpl vendedor = new VendedorImpl();
             vendedor.setCodigo(Long.valueOf(codigoVendedor));
+            vendedor.setNome(doc.getString(VendaImpl.VENDEDOR_NOME));
+            venda.setVendedor(vendedor);
             return venda;
         });
     }

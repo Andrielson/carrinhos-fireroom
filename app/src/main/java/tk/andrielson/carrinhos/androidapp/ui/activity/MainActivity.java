@@ -49,6 +49,10 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(view -> {
             Intent intent;
             switch (fragmentoAtivo) {
+                case VENDA:
+                    intent = new Intent(MainActivity.this,VendaActivity.class);
+                    startActivity(intent);
+                    break;
                 case PRODUTO:
                     intent = new Intent(MainActivity.this, ProdutoActivity.class);
                     startActivity(intent);

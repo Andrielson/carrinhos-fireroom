@@ -1,14 +1,21 @@
-package tk.andrielson.carrinhos.androidapp.firebase.teste;
+package tk.andrielson.carrinhos.androidapp.ui.fragment;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import tk.andrielson.carrinhos.androidapp.R;
+import tk.andrielson.carrinhos.androidapp.databinding.FragmentCadastroVendaBinding;
+import tk.andrielson.carrinhos.androidapp.ui.adapter.ItemVendaRecyclerViewAdapter;
+import tk.andrielson.carrinhos.androidapp.viewmodel.CadastroVendaViewModel;
 
 
 /**
@@ -20,16 +27,11 @@ import tk.andrielson.carrinhos.androidapp.R;
  * create an instance of this fragment.
  */
 public class CadastroVendaFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private static final String TAG = CadastroVendaFragment.class.getSimpleName();
     private OnFragmentInteractionListener mListener;
+    private FragmentCadastroVendaBinding binding;
+    private ItemVendaRecyclerViewAdapter adapter;
 
     public CadastroVendaFragment() {
         // Required empty public constructor
@@ -39,16 +41,12 @@ public class CadastroVendaFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment CadastroVendaFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CadastroVendaFragment newInstance(String param1, String param2) {
+    public static CadastroVendaFragment newInstance() {
         CadastroVendaFragment fragment = new CadastroVendaFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,41 +54,47 @@ public class CadastroVendaFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cadastro_venda, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_produto_lista, container, false);
+        adapter = new ItemVendaRecyclerViewAdapter();
+        binding.reciclerViewItens.setAdapter(adapter);
+        return binding.getRoot();
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        final CadastroVendaViewModel viewModel = ViewModelProviders.of(this).get(CadastroVendaViewModel.class);
+        configuraUI(viewModel);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+//        if (context instanceof OnFragmentInteractionListener) {
+//            mListener = (OnFragmentInteractionListener) context;
+//        } else {
+//            throw new RuntimeException(context.toString()
+//                    + " must implement OnFragmentInteractionListener");
+//        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private void configuraUI(CadastroVendaViewModel viewModel) {
+        viewModel.getItens().observe(this, itens -> {
+            if (itens != null) {
+                adapter.setItens(itens);
+            }
+            binding.executePendingBindings();
+        });
     }
 
     /**
@@ -106,5 +110,7 @@ public class CadastroVendaFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+
+        void onClickSelecionarVendedor();
     }
 }

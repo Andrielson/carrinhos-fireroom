@@ -1,8 +1,14 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="tk.andrielson.carrinhos.androidapp.firebase.teste.CadastroVendaFragment">
+    tools:context="tk.andrielson.carrinhos.androidapp.ui.fragment.CadastroVendaFragment">
 
-    <data />
+    <data>
+
+        <variable
+            name="vendedor"
+            type="tk.andrielson.carrinhos.androidapp.data.model.Vendedor" />
+    </data>
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -16,58 +22,43 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                tools:text="DATA" />
+                android:layout_height="wrap_content"
+                android:text="DATA" />
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                tools:text="SELECIONAR VENDEDOR" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="SELECIONAR VENDEDOR" />
 
-            <ScrollView
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recicler_view_itens"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="5">
-
-                <GridLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:columnCount="1">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        tools:text="GRID DOS PRODUTOS" />
-                </GridLayout>
-            </ScrollView>
+                android:layout_weight="1"
+                app:layoutManager="LinearLayoutManager"
+                tools:listitem="@layout/fragment_itemvenda" />
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:drawablePadding="6dp"
                 android:drawableStart="@drawable/ic_monetization_on_black_16dp"
-                tools:text="R$ 100,00" />
+                android:text="R$ 100,00" />
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:drawablePadding="6dp"
                 android:drawableStart="@drawable/ic_account_balance_black_16dp"
-                tools:text="R$ 60,00" />
+                android:text="R$ 60,00" />
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:drawablePadding="6dp"
                 android:drawableStart="@drawable/ic_account_box_black_16dp"
-                tools:text="R$ 40,00" />
+                android:text="R$ 40,00" />
         </LinearLayout>
 
     </android.support.design.widget.CoordinatorLayout>

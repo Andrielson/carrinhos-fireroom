@@ -77,7 +77,6 @@ public class ProdutoRecyclerViewAdapter extends RecyclerView.Adapter<ProdutoRecy
 
         @Override
         public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-            //TODO: implementar método equals nos objetos
             return Objects.equals(listaAntiga.get(oldItemPosition).getCodigo(), listaNova.get(newItemPosition).getCodigo());
         }
 

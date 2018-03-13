@@ -95,6 +95,7 @@ dependencies {
     // Android Architeture Lifecycle
     implementation "android.arch.lifecycle:extensions:$archLifecycleVersion"
     implementation 'com.android.support:support-v4:27.1.0'
+    implementation 'com.android.support:recyclerview-v7:27.1.0'
     annotationProcessor "android.arch.lifecycle:compiler:$archLifecycleVersion"
 
     // Facebook Stetho
@@ -115,6 +116,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'org.jetbrains:annotations-java5:15.0'
 }
+
+
 
 
 

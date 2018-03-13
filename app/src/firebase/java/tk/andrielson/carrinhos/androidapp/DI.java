@@ -8,6 +8,8 @@ import tk.andrielson.carrinhos.androidapp.data.dao.VendaDao;
 import tk.andrielson.carrinhos.androidapp.data.dao.VendaDaoImpl;
 import tk.andrielson.carrinhos.androidapp.data.dao.VendedorDao;
 import tk.andrielson.carrinhos.androidapp.data.dao.VendedorDaoImpl;
+import tk.andrielson.carrinhos.androidapp.data.model.ItemVenda;
+import tk.andrielson.carrinhos.androidapp.data.model.ItemVendaImpl;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.data.model.ProdutoImpl;
 import tk.andrielson.carrinhos.androidapp.data.model.Venda;
@@ -37,6 +39,16 @@ public final class DI {
     @NonNull
     public static Venda newVenda() {
         return new VendaImpl();
+    }
+
+    @NonNull
+    public static ItemVenda newItemVenda() {
+        return new ItemVendaImpl();
+    }
+
+    @NonNull
+    public static ItemVenda newItemVenda(Produto produto) {
+        return new ItemVendaImpl((ProdutoImpl) produto);
     }
 
     @NonNull

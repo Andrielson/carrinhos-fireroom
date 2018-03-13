@@ -38,6 +38,10 @@ public class ItemVendaImpl
     public ItemVendaImpl() {
     }
 
+    public ItemVendaImpl(ProdutoImpl produto) {
+        this.produto = produto;
+    }
+
     private ItemVendaImpl(Parcel in) {
         produto = (ProdutoImpl) in.readValue(ProdutoImpl.class.getClassLoader());
         qtSaiu = in.readByte() == 0x00 ? null : in.readInt();
