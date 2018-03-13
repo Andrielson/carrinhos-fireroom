@@ -9,13 +9,18 @@ import android.view.ViewGroup;
 import java.util.Objects;
 
 import tk.andrielson.carrinhos.androidapp.data.model.ItemVenda;
+import tk.andrielson.carrinhos.androidapp.data.model.ItemVendaImpl;
+import tk.andrielson.carrinhos.androidapp.databinding.FragmentCadastroVendaBinding;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentItemvendaBinding;
+import tk.andrielson.carrinhos.androidapp.ui.viewhandler.ItemVendaHandler;
 
 public class ItemVendaRecyclerViewAdapter extends RecyclerView.Adapter<ItemVendaRecyclerViewAdapter.ViewHolder> {
 
     private ItemVenda[] itens;
+    private final FragmentCadastroVendaBinding vendaBinding;
 
-    public ItemVendaRecyclerViewAdapter() {
+    public ItemVendaRecyclerViewAdapter(FragmentCadastroVendaBinding vendaBinding) {
+        this.vendaBinding = vendaBinding;
     }
 
     @NonNull
@@ -28,7 +33,7 @@ public class ItemVendaRecyclerViewAdapter extends RecyclerView.Adapter<ItemVenda
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        holder.bind(itens[position]);
+        holder.bind(itens[position], this.vendaBinding);
     }
 
     @Override
@@ -56,8 +61,12 @@ public class ItemVendaRecyclerViewAdapter extends RecyclerView.Adapter<ItemVenda
             this.binding = binding;
         }
 
-        public void bind(final ItemVenda itemVenda) {
-            binding.setItemVenda(itemVenda);
+        public void bind(final ItemVenda itemVenda, FragmentCadastroVendaBinding vendaBinding) {
+            binding.setItemVenda((ItemVendaImpl) itemVenda);
+            binding.qtLevou.setTransformationMethod(null);
+            binding.qtVoltou.setTransformationMethod(null);
+            binding.setHandler(new ItemVendaHandler(binding));
+            binding.setVenda(vendaBinding.getVenda());
         }
     }
 

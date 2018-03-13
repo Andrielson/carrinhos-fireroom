@@ -153,6 +153,8 @@ public class BindingAdapters {
     }
 
     private static void setValorRealTextView(TextView textView, Long valor) {
+        if (valor == null)
+            valor = 0L;
         textView.setText(String.format(Locale.getDefault(), "R$ %.2f", (double) valor / 100));
     }
 

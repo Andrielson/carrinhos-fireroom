@@ -8,16 +8,19 @@
         <variable
             name="vendedor"
             type="tk.andrielson.carrinhos.androidapp.data.model.Vendedor" />
+
+        <variable
+            name="venda"
+            type="tk.andrielson.carrinhos.androidapp.data.model.Venda" />
     </data>
 
-    <android.support.design.widget.CoordinatorLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/default_gap">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
@@ -31,20 +34,28 @@
                 android:layout_marginTop="8dp"
                 android:text="SELECIONAR VENDEDOR" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recicler_view_itens"
+            <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/recicler_view_itens"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:layoutManager="LinearLayoutManager"-->
+            <!--tools:listitem="@layout/fragment_itemvenda" />-->
+            <LinearLayout
+                android:id="@+id/layout_dos_itens"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                app:layoutManager="LinearLayoutManager"
-                tools:listitem="@layout/fragment_itemvenda" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:ignore="UselessLeaf">
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawablePadding="6dp"
                 android:drawableStart="@drawable/ic_monetization_on_black_16dp"
-                android:text="R$ 100,00" />
+                android:text="R$ 100,00"
+                app:valorReal="@{venda.total}" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -60,7 +71,5 @@
                 android:drawableStart="@drawable/ic_account_box_black_16dp"
                 android:text="R$ 40,00" />
         </LinearLayout>
-
-    </android.support.design.widget.CoordinatorLayout>
-
+    </ScrollView>
 </layout>

@@ -1,28 +1,24 @@
 package tk.andrielson.carrinhos.androidapp.data.model;
 
-import android.os.Parcelable;
-
-import java.math.BigDecimal;
-
 /**
  * Created by Andrielson on 02/03/2018.
  */
 
-public interface Vendedor {
+public abstract class Vendedor extends AbsEntidadePadrao {
 
-    public Long getCodigo();
+    public abstract Long getCodigo();
 
-    public void setCodigo(Long codigo);
+    public abstract void setCodigo(Long codigo);
 
-    public String getNome();
+    public abstract String getNome();
 
-    public void setNome(String nome);
+    public abstract void setNome(String nome);
 
-    public Integer getComissao();
+    public abstract Integer getComissao();
 
-    public void setComissao(Integer comissao);
+    public abstract void setComissao(Integer comissao);
 
-    public Boolean getAtivo();
+    public abstract Boolean getAtivo();
 
-    public void setAtivo(Boolean ativo);
+    public abstract void setAtivo(Boolean ativo);
 }

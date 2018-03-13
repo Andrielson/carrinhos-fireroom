@@ -8,8 +8,7 @@ import android.os.Parcelable;
  */
 
 public class ItemVendaImpl
-        extends AbsEntidadePadrao
-        implements ItemVenda<ProdutoImpl> {
+        extends ItemVenda<ProdutoImpl> {
 
     public static final String COLECAO = "itens";
     public static final String PRODUTO = "produto";

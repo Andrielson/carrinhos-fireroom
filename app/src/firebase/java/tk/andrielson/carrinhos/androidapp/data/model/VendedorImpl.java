@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Contract;
  * Created by Andrielson on 11/03/2018.
  */
 
-public class VendedorImpl extends AbsEntidadePadrao implements Vendedor {
+public class VendedorImpl extends Vendedor {
 
     //<editor-fold desc="Campos do objeto JSON do Firebase">
     public static final String COLECAO = "vendedores";

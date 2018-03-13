@@ -12,9 +12,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import tk.andrielson.carrinhos.androidapp.DI;
 import tk.andrielson.carrinhos.androidapp.R;
+import tk.andrielson.carrinhos.androidapp.data.model.ItemVenda;
+import tk.andrielson.carrinhos.androidapp.data.model.ItemVendaImpl;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentCadastroVendaBinding;
+import tk.andrielson.carrinhos.androidapp.databinding.FragmentItemvendaBinding;
 import tk.andrielson.carrinhos.androidapp.ui.adapter.ItemVendaRecyclerViewAdapter;
+import tk.andrielson.carrinhos.androidapp.ui.viewhandler.ItemVendaHandler;
 import tk.andrielson.carrinhos.androidapp.viewmodel.CadastroVendaViewModel;
 
 
@@ -32,6 +37,7 @@ public class CadastroVendaFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private FragmentCadastroVendaBinding binding;
     private ItemVendaRecyclerViewAdapter adapter;
+    private ItemVenda[] itemVendas;
 
     public CadastroVendaFragment() {
         // Required empty public constructor
@@ -58,9 +64,10 @@ public class CadastroVendaFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_produto_lista, container, false);
-        adapter = new ItemVendaRecyclerViewAdapter();
-        binding.reciclerViewItens.setAdapter(adapter);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cadastro_venda, container, false);
+        binding.setVenda(DI.newVenda());
+//        adapter = new ItemVendaRecyclerViewAdapter(binding);
+//        binding.reciclerViewItens.setAdapter(adapter);
         return binding.getRoot();
     }
 
@@ -88,12 +95,23 @@ public class CadastroVendaFragment extends Fragment {
         mListener = null;
     }
 
-    private void configuraUI(CadastroVendaViewModel viewModel) {
+    //TODO: encontrar uma forma de parar a observação da LiveData
+    private void configuraUI(final CadastroVendaViewModel viewModel) {
         viewModel.getItens().observe(this, itens -> {
             if (itens != null) {
-                adapter.setItens(itens);
+                LayoutInflater layoutInflater = LayoutInflater.from(binding.layoutDosItens.getContext());
+                binding.layoutDosItens.removeAllViews();
+                for (ItemVenda itv : itens) {
+                    FragmentItemvendaBinding itemvendaBinding = FragmentItemvendaBinding.inflate(layoutInflater, binding.layoutDosItens, false);
+                    itemvendaBinding.setItemVenda((ItemVendaImpl) itv);
+                    itemvendaBinding.setHandler(new ItemVendaHandler(itemvendaBinding));
+                    itemvendaBinding.setVenda(binding.getVenda());
+                    itemvendaBinding.qtLevou.setTransformationMethod(null);
+                    itemvendaBinding.qtVoltou.setTransformationMethod(null);
+                    binding.layoutDosItens.addView(itemvendaBinding.getRoot());
+                }
+                binding.executePendingBindings();
             }
-            binding.executePendingBindings();
         });
     }
 

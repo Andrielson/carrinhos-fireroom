@@ -4,26 +4,26 @@ package tk.andrielson.carrinhos.androidapp.data.model;
  * Created by Andrielson on 02/03/2018.
  */
 
-public interface Produto {
+public abstract class Produto extends AbsEntidadePadrao {
 
-    Long getCodigo();
+    public abstract Long getCodigo();
 
-    void setCodigo(Long codigo);
+    public abstract void setCodigo(Long codigo);
 
-    String getNome();
+    public abstract String getNome();
 
-    void setNome(String nome);
+    public abstract void setNome(String nome);
 
-    String getSigla();
+    public abstract String getSigla();
 
-    void setSigla(String sigla);
+    public abstract void setSigla(String sigla);
 
-    Long getPreco();
+    public abstract Long getPreco();
 
-    void setPreco(Long preco);
+    public abstract void setPreco(Long preco);
 
-    Boolean getAtivo();
+    public abstract Boolean getAtivo();
 
-    void setAtivo(Boolean ativo);
+    public abstract void setAtivo(Boolean ativo);
 
 }

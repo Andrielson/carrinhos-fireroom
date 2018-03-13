@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:grid="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="LabelFor">
+
+    <data>
+
+        <variable
+            name="itemVenda"
+            type="tk.andrielson.carrinhos.androidapp.data.model.ItemVendaImpl" />
+    </data>
+
+    <android.support.v7.widget.GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        grid:columnCount="3">
+
+        <!--Linha 1, coluna 1 e 2-->
+        <TextView
+            android:id="@+id/sigla"
+            android:layout_width="0dp" grid:layout_columnWeight="1"
+            android:layout_height="wrap_content"
+            android:text="@{itemVenda.produto.nome}"
+            android:textAppearance="?attr/textAppearanceListItem"
+            grid:layout_columnSpan="2"
+            tools:text="PICOLÉ DE LEITE" />
+
+        <!--Linha 1, coluna 3-->
+        <TextView
+            android:id="@+id/valor_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceListItem"
+            tools:text="R$ 20,00" />
+
+        <!--Linha 2, coluna 1-->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="3dp"
+            android:layout_marginStart="3dp"
+            android:hint="Levou"
+            grid:layout_columnWeight="1">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/qt_levou"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:maxLength="3" />
+        </android.support.design.widget.TextInputLayout>
+
+        <!--Linha 2, coluna 2-->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="3dp"
+            android:layout_marginStart="3dp"
+            android:hint="Levou"
+            grid:layout_columnWeight="1">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/qt_voltou"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:maxLength="3" />
+        </android.support.design.widget.TextInputLayout>
+
+        <!--Linha 2, coluna 3-->
+        <TextView
+            android:id="@+id/qt_vendeu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="3dp" grid:layout_gravity="bottom"
+            android:layout_marginStart="3dp"
+            android:textAppearance="?attr/textAppearanceListItem"
+            tools:text="20" />
+
+
+    </android.support.v7.widget.GridLayout>
+
+</layout>

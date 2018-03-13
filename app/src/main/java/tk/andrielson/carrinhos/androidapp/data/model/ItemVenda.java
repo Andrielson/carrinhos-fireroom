@@ -4,25 +4,25 @@ package tk.andrielson.carrinhos.androidapp.data.model;
  * Created by anfesilva on 12/03/2018.
  */
 
-public interface ItemVenda<P extends Produto> {
-    P getProduto();
+public abstract class ItemVenda<P extends Produto> extends AbsEntidadePadrao {
+    public abstract P getProduto();
 
-    void setProduto(P produto);
+    public abstract void setProduto(P produto);
 
-    Integer getQtSaiu();
+    public abstract Integer getQtSaiu();
 
-    void setQtSaiu(Integer qtSaiu);
+    public abstract void setQtSaiu(Integer qtSaiu);
 
-    Integer getQtVoltou();
+    public abstract Integer getQtVoltou();
 
-    void setQtVoltou(Integer qtVoltou);
+    public abstract void setQtVoltou(Integer qtVoltou);
 
-    Integer getQtVendeu();
+    public abstract Integer getQtVendeu();
 
-    void setQtVendeu(Integer qtVendeu);
+    public abstract void setQtVendeu(Integer qtVendeu);
 
-    Long getValor();
+    public abstract Long getValor();
 
-    void setValor(Long valor);
+    public abstract void setValor(Long valor);
 
 }

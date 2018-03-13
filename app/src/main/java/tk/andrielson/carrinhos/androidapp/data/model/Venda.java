@@ -7,32 +7,32 @@ import java.util.List;
  * Created by anfesilva on 12/03/2018.
  */
 
-public interface Venda<I extends ItemVenda, V extends Vendedor> {
-    Long getCodigo();
+public abstract class Venda<I extends ItemVenda, V extends Vendedor> extends AbsEntidadePadrao {
+    public abstract Long getCodigo();
 
-    void setCodigo(Long codigo);
+    public abstract void setCodigo(Long codigo);
 
-    Integer getComissao();
+    public abstract Integer getComissao();
 
-    void setComissao(Integer comissao);
+    public abstract void setComissao(Integer comissao);
 
-    Date getData();
+    public abstract Date getData();
 
-    void setData(Date data);
+    public abstract void setData(Date data);
 
-    Long getTotal();
+    public abstract Long getTotal();
 
-    void setTotal(Long total);
+    public abstract void setTotal(Long total);
 
-    V getVendedor();
+    public abstract V getVendedor();
 
-    void setVendedor(V vendedor);
+    public abstract void setVendedor(V vendedor);
 
-    String getStatus();
+    public abstract String getStatus();
 
-    void setStatus(String status);
+    public abstract void setStatus(String status);
 
-    List<I> getItens();
+    public abstract List<I> getItens();
 
-    void setItens(List<I> itens);
+    public abstract void setItens(List<I> itens);
 }

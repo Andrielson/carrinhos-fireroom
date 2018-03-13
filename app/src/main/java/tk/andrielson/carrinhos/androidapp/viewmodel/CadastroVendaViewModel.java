@@ -1,6 +1,5 @@
 package tk.andrielson.carrinhos.androidapp.viewmodel;
 
-import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.Transformations;
@@ -57,12 +56,13 @@ public class CadastroVendaViewModel extends ViewModel {
     public LiveData<ItemVenda[]> getItens() {
         return Transformations.map(produtos, input -> {
             List<ItemVenda> lista = new ArrayList<>();
-            for (Produto p : input) {
-                if (p.getAtivo()) {
-                    lista.add(DI.newItemVenda(p));
+            if (input != null)
+                for (Produto p : input) {
+                    if (p.getAtivo()) {
+                        lista.add(DI.newItemVenda(p));
+                    }
                 }
-            }
-            return lista.toArray(new ItemVenda[0]);
+            return lista.toArray(new ItemVenda[lista.size()]);
         });
     }
 }
