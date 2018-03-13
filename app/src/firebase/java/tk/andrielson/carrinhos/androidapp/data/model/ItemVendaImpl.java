@@ -17,12 +17,34 @@ public class ItemVendaImpl
     public static final String QT_VENDEU = "qt_vendeu";
     public static final String QT_VOLTOU = "qt_voltou";
     public static final String VALOR = "valor";
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<ItemVendaImpl> CREATOR = new Parcelable.Creator<ItemVendaImpl>() {
+        @Override
+        public ItemVendaImpl createFromParcel(Parcel in) {
+            return new ItemVendaImpl(in);
+        }
 
+        @Override
+        public ItemVendaImpl[] newArray(int size) {
+            return new ItemVendaImpl[size];
+        }
+    };
     private ProdutoImpl produto;
     private Integer qtSaiu;
     private Integer qtVoltou;
     private Integer qtVendeu;
     private Long valor;
+
+    public ItemVendaImpl() {
+    }
+
+    private ItemVendaImpl(Parcel in) {
+        produto = (ProdutoImpl) in.readValue(ProdutoImpl.class.getClassLoader());
+        qtSaiu = in.readByte() == 0x00 ? null : in.readInt();
+        qtVoltou = in.readByte() == 0x00 ? null : in.readInt();
+        qtVendeu = in.readByte() == 0x00 ? null : in.readInt();
+        valor = in.readByte() == 0x00 ? null : in.readLong();
+    }
 
     public ProdutoImpl getProduto() {
         return produto;
@@ -92,14 +114,6 @@ public class ItemVendaImpl
         return result;
     }
 
-    private ItemVendaImpl(Parcel in) {
-        produto = (ProdutoImpl) in.readValue(ProdutoImpl.class.getClassLoader());
-        qtSaiu = in.readByte() == 0x00 ? null : in.readInt();
-        qtVoltou = in.readByte() == 0x00 ? null : in.readInt();
-        qtVendeu = in.readByte() == 0x00 ? null : in.readInt();
-        valor = in.readByte() == 0x00 ? null : in.readLong();
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -133,17 +147,4 @@ public class ItemVendaImpl
             dest.writeLong(valor);
         }
     }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<ItemVendaImpl> CREATOR = new Parcelable.Creator<ItemVendaImpl>() {
-        @Override
-        public ItemVendaImpl createFromParcel(Parcel in) {
-            return new ItemVendaImpl(in);
-        }
-
-        @Override
-        public ItemVendaImpl[] newArray(int size) {
-            return new ItemVendaImpl[size];
-        }
-    };
 }

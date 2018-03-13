@@ -29,7 +29,31 @@
         grid:useDefaultMargins="true">
         <!--android:onClick="@{handler::onClickVenda}"-->
 
-        <!--Linha 1 coluna 1-->
+        <!--Linha 1, Coluna 1-->
+        <TextView
+            android:id="@+id/data"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textStyle="bold"
+            app:data="@{venda.data}"
+            grid:layout_columnWeight="2"
+            tools:text="12/03/2018" />
+
+        <!--Linha 1, Coluna 2-->
+        <TextView
+            android:id="@+id/valor_total"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawablePadding="6dp"
+            android:drawableStart="@drawable/ic_monetization_on_black_16dp"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textStyle="bold"
+            app:valorReal="@{venda.total}"
+            grid:layout_columnWeight="1"
+            tools:text="R$ 100,00" />
+
+        <!--Linha 2, Coluna 1-->
         <TextView
             android:id="@+id/nome_vendedor"
             android:layout_width="0dp"
@@ -41,40 +65,43 @@
             grid:layout_columnWeight="2"
             tools:text="TEIXEIRA AMARAL" />
 
-        <!--Linha 1 coluna 2-->
+        <!--Linha 2, Coluna 2-->
         <TextView
-            android:id="@+id/data"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
-            android:textAppearance="?attr/textAppearanceListItem"
-            android:textStyle="bold"
-            app:data="@{venda.data}"
-            grid:layout_columnWeight="1"
-            tools:text="12/03/2018" />
-
-        <!--Linha 2 coluna 1-->
-        <TextView
-            android:id="@+id/valor_total"
+            android:id="@+id/valor_pago"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:drawablePadding="6dp"
+            android:drawableStart="@drawable/ic_account_balance_black_16dp"
             android:textAppearance="?attr/textAppearanceListItem"
-            android:textStyle="bold"
-            app:valorReal="@{venda.total}"
-            grid:layout_columnWeight="2"
-            tools:text="R$ 34,00" />
+            app:vendaValorPago="@{venda}"
+            grid:layout_columnWeight="1"
+            tools:text="R$ 60,00" />
 
-        <!--Linha 2 coluna 2-->
+        <!--Linha 3, Coluna 1-->
         <TextView
             android:id="@+id/status"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="3dp"
             android:drawablePadding="6dp"
-            android:drawableStart="@drawable/ic_done_all_black_16dp"
             android:textAppearance="?attr/textAppearanceListItem"
-            grid:layout_columnWeight="1"
+            app:vendaStatus="@{venda.status}"
+            grid:layout_columnWeight="2"
             tools:text="Finalizada" />
+
+        <!--Linha 3, Coluna 2-->
+        <TextView
+            android:id="@+id/valor_comissao"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:drawablePadding="6dp"
+            android:drawableStart="@drawable/ic_account_box_black_16dp"
+            android:textAppearance="?attr/textAppearanceListItem"
+            app:vendaValorComissao="@{venda}"
+            grid:layout_columnWeight="1"
+            tools:text="R$ 40,00" />
+
     </android.support.v7.widget.GridLayout>
 </layout>

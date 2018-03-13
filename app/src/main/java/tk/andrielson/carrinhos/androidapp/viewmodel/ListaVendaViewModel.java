@@ -8,6 +8,8 @@ import java.util.List;
 
 import tk.andrielson.carrinhos.androidapp.DI;
 import tk.andrielson.carrinhos.androidapp.data.dao.VendaDao;
+import tk.andrielson.carrinhos.androidapp.data.dao.VendaDaoImpl;
+import tk.andrielson.carrinhos.androidapp.data.model.ItemVendaImpl;
 import tk.andrielson.carrinhos.androidapp.data.model.Venda;
 
 /**
@@ -26,6 +28,11 @@ public class ListaVendaViewModel extends ViewModel {
         //noinspection unchecked
         LiveData<List<Venda>> vendas = vendaDao.getAll();
         mediatorLiveDataListaVendas.addSource(vendas, mediatorLiveDataListaVendas::setValue);
+        VendaDaoImpl d = new VendaDaoImpl();
+        LiveData<List<ItemVendaImpl>> itens = d.getItens(null);
+        itens.observeForever(itemVendas -> {
+
+        });
     }
 
     public LiveData<List<Venda>> getVendas() {

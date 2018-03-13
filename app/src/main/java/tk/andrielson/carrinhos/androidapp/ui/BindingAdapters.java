@@ -66,6 +66,36 @@ public class BindingAdapters {
         textView.setText(venda.getVendedor().getNome());
     }
 
+    @BindingAdapter("vendaStatus")
+    public static void setVendaStatus(TextView view, String status) {
+        if (status != null && status.trim().toUpperCase().equals("FINALIZADA")) {
+            view.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_done_all_blue_16dp, 0, 0, 0);
+        } else { //Venda PENDENTE
+            view.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_done_black_16dp, 0, 0, 0);
+        }
+        view.setText(status);
+    }
+
+    @BindingAdapter("vendaValorPago")
+    public static void setVendaValorPago(TextView view, Venda venda) {
+        Long valor;
+        if (venda.getTotal() == null || venda.getComissao() == null)
+            valor = 0L;
+        else
+            valor = venda.getTotal() * (1 - venda.getComissao() / 100);
+        setValorRealTextView(view, valor);
+    }
+
+    @BindingAdapter("vendaValorComissao")
+    public static void setVendaValorComissao(TextView view, Venda venda) {
+        Long valor;
+        if (venda.getTotal() == null || venda.getComissao() == null)
+            valor = 0L;
+        else
+            valor = venda.getTotal() * venda.getComissao() / 100;
+        setValorRealTextView(view, valor);
+    }
+
     @BindingAdapter(value = "valorInteiroAttrChanged")
     public static void setListenerOnEditTextInteiro(EditText editText, final InverseBindingListener listener) {
         if (listener != null)

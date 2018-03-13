@@ -8,6 +8,7 @@ import android.util.Log;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
@@ -82,13 +83,15 @@ public class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaImpl> {
             for (DocumentSnapshot doc : input.getDocuments()) {
                 VendaImpl venda = new VendaImpl();
                 venda.setCodigo(doc.getLong(VendaImpl.CODIGO));
-                venda.setComissao(Integer.valueOf(String.valueOf(doc.getLong(VendaImpl.COMISSAO))));
+                venda.setComissao(doc.getLong(VendaImpl.COMISSAO).intValue());
                 venda.setData(doc.getDate(VendaImpl.DATA));
                 venda.setTotal(doc.getLong(VendaImpl.TOTAL));
+                venda.setStatus(doc.getString(VendaImpl.STATUS));
                 String codigoVendedor = doc.getDocumentReference(VendaImpl.VENDEDOR).getId();
                 VendedorImpl vendedor = new VendedorImpl();
                 vendedor.setCodigo(Long.valueOf(codigoVendedor));
                 vendedor.setNome(doc.getString(VendaImpl.VENDEDOR_NOME));
+                venda.setVendedor(vendedor);
                 lista.add(venda);
             }
             return lista;
@@ -99,7 +102,7 @@ public class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaImpl> {
     public LiveData<VendaImpl> getByCodigo(Long codigo) {
         Query query = queryPadrao.whereEqualTo(VendaImpl.CODIGO, codigo);
         FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(query);
-        LiveData<VendaImpl> liveVenda = Transformations.map(liveData, input -> {
+        return Transformations.map(liveData, input -> {
             if (input.getDocuments().isEmpty())
                 return null;
             DocumentSnapshot doc = input.getDocuments().get(0);
@@ -113,18 +116,26 @@ public class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaImpl> {
             vendedor.setCodigo(Long.valueOf(codigoVendedor));
             return venda;
         });
-        return Transformations.switchMap(getItens(codigo), new Function<List<ItemVendaImpl>, LiveData<VendaImpl>>() {
-            @Override
-            public LiveData<VendaImpl> apply(List<ItemVendaImpl> input) {
-                //Verificar possibilidade de inverter as livedata pra já retornar tudo pronto
-                return null;
-            }
-        });
     }
 
     public LiveData<List<ItemVendaImpl>> getItens(Long codigo) {
         Query query = db.collection("/vendas/000000000000000001/itens");
         FirestoreQueryLiveData itensLiveData = new FirestoreQueryLiveData(query);
-        return Transformations.map(itensLiveData, new ListaDeserializer<>(ItemVendaImpl.class));
+        return Transformations.map(itensLiveData, input -> {
+            List<ItemVendaImpl> lista = new ArrayList<>();
+            for (DocumentSnapshot doc : input.getDocuments()) {
+                ItemVendaImpl item = new ItemVendaImpl();
+                item.setValor(doc.getLong(ItemVendaImpl.VALOR));
+                Long qtd = doc.getLong(ItemVendaImpl.QT_SAIU);
+                item.setQtSaiu(qtd != null ? qtd.intValue() : 0);
+                qtd = doc.getLong(ItemVendaImpl.QT_VOLTOU);
+                item.setQtVoltou(qtd != null ? qtd.intValue() : 0);
+                qtd = doc.getLong(ItemVendaImpl.QT_VENDEU);
+                item.setQtVendeu(qtd != null ? qtd.intValue() : 0);
+                lista.add(item);
+                LogUtil.Log(TAG, String.valueOf(item.getValor()), Log.DEBUG);
+            }
+            return lista;
+        });
     }
 }

@@ -5,4 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="carrinhoHabilitado">#008000</color>
     <color name="carrinhoDesabilitado">#8B0000</color>
+    <color name="vendaFinalizada">#0000FF</color>
+    <color name="vendaAberta">#A9A9A9</color>
 </resources>
