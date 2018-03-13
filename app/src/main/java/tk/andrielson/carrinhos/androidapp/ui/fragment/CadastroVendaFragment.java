@@ -18,7 +18,6 @@ import tk.andrielson.carrinhos.androidapp.data.model.ItemVenda;
 import tk.andrielson.carrinhos.androidapp.data.model.ItemVendaImpl;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentCadastroVendaBinding;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentItemvendaBinding;
-import tk.andrielson.carrinhos.androidapp.ui.adapter.ItemVendaRecyclerViewAdapter;
 import tk.andrielson.carrinhos.androidapp.ui.viewhandler.ItemVendaHandler;
 import tk.andrielson.carrinhos.androidapp.viewmodel.CadastroVendaViewModel;
 
@@ -31,12 +30,11 @@ import tk.andrielson.carrinhos.androidapp.viewmodel.CadastroVendaViewModel;
  * Use the {@link CadastroVendaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CadastroVendaFragment extends Fragment {
+public class CadastroVendaFragment extends Fragment implements ItemVendaHandler.ItemVendaListener {
 
     private static final String TAG = CadastroVendaFragment.class.getSimpleName();
     private OnFragmentInteractionListener mListener;
     private FragmentCadastroVendaBinding binding;
-    private ItemVendaRecyclerViewAdapter adapter;
     private ItemVenda[] itemVendas;
 
     public CadastroVendaFragment() {
@@ -66,8 +64,6 @@ public class CadastroVendaFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cadastro_venda, container, false);
         binding.setVenda(DI.newVenda());
-//        adapter = new ItemVendaRecyclerViewAdapter(binding);
-//        binding.reciclerViewItens.setAdapter(adapter);
         return binding.getRoot();
     }
 
@@ -104,7 +100,7 @@ public class CadastroVendaFragment extends Fragment {
                 for (ItemVenda itv : itens) {
                     FragmentItemvendaBinding itemvendaBinding = FragmentItemvendaBinding.inflate(layoutInflater, binding.layoutDosItens, false);
                     itemvendaBinding.setItemVenda((ItemVendaImpl) itv);
-                    itemvendaBinding.setHandler(new ItemVendaHandler(itemvendaBinding));
+                    itemvendaBinding.setHandler(new ItemVendaHandler(itemvendaBinding, this));
                     itemvendaBinding.setVenda(binding.getVenda());
                     itemvendaBinding.qtLevou.setTransformationMethod(null);
                     itemvendaBinding.qtVoltou.setTransformationMethod(null);
@@ -113,6 +109,11 @@ public class CadastroVendaFragment extends Fragment {
                 binding.executePendingBindings();
             }
         });
+    }
+
+    @Override
+    public void atualizaTotalVenda(Long total) {
+        binding.getVenda().setTotal(100L);
     }
 
     /**

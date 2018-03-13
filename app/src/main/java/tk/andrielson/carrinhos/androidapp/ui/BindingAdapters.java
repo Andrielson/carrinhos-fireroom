@@ -32,7 +32,7 @@ import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
  * Created by anfesilva on 09/03/2018.
  */
 
-public class BindingAdapters {
+public final class BindingAdapters {
     private static final String TAG = BindingAdapters.class.getSimpleName();
 
     @BindingAdapter("android:checked")
