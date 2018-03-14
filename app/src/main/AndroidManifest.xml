@@ -16,6 +16,7 @@
         tools:replace="android:supportsRtl,android:allowBackup,android:label">
         <activity
             android:name=".ui.activity.SplashActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,21 +28,25 @@
             android:name=".ui.activity.MainActivity"
             android:label="@string/activity_main_label"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activity.ProdutoActivity"
             android:label="@string/activity_produto_label"
             android:parentActivityName=".ui.activity.MainActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
             android:name=".ui.activity.VendedorActivity"
             android:label="@string/activity_vendedor_label"
             android:parentActivityName=".ui.activity.MainActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
             android:name=".ui.activity.VendaActivity"
             android:label="@string/activity_venda_label"
             android:parentActivityName=".ui.activity.MainActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
     </application>
 

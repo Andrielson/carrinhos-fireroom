@@ -23,7 +23,7 @@ import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
  * Created by anfesilva on 12/03/2018.
  */
 
-public class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaImpl> {
+public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaImpl> {
     private static final String COLECAO = VendaImpl.COLECAO;
     private static final String TAG = VendaDaoImpl.class.getSimpleName();
 

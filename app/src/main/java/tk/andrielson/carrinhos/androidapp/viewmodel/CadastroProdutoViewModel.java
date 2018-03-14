@@ -33,7 +33,7 @@ public class CadastroProdutoViewModel extends ViewModel {
     }
 
     public LiveData<ProdutoObservable> getProduto() {
-        return Transformations.map(produtoLiveData, ProdutoObservable::new);
+        return Transformations.map(produtoLiveData, produto -> produto == null ? new ProdutoObservable() : new ProdutoObservable(produto));
     }
 
     public void setProduto(Produto produto) {

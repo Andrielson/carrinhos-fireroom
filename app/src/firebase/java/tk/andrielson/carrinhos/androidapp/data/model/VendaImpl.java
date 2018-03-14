@@ -10,7 +10,7 @@ import java.util.List;
  * Created by anfesilva on 12/03/2018.
  */
 
-public class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
+public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
 
     public static final String COLECAO = "vendas";
     public static final String CODIGO = "codigo";

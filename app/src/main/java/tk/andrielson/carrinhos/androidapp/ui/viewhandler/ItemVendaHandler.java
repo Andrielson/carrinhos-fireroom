@@ -13,11 +13,9 @@ import tk.andrielson.carrinhos.androidapp.databinding.FragmentItemvendaBinding;
 public class ItemVendaHandler {
     private static final String TAG = ItemVendaHandler.class.getSimpleName();
     private final FragmentItemvendaBinding binding;
-    private final ItemVendaListener listener;
 
-    public ItemVendaHandler(FragmentItemvendaBinding binding, ItemVendaListener listener) {
+    public ItemVendaHandler(FragmentItemvendaBinding binding) {
         this.binding = binding;
-        this.listener = listener;
     }
 
     public void calculaItem(Editable editable) {
@@ -30,10 +28,5 @@ public class ItemVendaHandler {
         long total = qtVendeu * valor;
         binding.qtVendeu.setText(String.valueOf(qtVendeu));
         binding.valorTotal.setText(String.format(Locale.getDefault(), "R$ %.2f", (double) total / 100));
-        listener.atualizaTotalVenda(total);
-    }
-
-    public interface ItemVendaListener {
-        void atualizaTotalVenda(Long total);
     }
 }

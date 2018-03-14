@@ -1,5 +1,4 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="tk.andrielson.carrinhos.androidapp.ui.fragment.CadastroVendaFragment">
 
@@ -7,11 +6,11 @@
 
         <variable
             name="vendedor"
-            type="tk.andrielson.carrinhos.androidapp.data.model.Vendedor" />
+            type="tk.andrielson.carrinhos.androidapp.observable.VendedorObservable" />
 
         <variable
             name="venda"
-            type="tk.andrielson.carrinhos.androidapp.data.model.Venda" />
+            type="tk.andrielson.carrinhos.androidapp.observable.VendaObservable" />
     </data>
 
     <ScrollView
@@ -27,7 +26,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="DATA" />
+                android:text="@{venda.data}" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -35,42 +34,36 @@
                 android:layout_marginTop="8dp"
                 android:text="SELECIONAR VENDEDOR" />
 
-            <!--<android.support.v7.widget.RecyclerView-->
-            <!--android:id="@+id/recicler_view_itens"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--app:layoutManager="LinearLayoutManager"-->
-            <!--tools:listitem="@layout/fragment_itemvenda" />-->
             <LinearLayout
                 android:id="@+id/layout_dos_itens"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                tools:ignore="UselessLeaf">
-
-            </LinearLayout>
+                tools:ignore="UselessLeaf" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawablePadding="6dp"
                 android:drawableStart="@drawable/ic_monetization_on_black_16dp"
-                android:text="R$ 100,00"
-                app:valorReal="@{venda.total}" />
+                android:text="@={venda.total}"
+                tools:text="R$ 100,00" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawablePadding="6dp"
                 android:drawableStart="@drawable/ic_account_balance_black_16dp"
-                android:text="R$ 60,00" />
+                android:text="@={venda.valorPago}"
+                tools:text="R$ 60,00" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawablePadding="6dp"
                 android:drawableStart="@drawable/ic_account_box_black_16dp"
-                android:text="R$ 40,00" />
+                android:text="@={venda.valorComissao}"
+                tools:text="R$ 40,00" />
         </LinearLayout>
     </ScrollView>
 </layout>

@@ -33,7 +33,7 @@ public class CadastroVendedorViewModel extends ViewModel {
     }
 
     public LiveData<VendedorObservable> getVendedor() {
-        return Transformations.map(vendedorLiveData, VendedorObservable::new);
+        return Transformations.map(vendedorLiveData, vendedor -> vendedor == null ? new VendedorObservable() : new VendedorObservable(vendedor));
     }
 
     public void setVendedor(Vendedor vendedor) {

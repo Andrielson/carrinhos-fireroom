@@ -15,10 +15,10 @@ import android.view.ViewGroup;
 import tk.andrielson.carrinhos.androidapp.DI;
 import tk.andrielson.carrinhos.androidapp.R;
 import tk.andrielson.carrinhos.androidapp.data.model.ItemVenda;
-import tk.andrielson.carrinhos.androidapp.data.model.ItemVendaImpl;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentCadastroVendaBinding;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentItemvendaBinding;
 import tk.andrielson.carrinhos.androidapp.observable.ItemVendaObservable;
+import tk.andrielson.carrinhos.androidapp.observable.VendaObservable;
 import tk.andrielson.carrinhos.androidapp.ui.viewhandler.ItemVendaHandler;
 import tk.andrielson.carrinhos.androidapp.viewmodel.CadastroVendaViewModel;
 
@@ -31,7 +31,7 @@ import tk.andrielson.carrinhos.androidapp.viewmodel.CadastroVendaViewModel;
  * Use the {@link CadastroVendaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CadastroVendaFragment extends Fragment implements ItemVendaHandler.ItemVendaListener {
+public class CadastroVendaFragment extends Fragment {
 
     private static final String TAG = CadastroVendaFragment.class.getSimpleName();
     private OnFragmentInteractionListener mListener;
@@ -64,7 +64,6 @@ public class CadastroVendaFragment extends Fragment implements ItemVendaHandler.
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cadastro_venda, container, false);
-        binding.setVenda(DI.newVenda());
         return binding.getRoot();
     }
 
@@ -98,22 +97,20 @@ public class CadastroVendaFragment extends Fragment implements ItemVendaHandler.
             if (itens != null) {
                 LayoutInflater layoutInflater = LayoutInflater.from(binding.layoutDosItens.getContext());
                 binding.layoutDosItens.removeAllViews();
-                for (ItemVendaObservable itv : itens) {
+                VendaObservable vendaObservable = new VendaObservable();
+                vendaObservable.setItensVendaObservable(itens);
+                for (ItemVendaObservable ito : vendaObservable.itens.get()) {
                     FragmentItemvendaBinding itemvendaBinding = FragmentItemvendaBinding.inflate(layoutInflater, binding.layoutDosItens, false);
-                    itemvendaBinding.setItemVenda(itv);
-                    itemvendaBinding.setHandler(new ItemVendaHandler(itemvendaBinding, this));
+                    itemvendaBinding.setItemVenda(ito);
+                    itemvendaBinding.setHandler(new ItemVendaHandler(itemvendaBinding));
                     itemvendaBinding.qtLevou.setTransformationMethod(null);
                     itemvendaBinding.qtVoltou.setTransformationMethod(null);
                     binding.layoutDosItens.addView(itemvendaBinding.getRoot());
                 }
+                binding.setVenda(vendaObservable);
                 binding.executePendingBindings();
             }
         });
-    }
-
-    @Override
-    public void atualizaTotalVenda(Long total) {
-        binding.getVenda().setTotal(100L);
     }
 
     /**

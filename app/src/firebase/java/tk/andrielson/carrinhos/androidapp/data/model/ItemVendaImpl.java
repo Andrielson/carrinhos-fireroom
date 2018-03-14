@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Created by anfesilva on 12/03/2018.
  */
 
-public class ItemVendaImpl
+public final class ItemVendaImpl
         extends ItemVenda<ProdutoImpl> {
 
     public static final String COLECAO = "itens";

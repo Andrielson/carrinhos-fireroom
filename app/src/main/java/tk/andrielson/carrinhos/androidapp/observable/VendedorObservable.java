@@ -21,7 +21,7 @@ public final class VendedorObservable {
     private final Vendedor vendedorModel;
 
     public VendedorObservable() {
-        vendedorModel = DI.newVendedor();
+        this(DI.newVendedor());
     }
 
     public VendedorObservable(Vendedor vendedor) {

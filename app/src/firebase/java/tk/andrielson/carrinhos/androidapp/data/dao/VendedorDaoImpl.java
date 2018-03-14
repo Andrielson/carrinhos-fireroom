@@ -16,7 +16,7 @@ import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 /**
  * Implementação de VendedorDao para o banco Firestore.
  */
-public class VendedorDaoImpl extends FirestoreDao implements VendedorDao<VendedorImpl> {
+public final class VendedorDaoImpl extends FirestoreDao implements VendedorDao<VendedorImpl> {
     private static final String COLECAO = VendedorImpl.COLECAO;
     private static final String TAG = VendedorDaoImpl.class.getSimpleName();
 

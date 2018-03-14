@@ -1,8 +1,10 @@
 package tk.andrielson.carrinhos.androidapp.viewmodel;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
+import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +15,7 @@ import tk.andrielson.carrinhos.androidapp.data.dao.VendedorDao;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
 import tk.andrielson.carrinhos.androidapp.observable.ItemVendaObservable;
+import tk.andrielson.carrinhos.androidapp.observable.VendaObservable;
 import tk.andrielson.carrinhos.androidapp.observable.VendedorObservable;
 
 /**
@@ -21,7 +24,8 @@ import tk.andrielson.carrinhos.androidapp.observable.VendedorObservable;
 @SuppressWarnings("unchecked")
 public class CadastroVendaViewModel extends ViewModel {
     private final LiveData<List<VendedorObservable>> vendedoresAtivos;
-    private final LiveData<ItemVendaObservable[]> itensVenda;
+    private final LiveData<List<ItemVendaObservable>> itensVenda;
+    private final VendaObservable vendaObservable = new VendaObservable(DI.newVenda());
 
     public CadastroVendaViewModel() {
         ProdutoDao produtoDao = DI.newProdutoDao();
@@ -30,7 +34,7 @@ public class CadastroVendaViewModel extends ViewModel {
             if (input != null)
                 for (Produto p : input)
                     if (p.getAtivo()) lista.add(new ItemVendaObservable(DI.newItemVenda(p)));
-            return lista.toArray(new ItemVendaObservable[lista.size()]);
+            return lista;
         });
         VendedorDao vendedorDao = DI.newVendedorDao();
         vendedoresAtivos = Transformations.map((LiveData<List<Vendedor>>) vendedorDao.getAll(), input -> {
@@ -42,11 +46,22 @@ public class CadastroVendaViewModel extends ViewModel {
         });
     }
 
+    public LiveData<List<ItemVendaObservable>>  getItensVenda() {
+        return itensVenda;
+    }
+
     public LiveData<List<VendedorObservable>> getVendedores() {
         return vendedoresAtivos;
     }
 
-    public LiveData<ItemVendaObservable[]> getItensVenda() {
-        return itensVenda;
+
+    private class TesteObserver implements Observer<List<ItemVendaObservable>> {
+        @Override
+        public void onChanged(@Nullable List<ItemVendaObservable> itemVendaObservables) {
+            if (itemVendaObservables != null && !itemVendaObservables.isEmpty()) {
+                vendaObservable.itens.set(itemVendaObservables);
+                itensVenda.removeObserver(this);
+            }
+        }
     }
 }

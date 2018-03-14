@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Created by Andrielson on 03/03/2018.
  */
 
-public class ProdutoImpl extends Produto {
+public final class ProdutoImpl extends Produto {
 
     //<editor-fold desc="Campos do objeto JSON do Firebase">
     public static final String COLECAO = "produtos";

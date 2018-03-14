@@ -6,8 +6,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
-import tk.andrielson.carrinhos.androidapp.observable.VendedorObservable;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentCadastroVendedorBinding;
+import tk.andrielson.carrinhos.androidapp.observable.VendedorObservable;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.CadastroVendedorFragment;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
@@ -35,7 +35,7 @@ public class CadastroVendedorHandler {
     public void onBotaoSalvarClick(View view, VendedorObservable observable) {
         Vendedor vendedor = observable.getVendedorModel();
         if (vendedor != null && ehNomeValido(vendedor.getNome(), vendedor) && ehComissaoValida(vendedor.getComissao()))
-            listener.salvarVendedor(vendedor, vendedor.getCodigo() == null);
+            listener.salvarVendedor(vendedor, vendedor.getCodigo() == null || vendedor.getCodigo().equals(0L));
         else {
             Toast.makeText(view.getContext(), "Por favor, corrija as informações incorretas!", Toast.LENGTH_SHORT).show();
             LogUtil.Log(TAG, "Vendedor nulo ou inválido!", Log.ERROR);

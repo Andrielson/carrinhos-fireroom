@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
-import tk.andrielson.carrinhos.androidapp.observable.ProdutoObservable;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentCadastroProdutoBinding;
+import tk.andrielson.carrinhos.androidapp.observable.ProdutoObservable;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.CadastroProdutoFragment;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
@@ -51,7 +51,7 @@ public class CadastroProdutoHandler {
     public void onBotaoSalvarClick(View view, ProdutoObservable observable) {
         Produto produto = observable.getProdutoModel();
         if (produto != null && ehNomeValido(produto.getNome(), produto) && ehSiglaValida(produto.getSigla()) && ehPrecoValido(produto.getPreco()))
-            listener.salvarProduto(produto, produto.getCodigo() == null);
+            listener.salvarProduto(produto, produto.getCodigo() == null || produto.getCodigo().equals(0L));
         else {
             Toast.makeText(view.getContext(), "Por favor, corrija as informações incorretas!", Toast.LENGTH_SHORT).show();
             LogUtil.Log(TAG, "Produto nulo ou inválido!", Log.ERROR);
