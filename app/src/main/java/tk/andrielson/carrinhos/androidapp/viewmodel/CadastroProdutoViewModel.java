@@ -1,6 +1,5 @@
 package tk.andrielson.carrinhos.androidapp.viewmodel;
 
-import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
@@ -13,7 +12,7 @@ import javax.annotation.Nullable;
 import tk.andrielson.carrinhos.androidapp.DI;
 import tk.andrielson.carrinhos.androidapp.data.dao.ProdutoDao;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
-import tk.andrielson.carrinhos.androidapp.data.observable.ProdutoObservable;
+import tk.andrielson.carrinhos.androidapp.observable.ProdutoObservable;
 
 /**
  * Created by Andrielson on 08/03/2018.

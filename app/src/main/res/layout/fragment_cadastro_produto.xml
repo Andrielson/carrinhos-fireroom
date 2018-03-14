@@ -9,7 +9,7 @@
 
         <variable
             name="produto"
-            type="tk.andrielson.carrinhos.androidapp.data.observable.ProdutoObservable" />
+            type="tk.andrielson.carrinhos.androidapp.observable.ProdutoObservable" />
 
         <variable
             name="handler"

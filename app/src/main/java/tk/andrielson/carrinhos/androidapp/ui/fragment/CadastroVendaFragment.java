@@ -18,6 +18,7 @@ import tk.andrielson.carrinhos.androidapp.data.model.ItemVenda;
 import tk.andrielson.carrinhos.androidapp.data.model.ItemVendaImpl;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentCadastroVendaBinding;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentItemvendaBinding;
+import tk.andrielson.carrinhos.androidapp.observable.ItemVendaObservable;
 import tk.andrielson.carrinhos.androidapp.ui.viewhandler.ItemVendaHandler;
 import tk.andrielson.carrinhos.androidapp.viewmodel.CadastroVendaViewModel;
 
@@ -93,15 +94,14 @@ public class CadastroVendaFragment extends Fragment implements ItemVendaHandler.
 
     //TODO: encontrar uma forma de parar a observação da LiveData
     private void configuraUI(final CadastroVendaViewModel viewModel) {
-        viewModel.getItens().observe(this, itens -> {
+        viewModel.getItensVenda().observe(this, itens -> {
             if (itens != null) {
                 LayoutInflater layoutInflater = LayoutInflater.from(binding.layoutDosItens.getContext());
                 binding.layoutDosItens.removeAllViews();
-                for (ItemVenda itv : itens) {
+                for (ItemVendaObservable itv : itens) {
                     FragmentItemvendaBinding itemvendaBinding = FragmentItemvendaBinding.inflate(layoutInflater, binding.layoutDosItens, false);
-                    itemvendaBinding.setItemVenda((ItemVendaImpl) itv);
+                    itemvendaBinding.setItemVenda(itv);
                     itemvendaBinding.setHandler(new ItemVendaHandler(itemvendaBinding, this));
-                    itemvendaBinding.setVenda(binding.getVenda());
                     itemvendaBinding.qtLevou.setTransformationMethod(null);
                     itemvendaBinding.qtVoltou.setTransformationMethod(null);
                     binding.layoutDosItens.addView(itemvendaBinding.getRoot());

@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
-import tk.andrielson.carrinhos.androidapp.data.observable.ProdutoObservable;
+import tk.andrielson.carrinhos.androidapp.observable.ProdutoObservable;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentCadastroProdutoBinding;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.CadastroProdutoFragment;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;

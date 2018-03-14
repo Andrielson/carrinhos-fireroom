@@ -1,4 +1,4 @@
-package tk.andrielson.carrinhos.androidapp.data.observable;
+package tk.andrielson.carrinhos.androidapp.observable;
 
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
@@ -8,6 +8,7 @@ import java.util.Locale;
 
 import tk.andrielson.carrinhos.androidapp.DI;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
+import tk.andrielson.carrinhos.androidapp.utils.Util;
 
 /**
  * Created by anfesilva on 13/03/2018.
@@ -32,7 +33,7 @@ public final class ProdutoObservable {
         codigo.set(produto.getCodigo() == null ? "0" : String.valueOf(produto.getCodigo()));
         nome.set(produto.getNome());
         sigla.set(produto.getSigla());
-        preco.set(produto.getPreco() == null ? "R$ 0,00" : String.format(Locale.getDefault(), "R$ %.2f", (double) produto.getPreco() / 100));
+        preco.set(Util.longToRS(produto.getPreco()));
         ativo.set(produto.getAtivo() == null ? true : produto.getAtivo());
         labelLista.set(String.format(Locale.getDefault(), "%s (%s)", nome.get(), sigla.get()));
     }
@@ -41,7 +42,7 @@ public final class ProdutoObservable {
         produtoModel.setCodigo(Long.valueOf(codigo.get()));
         produtoModel.setNome(nome.get());
         produtoModel.setSigla(sigla.get());
-        produtoModel.setPreco(Long.valueOf(preco.get().replaceAll("\\D", "")));
+        produtoModel.setPreco(Util.RStoLong(preco.get()));
         produtoModel.setAtivo(ativo.get());
         return produtoModel;
     }

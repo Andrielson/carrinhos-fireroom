@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
-import tk.andrielson.carrinhos.androidapp.data.observable.VendedorObservable;
+import tk.andrielson.carrinhos.androidapp.observable.VendedorObservable;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentCadastroVendedorBinding;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.CadastroVendedorFragment;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;

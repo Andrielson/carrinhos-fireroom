@@ -1,4 +1,4 @@
-package tk.andrielson.carrinhos.androidapp.data.observable;
+package tk.andrielson.carrinhos.androidapp.observable;
 
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;

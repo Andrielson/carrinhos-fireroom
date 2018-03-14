@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 import tk.andrielson.carrinhos.androidapp.DI;
 import tk.andrielson.carrinhos.androidapp.data.dao.VendedorDao;
 import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
-import tk.andrielson.carrinhos.androidapp.data.observable.VendedorObservable;
+import tk.andrielson.carrinhos.androidapp.observable.VendedorObservable;
 
 /**
  * Created by Andrielson on 08/03/2018.

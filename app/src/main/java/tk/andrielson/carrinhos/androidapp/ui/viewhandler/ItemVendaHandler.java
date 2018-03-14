@@ -26,7 +26,7 @@ public class ItemVendaHandler {
         int qtLevou = strQtLevou.isEmpty() ? 0 : Integer.valueOf(strQtLevou);
         int qtVoltou = strQtVoltou.isEmpty() ? 0 : Integer.valueOf(strQtVoltou);
         int qtVendeu = qtLevou - qtVoltou;
-        long valor = binding.getItemVenda().getProduto().getPreco();
+        long valor = binding.getItemVenda().produto.get().getProdutoModel().getPreco();
         long total = qtVendeu * valor;
         binding.qtVendeu.setText(String.valueOf(qtVendeu));
         binding.valorTotal.setText(String.format(Locale.getDefault(), "R$ %.2f", (double) total / 100));

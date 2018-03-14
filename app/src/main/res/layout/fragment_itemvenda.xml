@@ -6,12 +6,8 @@
     <data>
 
         <variable
-            name="venda"
-            type="tk.andrielson.carrinhos.androidapp.data.model.Venda" />
-
-        <variable
             name="itemVenda"
-            type="tk.andrielson.carrinhos.androidapp.data.model.ItemVendaImpl" />
+            type="tk.andrielson.carrinhos.androidapp.observable.ItemVendaObservable" />
 
         <variable
             name="handler"
@@ -44,6 +40,7 @@
             android:inputType="numberPassword"
             android:maxLength="3"
             android:minWidth="40dp"
+            android:text="@={itemVenda.qtSaiu}"
             android:textAppearance="?attr/textAppearanceListItem" />
 
         <EditText
@@ -58,6 +55,7 @@
             android:inputType="numberPassword"
             android:maxLength="3"
             android:minWidth="40dp"
+            android:text="@={itemVenda.qtVoltou}"
             android:textAppearance="?attr/textAppearanceListItem" />
 
         <TextView
@@ -67,6 +65,7 @@
             android:layout_marginEnd="3dp"
             android:layout_marginStart="3dp"
             android:layout_weight="1"
+            android:text="@={itemVenda.qtVendeu}"
             android:textAlignment="center"
             android:textAppearance="?attr/textAppearanceListItem"
             tools:text="20" />
@@ -76,6 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="end"
+            android:text="@={itemVenda.valor}"
             android:textAppearance="?attr/textAppearanceListItem"
             tools:text="R$ 20,00" />
     </LinearLayout>

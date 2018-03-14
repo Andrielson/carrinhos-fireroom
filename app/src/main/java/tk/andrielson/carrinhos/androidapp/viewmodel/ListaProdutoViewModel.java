@@ -11,7 +11,7 @@ import java.util.List;
 import tk.andrielson.carrinhos.androidapp.DI;
 import tk.andrielson.carrinhos.androidapp.data.dao.ProdutoDao;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
-import tk.andrielson.carrinhos.androidapp.data.observable.ProdutoObservable;
+import tk.andrielson.carrinhos.androidapp.observable.ProdutoObservable;
 
 /**
  * Created by anfesilva on 07/03/2018.

@@ -9,8 +9,7 @@ import android.view.ViewGroup;
 import java.util.List;
 import java.util.Objects;
 
-import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
-import tk.andrielson.carrinhos.androidapp.data.observable.VendedorObservable;
+import tk.andrielson.carrinhos.androidapp.observable.VendedorObservable;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentVendedorListaItemBinding;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaVendedorFragment;
 import tk.andrielson.carrinhos.androidapp.ui.viewhandler.ListaVendedorItemHandler;
