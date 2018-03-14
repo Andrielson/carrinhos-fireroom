@@ -18,6 +18,7 @@ import tk.andrielson.carrinhos.androidapp.DI;
 import tk.andrielson.carrinhos.androidapp.R;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentProdutoListaBinding;
+import tk.andrielson.carrinhos.androidapp.observable.ProdutoObservable;
 import tk.andrielson.carrinhos.androidapp.ui.adapter.ProdutoRecyclerViewAdapter;
 import tk.andrielson.carrinhos.androidapp.viewmodel.ListaProdutoViewModel;
 
@@ -41,8 +42,6 @@ public class ListaProdutoFragment extends Fragment {
     public ListaProdutoFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
     public static ListaProdutoFragment newInstance() {
         ListaProdutoFragment fragment = new ListaProdutoFragment();
         Bundle args = new Bundle();
@@ -100,17 +99,7 @@ public class ListaProdutoFragment extends Fragment {
         });
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(Produto item);
+        void onClickProduto(ProdutoObservable item);
     }
 }

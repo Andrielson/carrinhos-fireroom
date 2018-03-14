@@ -12,6 +12,7 @@ import static tk.andrielson.carrinhos.androidapp.DI.newVendedorDao;
 
 @SuppressWarnings("unchecked")
 public class CadastroVendedorViewModel extends AndroidViewModel {
+
     private final VendedorDao vendedorDao = newVendedorDao();
 
     public CadastroVendedorViewModel(@NonNull Application application) {
@@ -19,7 +20,7 @@ public class CadastroVendedorViewModel extends AndroidViewModel {
     }
 
     public void salvarVendedor(VendedorObservable observable) {
-        if (observable.codigo.get() == null || observable.codigo.get().isEmpty() || observable.codigo.get().equals("0")) {
+        if (observable.ehNovo()) {
             vendedorDao.insert(observable.getVendedorModel());
             Toast.makeText(this.getApplication(), "Vendedor adicionado!", Toast.LENGTH_SHORT).show();
         } else {
@@ -29,7 +30,7 @@ public class CadastroVendedorViewModel extends AndroidViewModel {
     }
 
     public void excluirVendedor(VendedorObservable observable) {
-        if (observable.codigo.get() != null && !observable.codigo.get().isEmpty() && !observable.codigo.get().equals("0")) {
+        if (!observable.ehNovo()) {
             vendedorDao.delete(observable.getVendedorModel());
             Toast.makeText(this.getApplication(), "Vendedor excluído!", Toast.LENGTH_SHORT).show();
         } else

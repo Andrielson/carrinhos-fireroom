@@ -14,6 +14,8 @@
         <variable
             name="handler"
             type="tk.andrielson.carrinhos.androidapp.ui.viewhandler.CadastroProdutoHandler" />
+
+        <import type="android.view.View" />
     </data>
 
     <ScrollView
@@ -124,7 +126,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/text_margin"
                     android:background="@color/colorPrimaryDark"
-                    android:onClick="@{(view) -> handler.onBotaoSalvarClick(view, produto)}"
+                    android:onClick="@{() -> handler.onBotaoSalvarClick(produto)}"
                     android:padding="10dp"
                     android:text="@string/fragment_cadastro_produto_label_botao_salvar"
                     android:textAllCaps="true"
@@ -138,11 +140,12 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="32dp"
-                    android:onClick="@{(view) -> handler.onBotaoExcluirClick(view, produto)}"
+                    android:onClick="@{() -> handler.onBotaoExcluirClick(produto)}"
                     android:padding="8dp"
                     android:text="@string/fragment_cadastro_produto_label_botao_excluir"
                     android:textAllCaps="true"
-                    android:textColor="#FF0000" />
+                    android:textColor="#FF0000"
+                    android:visibility="@{produto.ehNovo() ? View.GONE : View.VISIBLE}" />
             </LinearLayout>
         </android.support.design.widget.CoordinatorLayout>
     </ScrollView>

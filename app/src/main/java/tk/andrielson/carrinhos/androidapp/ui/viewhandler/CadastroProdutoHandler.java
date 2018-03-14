@@ -2,20 +2,13 @@ package tk.andrielson.carrinhos.androidapp.ui.viewhandler;
 
 import android.support.design.widget.Snackbar;
 import android.text.Editable;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.Toast;
 
-import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentCadastroProdutoBinding;
 import tk.andrielson.carrinhos.androidapp.observable.ProdutoObservable;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.CadastroProdutoFragment;
-import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
-
-/**
- * Created by anfesilva on 09/03/2018.
- */
+import tk.andrielson.carrinhos.androidapp.utils.Util;
 
 public class CadastroProdutoHandler {
     private static final String TAG = CadastroProdutoHandler.class.getSimpleName();
@@ -41,28 +34,25 @@ public class CadastroProdutoHandler {
         }
     }
 
-    public void onBotaoExcluirClick(View view, final ProdutoObservable produto) {
+    public void onBotaoExcluirClick(final ProdutoObservable produto) {
         Snackbar confirmacao = Snackbar.make(binding.coordinatorLayout, "Tem certeza de que quer excluir esse produto?", Snackbar.LENGTH_LONG);
         confirmacao.setAction("SIM", v -> listener.excluirProduto(produto));
         confirmacao.show();
     }
 
-    public void onBotaoSalvarClick(View view, ProdutoObservable observable) {
-        Produto produto = observable.getProdutoModel();
-        if (produto != null && ehNomeValido(produto.getNome(), produto) && ehSiglaValida(produto.getSigla()) && ehPrecoValido(produto.getPreco()))
-            listener.salvarProduto(observable, produto.getCodigo() == null || produto.getCodigo().equals(0L));
-        else {
-            Toast.makeText(view.getContext(), "Por favor, corrija as informações incorretas!", Toast.LENGTH_SHORT).show();
-            LogUtil.Log(TAG, "Produto nulo ou inválido!", Log.ERROR);
-        }
+    public void onBotaoSalvarClick(ProdutoObservable observable) {
+        if (ehNomeValido(observable) && ehSiglaValida(observable.sigla.get()) && ehPrecoValido(observable.preco.get()))
+            listener.salvarProduto(observable);
+        else
+            Toast.makeText(binding.getRoot().getContext(), "Por favor, corrija as informações incorretas!", Toast.LENGTH_SHORT).show();
     }
 
-    private boolean ehNomeValido(String nome, Produto produto) {
-        if (nome == null || nome.isEmpty()) {
+    private boolean ehNomeValido(ProdutoObservable produto) {
+        if (produto.nome.get() == null || produto.nome.get().isEmpty()) {
             binding.inputNome.setError("O nome do produto é obrigatório!");
             return false;
         }
-        produto.setNome(nome.trim().toUpperCase());
+        produto.nome.set((produto.nome.get().trim().toUpperCase()));
         return true;
     }
 
@@ -74,8 +64,8 @@ public class CadastroProdutoHandler {
         return true;
     }
 
-    private boolean ehPrecoValido(Long preco) {
-        if (preco == null || preco == 0L) {
+    private boolean ehPrecoValido(String preco) {
+        if (preco == null || preco.isEmpty() || Util.RStoLong(preco).equals(0L)) {
             binding.inputPreco.setError("Informe um preço maior que zero!");
             return false;
         }

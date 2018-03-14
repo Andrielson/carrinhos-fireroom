@@ -38,8 +38,6 @@ public class ListaVendedorFragment extends Fragment {
     public ListaVendedorFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
     public static ListaVendedorFragment newInstance() {
         ListaVendedorFragment fragment = new ListaVendedorFragment();
         Bundle args = new Bundle();

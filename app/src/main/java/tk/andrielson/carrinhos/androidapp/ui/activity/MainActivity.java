@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import tk.andrielson.carrinhos.androidapp.R;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.data.model.Venda;
+import tk.andrielson.carrinhos.androidapp.observable.ProdutoObservable;
 import tk.andrielson.carrinhos.androidapp.observable.VendedorObservable;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaProdutoFragment;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaVendaFragment;
@@ -194,9 +195,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onListFragmentInteraction(Produto item) {
+    public void onClickProduto(ProdutoObservable item) {
         Intent intent = new Intent(MainActivity.this, ProdutoActivity.class);
-        intent.putExtra("produtoCodigo", item.getCodigo());
+        intent.putExtra("produto", item.getProdutoModel());
         startActivity(intent);
     }
 
@@ -204,7 +205,6 @@ public class MainActivity extends AppCompatActivity
     public void onClickVendedor(VendedorObservable item) {
         Intent intent = new Intent(MainActivity.this, VendedorActivity.class);
         intent.putExtra("vendedor", item.getVendedorModel());
-        LogUtil.Log(TAG, item.getVendedorModel().getNome(), Log.DEBUG);
         startActivity(intent);
     }
 

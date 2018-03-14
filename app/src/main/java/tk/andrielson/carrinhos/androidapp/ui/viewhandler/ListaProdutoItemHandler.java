@@ -18,6 +18,6 @@ public class ListaProdutoItemHandler {
     }
 
     public void onClickProduto(View view) {
-        mListener.onListFragmentInteraction(produto);
+//        mListener.onClickProduto(produto);
     }
 }

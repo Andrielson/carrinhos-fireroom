@@ -4,18 +4,16 @@ import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 
-import java.util.Locale;
-
-import tk.andrielson.carrinhos.androidapp.DI;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.utils.Util;
+
+import static tk.andrielson.carrinhos.androidapp.DI.newProduto;
 
 /**
  * Created by anfesilva on 13/03/2018.
  */
 
-public final class ProdutoObservable {
-    public final ObservableField<String> codigo = new ObservableField<>();
+public final class ProdutoObservable extends AbsCodigoObservable {
     public final ObservableField<String> nome = new ObservableField<>();
     public final ObservableField<String> sigla = new ObservableField<>();
     public final ObservableField<String> preco = new ObservableField<>();
@@ -25,21 +23,21 @@ public final class ProdutoObservable {
     private final Produto produtoModel;
 
     public ProdutoObservable() {
-        this(DI.newProduto());
+        this(newProduto());
     }
 
     public ProdutoObservable(@NonNull Produto produto) {
         produtoModel = produto;
-        codigo.set(produto.getCodigo() == null ? "0" : String.valueOf(produto.getCodigo()));
+        codigoSet(produto.getCodigo());
         nome.set(produto.getNome());
         sigla.set(produto.getSigla());
         preco.set(Util.longToRS(produto.getPreco()));
         ativo.set(produto.getAtivo() == null ? true : produto.getAtivo());
-        labelLista.set(String.format(Locale.getDefault(), "%s (%s)", nome.get(), sigla.get()));
+        labelLista.set(String.format("%s (%s)", nome.get(), sigla.get()));
     }
 
     public Produto getProdutoModel() {
-        produtoModel.setCodigo(Long.valueOf(codigo.get()));
+        produtoModel.setCodigo(codigoGet());
         produtoModel.setNome(nome.get());
         produtoModel.setSigla(sigla.get());
         produtoModel.setPreco(Util.RStoLong(preco.get()));

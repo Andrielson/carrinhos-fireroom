@@ -1,57 +1,39 @@
 package tk.andrielson.carrinhos.androidapp.viewmodel;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Transformations;
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.support.annotation.NonNull;
+import android.widget.Toast;
 
-import javax.annotation.Nullable;
-
-import tk.andrielson.carrinhos.androidapp.DI;
 import tk.andrielson.carrinhos.androidapp.data.dao.ProdutoDao;
-import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.observable.ProdutoObservable;
 
-/**
- * Created by Andrielson on 08/03/2018.
- */
+import static tk.andrielson.carrinhos.androidapp.DI.newProdutoDao;
 
-public class CadastroProdutoViewModel extends ViewModel {
-    private final MutableLiveData<Produto> produtoLiveData;
+@SuppressWarnings("unchecked")
+public class CadastroProdutoViewModel extends AndroidViewModel {
 
-    public CadastroProdutoViewModel(@Nullable Long codigo) {
-        if (codigo == null) {
-            produtoLiveData = new MutableLiveData<>();
-            produtoLiveData.setValue(DI.newProduto());
+    private final ProdutoDao produtoDao = newProdutoDao();
+
+    public CadastroProdutoViewModel(@NonNull Application application) {
+        super(application);
+    }
+
+    public void salvarProduto(ProdutoObservable observable) {
+        if (observable.ehNovo()) {
+            produtoDao.insert(observable.getProdutoModel());
+            Toast.makeText(this.getApplication(), "Produto adicionado!", Toast.LENGTH_SHORT).show();
         } else {
-            ProdutoDao produtoDao = DI.newProdutoDao();
-            //noinspection unchecked
-            produtoLiveData = (MutableLiveData<Produto>) produtoDao.getByCodigo(codigo);
+            produtoDao.update(observable.getProdutoModel());
+            Toast.makeText(this.getApplication(), "Produto atualizado!", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public LiveData<ProdutoObservable> getProduto() {
-        return Transformations.map(produtoLiveData, produto -> produto == null ? new ProdutoObservable() : new ProdutoObservable(produto));
-    }
-
-    public void setProduto(Produto produto) {
-        produtoLiveData.setValue(produto);
-    }
-
-    public static class Factory extends ViewModelProvider.NewInstanceFactory {
-        private final Long produtoCodigo;
-
-        public Factory(@Nullable Long codigo) {
-            produtoCodigo = codigo;
-        }
-
-        @Override
-        @NonNull
-        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            //noinspection unchecked
-            return (T) new CadastroProdutoViewModel(produtoCodigo);
-        }
+    public void excluirProduto(ProdutoObservable observable) {
+        if (!observable.ehNovo()) {
+            produtoDao.delete(observable.getProdutoModel());
+            Toast.makeText(this.getApplication(), "Produto excluído!", Toast.LENGTH_SHORT).show();
+        } else
+            Toast.makeText(this.getApplication(), "Não é possível excluir um produto nulo/vazio!", Toast.LENGTH_SHORT).show();
     }
 }

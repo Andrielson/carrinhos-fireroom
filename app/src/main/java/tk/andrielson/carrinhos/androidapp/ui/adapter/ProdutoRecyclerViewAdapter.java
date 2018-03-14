@@ -9,10 +9,9 @@ import android.view.ViewGroup;
 import java.util.List;
 import java.util.Objects;
 
-import tk.andrielson.carrinhos.androidapp.observable.ProdutoObservable;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentProdutoListaItemBinding;
+import tk.andrielson.carrinhos.androidapp.observable.ProdutoObservable;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaProdutoFragment;
-import tk.andrielson.carrinhos.androidapp.ui.viewhandler.ListaProdutoItemHandler;
 
 /**
  * Created by Andrielson on 06/03/2018.
@@ -100,7 +99,7 @@ public class ProdutoRecyclerViewAdapter extends RecyclerView.Adapter<ProdutoRecy
 
         public void bind(final ProdutoObservable produto, final ListaProdutoFragment.OnListFragmentInteractionListener listener) {
             binding.setProduto(produto);
-            binding.setHandler(new ListaProdutoItemHandler(listener, produto.getProdutoModel()));
+            binding.setListener(listener);
             binding.executePendingBindings();
         }
 

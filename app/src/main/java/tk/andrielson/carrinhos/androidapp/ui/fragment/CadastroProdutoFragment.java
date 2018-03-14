@@ -1,6 +1,5 @@
 package tk.andrielson.carrinhos.androidapp.ui.fragment;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -16,7 +15,6 @@ import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentCadastroProdutoBinding;
 import tk.andrielson.carrinhos.androidapp.observable.ProdutoObservable;
 import tk.andrielson.carrinhos.androidapp.ui.viewhandler.CadastroProdutoHandler;
-import tk.andrielson.carrinhos.androidapp.viewmodel.CadastroProdutoViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,9 +27,9 @@ import tk.andrielson.carrinhos.androidapp.viewmodel.CadastroProdutoViewModel;
 public class CadastroProdutoFragment extends Fragment {
 
     private static final String TAG = CadastroProdutoFragment.class.getSimpleName();
-    private static final String ARG_CODIGO = "codigo";
+    private static final String ARG_PRODUTO = "produto";
 
-    private Long produtoCodigo;
+    private ProdutoObservable produtoObservable;
     private FragmentCadastroProdutoBinding binding;
 
     private OnFragmentInteractionListener mListener;
@@ -44,23 +42,35 @@ public class CadastroProdutoFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param codigo o código do produto existente.
+     * @param produto o produto cujos dados serão exibidos.
      * @return A new instance of fragment CadastroProdutoFragment.
      */
-    public static CadastroProdutoFragment newInstance(Long codigo) {
+    public static CadastroProdutoFragment newInstance(@NonNull Produto produto) {
         CadastroProdutoFragment fragment = new CadastroProdutoFragment();
-        if (codigo != null) {
-            Bundle args = new Bundle();
-            args.putLong(ARG_CODIGO, codigo);
-            fragment.setArguments(args);
-        }
+        Bundle args = new Bundle();
+        args.putParcelable(ARG_PRODUTO, produto);
+        fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (!(context instanceof OnFragmentInteractionListener)) {
+            throw new RuntimeException(context.toString()
+                    + " deve implementar OnFragmentInteractionListener");
+        }
+        mListener = (OnFragmentInteractionListener) context;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        produtoCodigo = (getArguments() != null) ? getArguments().getLong(ARG_CODIGO) : null;
+        if (getArguments() != null && getArguments().getParcelable(ARG_PRODUTO) != null)
+            //noinspection ConstantConditions
+            produtoObservable = new ProdutoObservable(getArguments().getParcelable(ARG_PRODUTO));
+        else
+            produtoObservable = new ProdutoObservable();
     }
 
     @Override
@@ -69,6 +79,7 @@ public class CadastroProdutoFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cadastro_produto, container, false);
         CadastroProdutoHandler handler = new CadastroProdutoHandler(binding, mListener);
+        binding.setProduto(produtoObservable);
         binding.setHandler(handler);
         return binding.getRoot();
     }
@@ -76,20 +87,6 @@ public class CadastroProdutoFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        CadastroProdutoViewModel.Factory factory = new CadastroProdutoViewModel.Factory(this.produtoCodigo);
-        //noinspection ConstantConditions
-        CadastroProdutoViewModel viewModel = ViewModelProviders.of(getActivity(), factory).get(CadastroProdutoViewModel.class);
-        configuraViewModel(viewModel);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (!(context instanceof OnFragmentInteractionListener)) {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-        mListener = (OnFragmentInteractionListener) context;
     }
 
     @Override
@@ -98,22 +95,8 @@ public class CadastroProdutoFragment extends Fragment {
         mListener = null;
     }
 
-    private void configuraViewModel(CadastroProdutoViewModel viewModel) {
-        viewModel.getProduto().observe(this, produto -> binding.setProduto(produto));
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        void salvarProduto(ProdutoObservable produto, boolean insercao);
+        void salvarProduto(ProdutoObservable produto);
 
         void excluirProduto(ProdutoObservable produto);
     }

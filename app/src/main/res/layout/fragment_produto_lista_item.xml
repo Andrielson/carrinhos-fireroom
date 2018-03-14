@@ -12,8 +12,8 @@
             type="tk.andrielson.carrinhos.androidapp.observable.ProdutoObservable" />
 
         <variable
-            name="handler"
-            type="tk.andrielson.carrinhos.androidapp.ui.viewhandler.ListaProdutoItemHandler" />
+            name="listener"
+            type="tk.andrielson.carrinhos.androidapp.ui.fragment.ListaProdutoFragment.OnListFragmentInteractionListener" />
     </data>
 
     <LinearLayout
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="#F5F5F5"
-        android:onClick="@{handler::onClickProduto}"
+        android:onClick="@{() -> listener.onClickProduto(produto)}"
         android:orientation="horizontal">
 
         <ImageView

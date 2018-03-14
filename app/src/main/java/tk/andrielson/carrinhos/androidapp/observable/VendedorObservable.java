@@ -19,29 +19,26 @@ public final class VendedorObservable {
     public final ObservableField<String> nome = new ObservableField<>();
     public final ObservableField<String> comissao = new ObservableField<>();
     public final ObservableBoolean ativo = new ObservableBoolean();
-    public final ObservableBoolean novo = new ObservableBoolean();
 
     private final Vendedor vendedorModel;
 
     public VendedorObservable() {
         this(newVendedor());
-        novo.set(true);
     }
 
     public VendedorObservable(@NonNull Vendedor vendedor) {
-        this.vendedorModel = vendedor;
+        vendedorModel = vendedor;
         codigo.set(String.valueOf(vendedor.getCodigo() == null ? 0L : vendedor.getCodigo()));
         nome.set(vendedor.getNome());
         comissao.set((vendedor.getComissao() == null || vendedor.getComissao() == 0) ? "" : String.format(Locale.getDefault(), "%d %%", vendedor.getComissao()));
         ativo.set(vendedor.getAtivo() == null ? true : vendedor.getAtivo());
-        novo.set(false);
     }
 
     @NonNull
     public Vendedor getVendedorModel() {
-        vendedorModel.setCodigo(codigo.get() == null ? 0L : Long.valueOf(codigo.get()));
+        vendedorModel.setCodigo(codigo.get() == null || codigo.get().isEmpty() ? 0L : Long.valueOf(codigo.get()));
         vendedorModel.setNome(nome.get());
-        vendedorModel.setComissao((comissao.get() == null || comissao.get().isEmpty()) ? 0 : Integer.valueOf(comissao.get().replaceAll("\\D", "")));
+        vendedorModel.setComissao(comissao.get() == null || comissao.get().isEmpty() ? 0 : Integer.valueOf(comissao.get().replaceAll("\\D", "")));
         vendedorModel.setAtivo(ativo.get());
         return vendedorModel;
     }
