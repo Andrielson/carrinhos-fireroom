@@ -9,10 +9,9 @@ import android.view.ViewGroup;
 import java.util.List;
 import java.util.Objects;
 
-import tk.andrielson.carrinhos.androidapp.observable.VendedorObservable;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentVendedorListaItemBinding;
+import tk.andrielson.carrinhos.androidapp.observable.VendedorObservable;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaVendedorFragment;
-import tk.andrielson.carrinhos.androidapp.ui.viewhandler.ListaVendedorItemHandler;
 
 /**
  * Created by Andrielson on 06/03/2018.
@@ -88,7 +87,7 @@ public class VendedorRecyclerViewAdapter extends RecyclerView.Adapter<VendedorRe
             return p1.hashCode() == p2.hashCode();
         }
     }
-    
+
     public class VendedorViewHolder extends RecyclerView.ViewHolder {
 
         private final String TAG = VendedorViewHolder.class.getSimpleName();
@@ -101,7 +100,7 @@ public class VendedorRecyclerViewAdapter extends RecyclerView.Adapter<VendedorRe
 
         public void bind(final VendedorObservable observable, final ListaVendedorFragment.OnListFragmentInteractionListener listener) {
             binding.setVendedor(observable);
-            binding.setHandler(new ListaVendedorItemHandler(listener, observable.getVendedorModel()));
+            binding.setListener(listener);
             binding.executePendingBindings();
         }
 

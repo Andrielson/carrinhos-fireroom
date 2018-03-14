@@ -1,10 +1,12 @@
 package tk.andrielson.carrinhos.androidapp.observable;
 
 import android.databinding.ObservableField;
+import android.support.annotation.NonNull;
 
-import tk.andrielson.carrinhos.androidapp.DI;
 import tk.andrielson.carrinhos.androidapp.data.model.ItemVenda;
 import tk.andrielson.carrinhos.androidapp.utils.Util;
+
+import static tk.andrielson.carrinhos.androidapp.DI.newItemVenda;
 
 /**
  * Created by Andrielson on 13/03/2018.
@@ -20,10 +22,10 @@ public final class ItemVendaObservable {
     private final ItemVenda itemVendaModel;
 
     public ItemVendaObservable() {
-        itemVendaModel = DI.newItemVenda();
+        this(newItemVenda());
     }
 
-    public ItemVendaObservable(ItemVenda itemVenda) {
+    public ItemVendaObservable(@NonNull ItemVenda itemVenda) {
         itemVendaModel = itemVenda;
         produto.set(itemVenda.getProduto() == null ? new ProdutoObservable() : new ProdutoObservable(itemVenda.getProduto()));
         qtSaiu.set(String.valueOf(itemVenda.getQtSaiu() == null ? "" : itemVenda.getQtSaiu()));

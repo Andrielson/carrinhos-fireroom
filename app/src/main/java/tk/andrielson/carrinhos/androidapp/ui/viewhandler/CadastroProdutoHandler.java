@@ -41,8 +41,7 @@ public class CadastroProdutoHandler {
         }
     }
 
-    public void onBotaoExcluirClick(View view, final ProdutoObservable observable) {
-        Produto produto = observable.getProdutoModel();
+    public void onBotaoExcluirClick(View view, final ProdutoObservable produto) {
         Snackbar confirmacao = Snackbar.make(binding.coordinatorLayout, "Tem certeza de que quer excluir esse produto?", Snackbar.LENGTH_LONG);
         confirmacao.setAction("SIM", v -> listener.excluirProduto(produto));
         confirmacao.show();
@@ -51,7 +50,7 @@ public class CadastroProdutoHandler {
     public void onBotaoSalvarClick(View view, ProdutoObservable observable) {
         Produto produto = observable.getProdutoModel();
         if (produto != null && ehNomeValido(produto.getNome(), produto) && ehSiglaValida(produto.getSigla()) && ehPrecoValido(produto.getPreco()))
-            listener.salvarProduto(produto, produto.getCodigo() == null || produto.getCodigo().equals(0L));
+            listener.salvarProduto(observable, produto.getCodigo() == null || produto.getCodigo().equals(0L));
         else {
             Toast.makeText(view.getContext(), "Por favor, corrija as informações incorretas!", Toast.LENGTH_SHORT).show();
             LogUtil.Log(TAG, "Produto nulo ou inválido!", Log.ERROR);

@@ -19,6 +19,6 @@ public class ListaVendedorItemHandler {
     }
 
     public void onClickVendedor(View view) {
-        mListener.onListFragmentInteraction(vendedor);
+//        mListener.onClickVendedor(vendedor);
     }
 }

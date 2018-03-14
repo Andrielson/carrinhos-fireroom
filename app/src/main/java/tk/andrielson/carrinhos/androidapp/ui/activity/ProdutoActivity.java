@@ -7,10 +7,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import tk.andrielson.carrinhos.androidapp.DI;
 import tk.andrielson.carrinhos.androidapp.R;
-import tk.andrielson.carrinhos.androidapp.data.dao.ProdutoDao;
-import tk.andrielson.carrinhos.androidapp.data.model.Produto;
+import tk.andrielson.carrinhos.androidapp.observable.ProdutoObservable;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.CadastroProdutoFragment;
 
 public class ProdutoActivity extends AppCompatActivity implements CadastroProdutoFragment.OnFragmentInteractionListener {
@@ -28,23 +26,13 @@ public class ProdutoActivity extends AppCompatActivity implements CadastroProdut
     }
 
     @Override
-    public void salvarProduto(Produto produto, boolean insercao) {
-        ProdutoDao dao = DI.newProdutoDao();
-        if (insercao)
-            dao.insert(produto);
-        else
-            dao.update(produto);
+    public void salvarProduto(ProdutoObservable produto, boolean insercao) {
         Toast.makeText(this, "Produto " + (insercao ? "adicionado!" : "atualizado!"), Toast.LENGTH_SHORT).show();
         finish();
     }
 
     @Override
-    public void excluirProduto(Produto produto) {
-        if (produto.getCodigo() != null && produto.getCodigo() != 0) {
-            ProdutoDao dao = DI.newProdutoDao();
-            dao.delete(produto);
-            Toast.makeText(this, "Produto excluído!", Toast.LENGTH_SHORT).show();
-        }
+    public void excluirProduto(ProdutoObservable produto) {
         finish();
     }
 }

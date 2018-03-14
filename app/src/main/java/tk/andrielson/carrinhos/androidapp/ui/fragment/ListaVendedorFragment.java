@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import tk.andrielson.carrinhos.androidapp.R;
 import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentVendedorListaBinding;
+import tk.andrielson.carrinhos.androidapp.observable.VendedorObservable;
 import tk.andrielson.carrinhos.androidapp.ui.adapter.VendedorRecyclerViewAdapter;
 import tk.andrielson.carrinhos.androidapp.viewmodel.ListaVendedorViewModel;
 
@@ -96,17 +97,7 @@ public class ListaVendedorFragment extends Fragment {
         });
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(Vendedor item);
+        void onClickVendedor(VendedorObservable item);
     }
 }

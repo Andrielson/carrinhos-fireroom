@@ -2,6 +2,7 @@ package tk.andrielson.carrinhos.androidapp.data.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 /**
  * Created by Andrielson on 03/03/2018.
@@ -31,10 +32,10 @@ public final class ProdutoImpl extends Produto {
             return new ProdutoImpl[size];
         }
     };
-    private Long codigo;
+    private Long codigo = 0L;
     private String nome;
     private String sigla;
-    private Long preco;
+    private Long preco = 0L;
     private Boolean ativo = Boolean.TRUE;
     private Boolean excluido = Boolean.FALSE;
 
@@ -59,6 +60,7 @@ public final class ProdutoImpl extends Produto {
         excluido = excluidoVal == 0x02 ? null : ativoVal != 0x00;
     }
 
+    @NonNull
     @Override
     public Long getCodigo() {
         return codigo;
@@ -89,6 +91,7 @@ public final class ProdutoImpl extends Produto {
         this.sigla = sigla;
     }
 
+    @NonNull
     @Override
     public Long getPreco() {
         return preco;
@@ -148,21 +151,22 @@ public final class ProdutoImpl extends Produto {
 
         ProdutoImpl produto = (ProdutoImpl) o;
 
-        if (!getCodigo().equals(produto.getCodigo())) return false;
-        if (!getNome().equals(produto.getNome())) return false;
-        if (!getSigla().equals(produto.getSigla())) return false;
-        if (!getPreco().equals(produto.getPreco())) return false;
-        return getAtivo().equals(produto.getAtivo());
+        if (!codigo.equals(produto.codigo)) return false;
+        if (nome != null ? !nome.equals(produto.nome) : produto.nome != null) return false;
+        if (sigla != null ? !sigla.equals(produto.sigla) : produto.sigla != null) return false;
+        if (!preco.equals(produto.preco)) return false;
+        if (!ativo.equals(produto.ativo)) return false;
+        return excluido.equals(produto.excluido);
     }
 
     @Override
     public int hashCode() {
-        int result = getCodigo() != null ? getCodigo().hashCode() : 0;
-        result = 31 * result + (getNome() != null ? getNome().hashCode() : 0);
-        result = 31 * result + (getSigla() != null ? getSigla().hashCode() : 0);
-        result = 31 * result + (getPreco() != null ? getPreco().hashCode() : 0);
-        result = 31 * result + (getAtivo() != null ? getAtivo().hashCode() : 0);
-        result = 31 * result + (excluido != null ? excluido.hashCode() : 0);
+        int result = codigo.hashCode();
+        result = 31 * result + (nome != null ? nome.hashCode() : 0);
+        result = 31 * result + (sigla != null ? sigla.hashCode() : 0);
+        result = 31 * result + preco.hashCode();
+        result = 31 * result + ativo.hashCode();
+        result = 31 * result + excluido.hashCode();
         return result;
     }
 }

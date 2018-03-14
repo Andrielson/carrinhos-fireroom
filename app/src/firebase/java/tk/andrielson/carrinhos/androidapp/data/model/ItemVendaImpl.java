@@ -2,6 +2,9 @@ package tk.andrielson.carrinhos.androidapp.data.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+
+import org.jetbrains.annotations.Contract;
 
 /**
  * Created by anfesilva on 12/03/2018.
@@ -18,21 +21,24 @@ public final class ItemVendaImpl
     public static final String VALOR = "valor";
     @SuppressWarnings("unused")
     public static final Parcelable.Creator<ItemVendaImpl> CREATOR = new Parcelable.Creator<ItemVendaImpl>() {
+        @NonNull
         @Override
         public ItemVendaImpl createFromParcel(Parcel in) {
             return new ItemVendaImpl(in);
         }
 
+        @NonNull
+        @Contract(pure = true)
         @Override
         public ItemVendaImpl[] newArray(int size) {
             return new ItemVendaImpl[size];
         }
     };
     private ProdutoImpl produto;
-    private Integer qtSaiu;
-    private Integer qtVoltou;
-    private Integer qtVendeu;
-    private Long valor;
+    private Integer qtSaiu = 0;
+    private Integer qtVoltou = 0;
+    private Integer qtVendeu = 0;
+    private Long valor = 0L;
 
     public ItemVendaImpl() {
     }
@@ -49,42 +55,62 @@ public final class ItemVendaImpl
         valor = in.readByte() == 0x00 ? null : in.readLong();
     }
 
+    @Contract(pure = true)
+    @NonNull
+    @Override
     public ProdutoImpl getProduto() {
         return produto;
     }
 
+    @Override
     public void setProduto(ProdutoImpl produto) {
         this.produto = produto;
     }
 
+    @Contract(pure = true)
+    @NonNull
+    @Override
     public Integer getQtSaiu() {
         return qtSaiu;
     }
 
+    @Override
     public void setQtSaiu(Integer qtSaiu) {
         this.qtSaiu = qtSaiu;
     }
 
+    @Contract(pure = true)
+    @NonNull
+    @Override
     public Integer getQtVoltou() {
         return qtVoltou;
     }
 
+    @Override
     public void setQtVoltou(Integer qtVoltou) {
         this.qtVoltou = qtVoltou;
     }
 
+    @Contract(pure = true)
+    @NonNull
+    @Override
     public Integer getQtVendeu() {
         return qtVendeu;
     }
 
+    @Override
     public void setQtVendeu(Integer qtVendeu) {
         this.qtVendeu = qtVendeu;
     }
 
+    @Contract(pure = true)
+    @NonNull
+    @Override
     public Long getValor() {
         return valor;
     }
 
+    @Override
     public void setValor(Long valor) {
         this.valor = valor;
     }
@@ -117,6 +143,7 @@ public final class ItemVendaImpl
         return result;
     }
 
+    @Contract(pure = true)
     @Override
     public int describeContents() {
         return 0;

@@ -2,6 +2,7 @@ package tk.andrielson.carrinhos.androidapp.data.dao;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.firebase.firestore.DocumentReference;
@@ -34,7 +35,7 @@ public final class VendedorDaoImpl extends FirestoreDao implements VendedorDao<V
      * @return o código gerado para o vendedor
      */
     @Override
-    public long insert(VendedorImpl vendedor) {
+    public long insert(@NonNull VendedorImpl vendedor) {
         String ultimoID = getColecaoID(COLECAO);
         Long novoCodigo = Long.valueOf(ultimoID) + 1;
         vendedor.setCodigo(novoCodigo);
@@ -56,7 +57,7 @@ public final class VendedorDaoImpl extends FirestoreDao implements VendedorDao<V
      * @return o número de vendedors atualizados
      */
     @Override
-    public int update(VendedorImpl vendedor) {
+    public int update(@NonNull VendedorImpl vendedor) {
         final String id = getIdFromCodigo(vendedor.getCodigo());
         DocumentReference documento = collection.document(id);
         WriteBatch batch = db.batch();
@@ -75,7 +76,7 @@ public final class VendedorDaoImpl extends FirestoreDao implements VendedorDao<V
      * @return o número de vendedor removidos
      */
     @Override
-    public int delete(VendedorImpl vendedor) {
+    public int delete(@NonNull VendedorImpl vendedor) {
         final String id = getIdFromCodigo(vendedor.getCodigo());
         DocumentReference documento = collection.document(id);
         WriteBatch batch = db.batch();
@@ -113,7 +114,7 @@ public final class VendedorDaoImpl extends FirestoreDao implements VendedorDao<V
      * @return o vendedor encapsulado em uma LiveData
      */
     @Override
-    public LiveData<VendedorImpl> getByCodigo(Long codigo) {
+    public LiveData<VendedorImpl> getByCodigo(@NonNull final Long codigo) {
         Query query = queryPadrao.whereEqualTo("codigo", codigo);
         FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(query);
         return Transformations.map(liveData, new Deserializer<>(VendedorImpl.class));

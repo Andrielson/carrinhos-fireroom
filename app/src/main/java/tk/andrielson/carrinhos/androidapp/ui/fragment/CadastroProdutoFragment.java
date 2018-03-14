@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import tk.andrielson.carrinhos.androidapp.R;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentCadastroProdutoBinding;
+import tk.andrielson.carrinhos.androidapp.observable.ProdutoObservable;
 import tk.andrielson.carrinhos.androidapp.ui.viewhandler.CadastroProdutoHandler;
 import tk.andrielson.carrinhos.androidapp.viewmodel.CadastroProdutoViewModel;
 
@@ -112,8 +113,8 @@ public class CadastroProdutoFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void salvarProduto(Produto produto, boolean insercao);
+        void salvarProduto(ProdutoObservable produto, boolean insercao);
 
-        void excluirProduto(Produto produto);
+        void excluirProduto(ProdutoObservable produto);
     }
 }

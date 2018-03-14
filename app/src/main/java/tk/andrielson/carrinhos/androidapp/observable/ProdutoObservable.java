@@ -25,7 +25,7 @@ public final class ProdutoObservable {
     private final Produto produtoModel;
 
     public ProdutoObservable() {
-        produtoModel = DI.newProduto();
+        this(DI.newProduto());
     }
 
     public ProdutoObservable(@NonNull Produto produto) {

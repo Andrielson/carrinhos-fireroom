@@ -36,9 +36,9 @@ public final class VendedorImpl extends Vendedor {
             return new VendedorImpl[size];
         }
     };
-    private Long codigo;
+    private Long codigo = 0L;
     private String nome;
-    private Integer comissao;
+    private Integer comissao = 0;
     private Boolean ativo = Boolean.TRUE;
     private Boolean excluido = Boolean.FALSE;
 
@@ -105,22 +105,20 @@ public final class VendedorImpl extends Vendedor {
 
         VendedorImpl vendedor = (VendedorImpl) o;
 
-        if (getCodigo() != null ? !getCodigo().equals(vendedor.getCodigo()) : vendedor.getCodigo() != null)
-            return false;
-        if (getNome() != null ? !getNome().equals(vendedor.getNome()) : vendedor.getNome() != null)
-            return false;
-        if (getComissao() != null ? !getComissao().equals(vendedor.getComissao()) : vendedor.getComissao() != null)
-            return false;
-        return getAtivo() != null ? getAtivo().equals(vendedor.getAtivo()) : vendedor.getAtivo() == null;
+        if (!codigo.equals(vendedor.codigo)) return false;
+        if (nome != null ? !nome.equals(vendedor.nome) : vendedor.nome != null) return false;
+        if (!comissao.equals(vendedor.comissao)) return false;
+        if (!ativo.equals(vendedor.ativo)) return false;
+        return excluido.equals(vendedor.excluido);
     }
 
     @Override
     public int hashCode() {
-        int result = getCodigo() != null ? getCodigo().hashCode() : 0;
-        result = 31 * result + (getNome() != null ? getNome().hashCode() : 0);
-        result = 31 * result + (getComissao() != null ? getComissao().hashCode() : 0);
-        result = 31 * result + (getAtivo() != null ? getAtivo().hashCode() : 0);
-        result = 31 * result + (excluido != null ? excluido.hashCode() : 0);
+        int result = codigo.hashCode();
+        result = 31 * result + (nome != null ? nome.hashCode() : 0);
+        result = 31 * result + comissao.hashCode();
+        result = 31 * result + ativo.hashCode();
+        result = 31 * result + excluido.hashCode();
         return result;
     }
 

@@ -1,6 +1,7 @@
 package tk.andrielson.carrinhos.androidapp.data.dao;
 
 import android.arch.lifecycle.LiveData;
+import android.support.annotation.NonNull;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface VendedorDao<T extends Vendedor> {
      * @param vendedor the vendedor
      * @return the long
      */
-    long insert(T vendedor);
+    long insert(@NonNull T vendedor);
 
     /**
      * Update int.
@@ -24,7 +25,7 @@ public interface VendedorDao<T extends Vendedor> {
      * @param vendedor the vendedor
      * @return the int
      */
-    int update(T vendedor);
+    int update(@NonNull T vendedor);
 
     /**
      * Delete int.
@@ -32,7 +33,7 @@ public interface VendedorDao<T extends Vendedor> {
      * @param vendedor the vendedor
      * @return the int
      */
-    int delete(T vendedor);
+    int delete(@NonNull T vendedor);
 
     /**
      * Gets all.
@@ -47,6 +48,6 @@ public interface VendedorDao<T extends Vendedor> {
      * @param codigo the codigo
      * @return the by codigo
      */
-    LiveData<T> getByCodigo(Long codigo);
+    LiveData<T> getByCodigo(@NonNull final Long codigo);
 
 }

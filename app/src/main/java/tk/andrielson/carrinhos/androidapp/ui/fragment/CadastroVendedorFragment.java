@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import tk.andrielson.carrinhos.androidapp.R;
 import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentCadastroVendedorBinding;
+import tk.andrielson.carrinhos.androidapp.observable.VendedorObservable;
 import tk.andrielson.carrinhos.androidapp.ui.viewhandler.CadastroVendedorHandler;
 import tk.andrielson.carrinhos.androidapp.viewmodel.CadastroVendedorViewModel;
 
@@ -28,9 +29,9 @@ import tk.andrielson.carrinhos.androidapp.viewmodel.CadastroVendedorViewModel;
 public class CadastroVendedorFragment extends Fragment {
 
     private static final String TAG = CadastroVendedorFragment.class.getSimpleName();
-    private static final String ARG_CODIGO = "codigo";
+    private static final String ARG_VENDEDOR = "vendedor";
 
-    private Long vendedorCodigo;
+    private VendedorObservable vendedorObservable;
     private FragmentCadastroVendedorBinding binding;
 
     private OnFragmentInteractionListener mListener;
@@ -43,23 +44,35 @@ public class CadastroVendedorFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param codigo o código do vendedor existente.
+     * @param vendedor o vendedor cujos dados serão exibidos.
      * @return A new instance of fragment CadastroVendedorFragment.
      */
-    public static CadastroVendedorFragment newInstance(Long codigo) {
+    public static CadastroVendedorFragment newInstance(@NonNull Vendedor vendedor) {
         CadastroVendedorFragment fragment = new CadastroVendedorFragment();
-        if (codigo != null) {
-            Bundle args = new Bundle();
-            args.putLong(ARG_CODIGO, codigo);
-            fragment.setArguments(args);
-        }
+        Bundle args = new Bundle();
+        args.putParcelable(ARG_VENDEDOR, vendedor);
+        fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (!(context instanceof OnFragmentInteractionListener)) {
+            throw new RuntimeException(context.toString()
+                    + " deve implementar OnFragmentInteractionListener");
+        }
+        mListener = (OnFragmentInteractionListener) context;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        vendedorCodigo = (getArguments() != null) ? getArguments().getLong(ARG_CODIGO) : null;
+        if (getArguments() != null && getArguments().getParcelable(ARG_VENDEDOR) != null)
+            //noinspection ConstantConditions
+            vendedorObservable = new VendedorObservable(getArguments().getParcelable(ARG_VENDEDOR));
+        else
+            vendedorObservable = new VendedorObservable();
     }
 
     @Override
@@ -76,20 +89,6 @@ public class CadastroVendedorFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        CadastroVendedorViewModel.Factory factory = new CadastroVendedorViewModel.Factory(this.vendedorCodigo);
-        //noinspection ConstantConditions
-        CadastroVendedorViewModel viewModel = ViewModelProviders.of(getActivity(), factory).get(CadastroVendedorViewModel.class);
-        configuraViewModel(viewModel);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (!(context instanceof OnFragmentInteractionListener)) {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-        mListener = (OnFragmentInteractionListener) context;
     }
 
     @Override
@@ -98,23 +97,9 @@ public class CadastroVendedorFragment extends Fragment {
         mListener = null;
     }
 
-    private void configuraViewModel(CadastroVendedorViewModel viewModel) {
-        viewModel.getVendedor().observe(this, vendedor -> binding.setVendedor(vendedor));
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        void salvarVendedor(Vendedor vendedor, boolean insercao);
+        void salvarVendedor(VendedorObservable vendedor);
 
-        void excluirVendedor(Vendedor vendedor);
+        void excluirVendedor(VendedorObservable vendedor);
     }
 }

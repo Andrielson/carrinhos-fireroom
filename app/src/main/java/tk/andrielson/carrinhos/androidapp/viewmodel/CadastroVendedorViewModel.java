@@ -1,57 +1,46 @@
 package tk.andrielson.carrinhos.androidapp.viewmodel;
 
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
+import android.widget.Toast;
 
-import javax.annotation.Nullable;
-
-import tk.andrielson.carrinhos.androidapp.DI;
 import tk.andrielson.carrinhos.androidapp.data.dao.VendedorDao;
 import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
 import tk.andrielson.carrinhos.androidapp.observable.VendedorObservable;
 
-/**
- * Created by Andrielson on 08/03/2018.
- */
+import static tk.andrielson.carrinhos.androidapp.DI.newVendedorDao;
 
-public class CadastroVendedorViewModel extends ViewModel {
-    private final MutableLiveData<Vendedor> vendedorLiveData;
+@SuppressWarnings("unchecked")
+public class CadastroVendedorViewModel extends AndroidViewModel {
+    private final VendedorDao vendedorDao = newVendedorDao();
 
-    public CadastroVendedorViewModel(@Nullable Long codigo) {
-        if (codigo == null) {
-            vendedorLiveData = new MutableLiveData<>();
-            vendedorLiveData.setValue(DI.newVendedor());
+    public CadastroVendedorViewModel(@NonNull Application application) {
+        super(application);
+    }
+
+    public LiveData<VendedorObservable> getVendedor(@NonNull Long codigo) {
+        return Transformations.map((LiveData<Vendedor>) vendedorDao.getByCodigo(codigo), VendedorObservable::new);
+    }
+
+    public void salvarVendedor(VendedorObservable observable) {
+        if (observable.codigo.get() == null || observable.codigo.get().isEmpty() || observable.codigo.get().equals("0")) {
+            vendedorDao.insert(observable.getVendedorModel());
+            Toast.makeText(this.getApplication(), "Vendedor adicionado!", Toast.LENGTH_SHORT).show();
         } else {
-            VendedorDao vendedorDao = DI.newVendedorDao();
-            //noinspection unchecked
-            vendedorLiveData = (MutableLiveData<Vendedor>) vendedorDao.getByCodigo(codigo);
+            vendedorDao.update(observable.getVendedorModel());
+            Toast.makeText(this.getApplication(), "Vendedor atualizado!", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public LiveData<VendedorObservable> getVendedor() {
-        return Transformations.map(vendedorLiveData, vendedor -> vendedor == null ? new VendedorObservable() : new VendedorObservable(vendedor));
+    public void excluirVendedor(VendedorObservable observable) {
+        if (observable.codigo.get() != null && !observable.codigo.get().isEmpty() && !observable.codigo.get().equals("0")) {
+            vendedorDao.delete(observable.getVendedorModel());
+            Toast.makeText(this.getApplication(), "Vendedor excluído!", Toast.LENGTH_SHORT).show();
+        } else
+            Toast.makeText(this.getApplication(), "Não é possível excluir um vendedor nulo/vazio!", Toast.LENGTH_SHORT).show();
     }
 
-    public void setVendedor(Vendedor vendedor) {
-        vendedorLiveData.setValue(vendedor);
-    }
-
-    public static class Factory extends ViewModelProvider.NewInstanceFactory {
-        private final Long vendedorCodigo;
-
-        public Factory(@Nullable Long codigo) {
-            vendedorCodigo = codigo;
-        }
-
-        @Override
-        @NonNull
-        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            //noinspection unchecked
-            return (T) new CadastroVendedorViewModel(vendedorCodigo);
-        }
-    }
 }

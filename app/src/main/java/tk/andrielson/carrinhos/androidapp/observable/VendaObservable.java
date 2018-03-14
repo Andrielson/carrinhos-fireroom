@@ -3,6 +3,7 @@ package tk.andrielson.carrinhos.androidapp.observable;
 import android.annotation.SuppressLint;
 import android.databinding.Observable;
 import android.databinding.ObservableField;
+import android.support.annotation.NonNull;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -40,7 +41,7 @@ public final class VendaObservable {
         this(DI.newVenda());
     }
 
-    public VendaObservable(Venda venda) {
+    public VendaObservable(@NonNull Venda venda) {
         vendaModel = venda;
         codigo.set(venda.getCodigo() == null ? "0" : String.valueOf(venda.getCodigo()));
         data.set(venda.getData() == null ? dateFormat.format(Calendar.getInstance().getTime()) : dateFormat.format(venda.getData()));

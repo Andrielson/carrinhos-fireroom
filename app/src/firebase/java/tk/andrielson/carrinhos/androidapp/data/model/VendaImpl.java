@@ -3,6 +3,8 @@ package tk.andrielson.carrinhos.androidapp.data.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.jetbrains.annotations.Contract;
+
 import java.util.Date;
 import java.util.List;
 
@@ -22,10 +24,10 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
     public static final String STATUS = "status";
     public static final String ITENS = "itens";
 
-    private Long codigo;
-    private Integer comissao;
+    private Long codigo = 0L;
+    private Integer comissao = 0;
     private Date data;
-    private Long total;
+    private Long total = 0L;
     private VendedorImpl vendedor;
     private String vendedorNome;
     private String status;
@@ -35,6 +37,7 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
 
     }
 
+    @Contract(pure = true)
     public Long getCodigo() {
         return codigo;
     }
@@ -43,6 +46,7 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
         this.codigo = codigo;
     }
 
+    @Contract(pure = true)
     public Integer getComissao() {
         return comissao;
     }
@@ -51,6 +55,7 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
         this.comissao = comissao;
     }
 
+    @Contract(pure = true)
     public Date getData() {
         return data;
     }
@@ -59,6 +64,7 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
         this.data = data;
     }
 
+    @Contract(pure = true)
     public Long getTotal() {
         return total;
     }
@@ -67,6 +73,7 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
         this.total = total;
     }
 
+    @Contract(pure = true)
     public VendedorImpl getVendedor() {
         return vendedor;
     }
@@ -75,6 +82,7 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
         this.vendedor = vendedor;
     }
 
+    @Contract(pure = true)
     public String getStatus() {
         return status;
     }
@@ -83,6 +91,7 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
         this.status = status;
     }
 
+    @Contract(pure = true)
     public String getVendedorNome() {
         return vendedorNome;
     }
@@ -91,6 +100,7 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
         this.vendedorNome = vendedorNome;
     }
 
+    @Contract(pure = true)
     @Override
     public List<ItemVendaImpl> getItens() {
         return itens;
@@ -138,6 +148,7 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
         return result;
     }
 
+    @Contract(pure = true)
     @Override
     public int describeContents() {
         return 0;

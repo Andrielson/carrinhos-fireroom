@@ -1,8 +1,8 @@
 package tk.andrielson.carrinhos.androidapp.ui.viewhandler;
 
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
@@ -20,39 +20,36 @@ public class CadastroVendedorHandler {
     private final CadastroVendedorFragment.OnFragmentInteractionListener listener;
     private final FragmentCadastroVendedorBinding binding;
 
-    public CadastroVendedorHandler(FragmentCadastroVendedorBinding binding, CadastroVendedorFragment.OnFragmentInteractionListener listener) {
+    public CadastroVendedorHandler(@NonNull final FragmentCadastroVendedorBinding binding, @NonNull final CadastroVendedorFragment.OnFragmentInteractionListener listener) {
         this.listener = listener;
         this.binding = binding;
     }
 
-    public void onBotaoExcluirClick(View view, final VendedorObservable observable) {
-        Vendedor vendedor = observable.getVendedorModel();
-        Snackbar confirmacao = Snackbar.make(binding.coordinatorLayout, "Tem certeza de que quer excluir esse vendedor?", Snackbar.LENGTH_LONG);
-        confirmacao.setAction("SIM", v -> listener.excluirVendedor(vendedor));
+    public void onBotaoExcluirClick(@NonNull final VendedorObservable observable) {
+        Snackbar confirmacao = Snackbar.make(binding.coordinatorLayout, "Tem certeza de que deseja excluir esse vendedor?", Snackbar.LENGTH_LONG);
+        confirmacao.setAction("SIM", v -> listener.excluirVendedor(observable));
         confirmacao.show();
     }
 
-    public void onBotaoSalvarClick(View view, VendedorObservable observable) {
-        Vendedor vendedor = observable.getVendedorModel();
-        if (vendedor != null && ehNomeValido(vendedor.getNome(), vendedor) && ehComissaoValida(vendedor.getComissao()))
-            listener.salvarVendedor(vendedor, vendedor.getCodigo() == null || vendedor.getCodigo().equals(0L));
+    public void onBotaoSalvarClick(@NonNull final VendedorObservable observable) {
+        if (ehNomeValido(observable) && ehComissaoValida(observable.comissao.get()))
+            listener.salvarVendedor(observable);
         else {
-            Toast.makeText(view.getContext(), "Por favor, corrija as informações incorretas!", Toast.LENGTH_SHORT).show();
-            LogUtil.Log(TAG, "Vendedor nulo ou inválido!", Log.ERROR);
+            Toast.makeText(binding.getRoot().getContext(), "Por favor, corrija as informações incorretas!", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private boolean ehNomeValido(String nome, Vendedor vendedor) {
-        if (nome == null || nome.isEmpty()) {
+    private boolean ehNomeValido(@NonNull VendedorObservable observable) {
+        if (observable.nome.get() == null || observable.nome.get().isEmpty()) {
             binding.inputNome.setError("O nome do vendedor é obrigatório!");
             return false;
         }
-        vendedor.setNome(nome.trim().toUpperCase());
+        observable.nome.set(observable.nome.get().trim().toUpperCase());
         return true;
     }
 
-    private boolean ehComissaoValida(Integer comissao) {
-        if (comissao == null || comissao == 0) {
+    private boolean ehComissaoValida(String comissao) {
+        if (comissao == null || comissao.isEmpty()) {
             binding.inputComissao.setError("A comissão é obrigatória!");
             return false;
         }

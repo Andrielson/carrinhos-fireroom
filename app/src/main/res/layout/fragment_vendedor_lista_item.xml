@@ -12,8 +12,8 @@
             type="tk.andrielson.carrinhos.androidapp.observable.VendedorObservable" />
 
         <variable
-            name="handler"
-            type="tk.andrielson.carrinhos.androidapp.ui.viewhandler.ListaVendedorItemHandler" />
+            name="listener"
+            type="tk.andrielson.carrinhos.androidapp.ui.fragment.ListaVendedorFragment.OnListFragmentInteractionListener" />
     </data>
 
     <LinearLayout
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="#F5F5F5"
-        android:onClick="@{handler::onClickVendedor}"
+        android:onClick="@{() -> listener.onClickVendedor(vendedor)}"
         android:orientation="horizontal">
 
         <ImageView
