@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
+import tk.andrielson.carrinhos.androidapp.data.observable.ProdutoObservable;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentCadastroProdutoBinding;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.CadastroProdutoFragment;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
@@ -40,13 +41,15 @@ public class CadastroProdutoHandler {
         }
     }
 
-    public void onBotaoExcluirClick(View view, final Produto produto) {
+    public void onBotaoExcluirClick(View view, final ProdutoObservable observable) {
+        Produto produto = observable.getProdutoModel();
         Snackbar confirmacao = Snackbar.make(binding.coordinatorLayout, "Tem certeza de que quer excluir esse produto?", Snackbar.LENGTH_LONG);
         confirmacao.setAction("SIM", v -> listener.excluirProduto(produto));
         confirmacao.show();
     }
 
-    public void onBotaoSalvarClick(View view, Produto produto) {
+    public void onBotaoSalvarClick(View view, ProdutoObservable observable) {
+        Produto produto = observable.getProdutoModel();
         if (produto != null && ehNomeValido(produto.getNome(), produto) && ehSiglaValida(produto.getSigla()) && ehPrecoValido(produto.getPreco()))
             listener.salvarProduto(produto, produto.getCodigo() == null);
         else {

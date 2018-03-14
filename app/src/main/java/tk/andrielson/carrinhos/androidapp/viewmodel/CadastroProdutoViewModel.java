@@ -1,7 +1,9 @@
 package tk.andrielson.carrinhos.androidapp.viewmodel;
 
+import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
@@ -11,6 +13,7 @@ import javax.annotation.Nullable;
 import tk.andrielson.carrinhos.androidapp.DI;
 import tk.andrielson.carrinhos.androidapp.data.dao.ProdutoDao;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
+import tk.andrielson.carrinhos.androidapp.data.observable.ProdutoObservable;
 
 /**
  * Created by Andrielson on 08/03/2018.
@@ -30,8 +33,8 @@ public class CadastroProdutoViewModel extends ViewModel {
         }
     }
 
-    public LiveData<Produto> getProduto() {
-        return produtoLiveData;
+    public LiveData<ProdutoObservable> getProduto() {
+        return Transformations.map(produtoLiveData, ProdutoObservable::new);
     }
 
     public void setProduto(Produto produto) {

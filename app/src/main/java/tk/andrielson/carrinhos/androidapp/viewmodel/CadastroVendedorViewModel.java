@@ -2,6 +2,7 @@ package tk.andrielson.carrinhos.androidapp.viewmodel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
@@ -11,6 +12,7 @@ import javax.annotation.Nullable;
 import tk.andrielson.carrinhos.androidapp.DI;
 import tk.andrielson.carrinhos.androidapp.data.dao.VendedorDao;
 import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
+import tk.andrielson.carrinhos.androidapp.data.observable.VendedorObservable;
 
 /**
  * Created by Andrielson on 08/03/2018.
@@ -25,12 +27,13 @@ public class CadastroVendedorViewModel extends ViewModel {
             vendedorLiveData.setValue(DI.newVendedor());
         } else {
             VendedorDao vendedorDao = DI.newVendedorDao();
+            //noinspection unchecked
             vendedorLiveData = (MutableLiveData<Vendedor>) vendedorDao.getByCodigo(codigo);
         }
     }
 
-    public LiveData<Vendedor> getVendedor() {
-        return vendedorLiveData;
+    public LiveData<VendedorObservable> getVendedor() {
+        return Transformations.map(vendedorLiveData, VendedorObservable::new);
     }
 
     public void setVendedor(Vendedor vendedor) {

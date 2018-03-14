@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import java.util.List;
 import java.util.Objects;
 
-import tk.andrielson.carrinhos.androidapp.data.model.Produto;
+import tk.andrielson.carrinhos.androidapp.data.observable.ProdutoObservable;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentProdutoListaItemBinding;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaProdutoFragment;
 import tk.andrielson.carrinhos.androidapp.ui.viewhandler.ListaProdutoItemHandler;
@@ -21,7 +21,7 @@ import tk.andrielson.carrinhos.androidapp.ui.viewhandler.ListaProdutoItemHandler
 public class ProdutoRecyclerViewAdapter extends RecyclerView.Adapter<ProdutoRecyclerViewAdapter.ProdutoViewHolder> {
     protected final ListaProdutoFragment.OnListFragmentInteractionListener mListener;
 
-    protected List<? extends Produto> listaProduto;
+    protected List<ProdutoObservable> listaProduto;
 
     public ProdutoRecyclerViewAdapter(ListaProdutoFragment.OnListFragmentInteractionListener mListener) {
         this.mListener = mListener;
@@ -45,7 +45,7 @@ public class ProdutoRecyclerViewAdapter extends RecyclerView.Adapter<ProdutoRecy
         return (listaProduto != null) ? listaProduto.size() : 0;
     }
 
-    public void setListaProduto(final List<? extends Produto> novaLista) {
+    public void setListaProduto(final List<ProdutoObservable> novaLista) {
         if (this.listaProduto == null) {
             this.listaProduto = novaLista;
             notifyItemRangeInserted(0, novaLista.size());
@@ -57,10 +57,10 @@ public class ProdutoRecyclerViewAdapter extends RecyclerView.Adapter<ProdutoRecy
     }
 
     private static final class DiffCallback extends DiffUtil.Callback {
-        private final List<? extends Produto> listaNova;
-        private final List<? extends Produto> listaAntiga;
+        private final List<ProdutoObservable> listaNova;
+        private final List<ProdutoObservable> listaAntiga;
 
-        DiffCallback(List<? extends Produto> listaNova, List<? extends Produto> listaAntiga) {
+        DiffCallback(List<ProdutoObservable> listaNova, List<ProdutoObservable> listaAntiga) {
             this.listaNova = listaNova;
             this.listaAntiga = listaAntiga;
         }
@@ -77,17 +77,17 @@ public class ProdutoRecyclerViewAdapter extends RecyclerView.Adapter<ProdutoRecy
 
         @Override
         public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-            return Objects.equals(listaAntiga.get(oldItemPosition).getCodigo(), listaNova.get(newItemPosition).getCodigo());
+            return Objects.equals(listaAntiga.get(oldItemPosition).codigo.get(), listaNova.get(newItemPosition).codigo.get());
         }
 
         @Override
         public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-            Produto p1 = listaAntiga.get(oldItemPosition);
-            Produto p2 = listaNova.get(newItemPosition);
+            ProdutoObservable p1 = listaAntiga.get(oldItemPosition);
+            ProdutoObservable p2 = listaNova.get(newItemPosition);
             return p1.hashCode() == p2.hashCode();
         }
     }
-    
+
     public class ProdutoViewHolder extends RecyclerView.ViewHolder {
 
         private final String TAG = ProdutoViewHolder.class.getSimpleName();
@@ -98,9 +98,9 @@ public class ProdutoRecyclerViewAdapter extends RecyclerView.Adapter<ProdutoRecy
             this.binding = binding;
         }
 
-        public void bind(final Produto produto, final ListaProdutoFragment.OnListFragmentInteractionListener listener) {
+        public void bind(final ProdutoObservable produto, final ListaProdutoFragment.OnListFragmentInteractionListener listener) {
             binding.setProduto(produto);
-            binding.setHandler(new ListaProdutoItemHandler(listener, produto));
+            binding.setHandler(new ListaProdutoItemHandler(listener, produto.getProdutoModel()));
             binding.executePendingBindings();
         }
 

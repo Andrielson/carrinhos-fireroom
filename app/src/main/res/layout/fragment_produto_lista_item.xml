@@ -9,7 +9,7 @@
 
         <variable
             name="produto"
-            type="tk.andrielson.carrinhos.androidapp.data.model.Produto" />
+            type="tk.andrielson.carrinhos.androidapp.data.observable.ProdutoObservable" />
 
         <variable
             name="handler"
@@ -40,8 +40,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
-            android:layout_weight="2"
-            android:text='@{String.format("%s (%s)", produto.nome, produto.sigla)}'
+            android:layout_weight="1"
+            android:text='@{produto.labelLista}'
             android:textAllCaps="true"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textStyle="bold"
@@ -49,13 +49,13 @@
 
         <TextView
             android:id="@+id/fragment_produto_valor"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
-            android:layout_weight="1"
+            android:gravity="end"
+            android:text="@{produto.preco}"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textStyle="bold"
-            app:valorReal="@{produto.preco}"
             tools:text="R$ 2,50" />
     </LinearLayout>
 </layout>

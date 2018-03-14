@@ -39,4 +39,28 @@ public final class VendedorObservable {
         vendedorModel.setAtivo(ativo.get());
         return vendedorModel;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        VendedorObservable that = (VendedorObservable) o;
+
+        if (!codigo.equals(that.codigo)) return false;
+        if (!nome.equals(that.nome)) return false;
+        if (!comissao.equals(that.comissao)) return false;
+        if (!ativo.equals(that.ativo)) return false;
+        return vendedorModel.equals(that.vendedorModel);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = codigo.hashCode();
+        result = 31 * result + nome.hashCode();
+        result = 31 * result + comissao.hashCode();
+        result = 31 * result + ativo.hashCode();
+        result = 31 * result + vendedorModel.hashCode();
+        return result;
+    }
 }

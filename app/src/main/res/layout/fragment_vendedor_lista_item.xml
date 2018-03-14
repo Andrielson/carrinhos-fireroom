@@ -9,7 +9,7 @@
 
         <variable
             name="vendedor"
-            type="tk.andrielson.carrinhos.androidapp.data.model.Vendedor" />
+            type="tk.andrielson.carrinhos.androidapp.data.observable.VendedorObservable" />
 
         <variable
             name="handler"
@@ -40,7 +40,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
-            android:layout_weight="3"
+            android:layout_weight="1"
             android:text="@{vendedor.nome}"
             android:textAllCaps="true"
             android:textAppearance="?attr/textAppearanceListItem"
@@ -49,14 +49,14 @@
 
         <TextView
             android:id="@+id/fragment_vendedor_comissao"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
-            android:layout_weight="1"
+            android:gravity="end"
+            android:text="@{vendedor.comissao}"
             android:textAllCaps="true"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textStyle="bold"
-            app:valorInteiro="@{vendedor.comissao}"
             tools:text="40 %" />
     </LinearLayout>
 </layout>

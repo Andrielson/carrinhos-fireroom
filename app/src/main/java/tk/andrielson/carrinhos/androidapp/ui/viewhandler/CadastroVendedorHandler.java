@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
+import tk.andrielson.carrinhos.androidapp.data.observable.VendedorObservable;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentCadastroVendedorBinding;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.CadastroVendedorFragment;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
@@ -24,13 +25,15 @@ public class CadastroVendedorHandler {
         this.binding = binding;
     }
 
-    public void onBotaoExcluirClick(View view, final Vendedor vendedor) {
+    public void onBotaoExcluirClick(View view, final VendedorObservable observable) {
+        Vendedor vendedor = observable.getVendedorModel();
         Snackbar confirmacao = Snackbar.make(binding.coordinatorLayout, "Tem certeza de que quer excluir esse vendedor?", Snackbar.LENGTH_LONG);
         confirmacao.setAction("SIM", v -> listener.excluirVendedor(vendedor));
         confirmacao.show();
     }
 
-    public void onBotaoSalvarClick(View view, Vendedor vendedor) {
+    public void onBotaoSalvarClick(View view, VendedorObservable observable) {
+        Vendedor vendedor = observable.getVendedorModel();
         if (vendedor != null && ehNomeValido(vendedor.getNome(), vendedor) && ehComissaoValida(vendedor.getComissao()))
             listener.salvarVendedor(vendedor, vendedor.getCodigo() == null);
         else {

@@ -9,7 +9,7 @@
 
         <variable
             name="vendedor"
-            type="tk.andrielson.carrinhos.androidapp.data.model.Vendedor" />
+            type="tk.andrielson.carrinhos.androidapp.data.observable.VendedorObservable" />
 
         <variable
             name="handler"
@@ -64,7 +64,7 @@
                         android:imeOptions="actionDone"
                         android:inputType="numberPassword"
                         android:maxLength="2"
-                        app:valorInteiro="@={vendedor.comissao}"
+                        android:text="@={vendedor.comissao}"
                         tools:text="80" />
 
                 </android.support.design.widget.TextInputLayout>

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
+import tk.andrielson.carrinhos.androidapp.data.observable.VendedorObservable;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentVendedorListaItemBinding;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaVendedorFragment;
 import tk.andrielson.carrinhos.androidapp.ui.viewhandler.ListaVendedorItemHandler;
@@ -21,7 +22,7 @@ import tk.andrielson.carrinhos.androidapp.ui.viewhandler.ListaVendedorItemHandle
 public class VendedorRecyclerViewAdapter extends RecyclerView.Adapter<VendedorRecyclerViewAdapter.VendedorViewHolder> {
     protected final ListaVendedorFragment.OnListFragmentInteractionListener mListener;
 
-    protected List<? extends Vendedor> listaVendedor;
+    protected List<VendedorObservable> listaVendedor;
 
     public VendedorRecyclerViewAdapter(ListaVendedorFragment.OnListFragmentInteractionListener mListener) {
         this.mListener = mListener;
@@ -45,7 +46,7 @@ public class VendedorRecyclerViewAdapter extends RecyclerView.Adapter<VendedorRe
         return (listaVendedor != null) ? listaVendedor.size() : 0;
     }
 
-    public void setListaVendedor(final List<? extends Vendedor> novaLista) {
+    public void setListaVendedor(final List<VendedorObservable> novaLista) {
         if (this.listaVendedor == null) {
             this.listaVendedor = novaLista;
             notifyItemRangeInserted(0, novaLista.size());
@@ -57,10 +58,10 @@ public class VendedorRecyclerViewAdapter extends RecyclerView.Adapter<VendedorRe
     }
 
     private static final class DiffCallback extends DiffUtil.Callback {
-        private final List<? extends Vendedor> listaNova;
-        private final List<? extends Vendedor> listaAntiga;
+        private final List<VendedorObservable> listaNova;
+        private final List<VendedorObservable> listaAntiga;
 
-        DiffCallback(List<? extends Vendedor> listaNova, List<? extends Vendedor> listaAntiga) {
+        DiffCallback(List<VendedorObservable> listaNova, List<VendedorObservable> listaAntiga) {
             this.listaNova = listaNova;
             this.listaAntiga = listaAntiga;
         }
@@ -78,13 +79,13 @@ public class VendedorRecyclerViewAdapter extends RecyclerView.Adapter<VendedorRe
         @Override
         public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
             //TODO: implementar método equals nos objetos
-            return Objects.equals(listaAntiga.get(oldItemPosition).getCodigo(), listaNova.get(newItemPosition).getCodigo());
+            return Objects.equals(listaAntiga.get(oldItemPosition).codigo.get(), listaNova.get(newItemPosition).codigo.get());
         }
 
         @Override
         public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-            Vendedor p1 = listaAntiga.get(oldItemPosition);
-            Vendedor p2 = listaNova.get(newItemPosition);
+            VendedorObservable p1 = listaAntiga.get(oldItemPosition);
+            VendedorObservable p2 = listaNova.get(newItemPosition);
             return p1.hashCode() == p2.hashCode();
         }
     }
@@ -99,9 +100,9 @@ public class VendedorRecyclerViewAdapter extends RecyclerView.Adapter<VendedorRe
             this.binding = binding;
         }
 
-        public void bind(final Vendedor vendedor, final ListaVendedorFragment.OnListFragmentInteractionListener listener) {
-            binding.setVendedor(vendedor);
-            binding.setHandler(new ListaVendedorItemHandler(listener, vendedor));
+        public void bind(final VendedorObservable observable, final ListaVendedorFragment.OnListFragmentInteractionListener listener) {
+            binding.setVendedor(observable);
+            binding.setHandler(new ListaVendedorItemHandler(listener, observable.getVendedorModel()));
             binding.executePendingBindings();
         }
 

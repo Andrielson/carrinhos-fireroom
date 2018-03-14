@@ -18,6 +18,7 @@ public final class ProdutoObservable {
     public final ObservableField<String> nome = new ObservableField<>();
     public final ObservableField<String> sigla = new ObservableField<>();
     public final ObservableField<String> preco = new ObservableField<>();
+    public final ObservableField<String> labelLista = new ObservableField<>();
     public final ObservableBoolean ativo = new ObservableBoolean();
 
     private final Produto produtoModel;
@@ -33,6 +34,7 @@ public final class ProdutoObservable {
         sigla.set(produto.getSigla());
         preco.set(produto.getPreco() == null ? "R$ 0,00" : String.format(Locale.getDefault(), "R$ %.2f", (double) produto.getPreco() / 100));
         ativo.set(produto.getAtivo() == null ? true : produto.getAtivo());
+        labelLista.set(String.format(Locale.getDefault(), "%s (%s)", nome.get(), sigla.get()));
     }
 
     public Produto getProdutoModel() {
@@ -42,5 +44,31 @@ public final class ProdutoObservable {
         produtoModel.setPreco(Long.valueOf(preco.get().replaceAll("\\D", "")));
         produtoModel.setAtivo(ativo.get());
         return produtoModel;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ProdutoObservable that = (ProdutoObservable) o;
+
+        if (!codigo.equals(that.codigo)) return false;
+        if (!nome.equals(that.nome)) return false;
+        if (!sigla.equals(that.sigla)) return false;
+        if (!preco.equals(that.preco)) return false;
+        if (!ativo.equals(that.ativo)) return false;
+        return produtoModel.equals(that.produtoModel);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = codigo.hashCode();
+        result = 31 * result + nome.hashCode();
+        result = 31 * result + sigla.hashCode();
+        result = 31 * result + preco.hashCode();
+        result = 31 * result + ativo.hashCode();
+        result = 31 * result + produtoModel.hashCode();
+        return result;
     }
 }
