@@ -20,7 +20,6 @@ import android.view.MenuItem;
 import tk.andrielson.carrinhos.androidapp.R;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.data.model.Venda;
-import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
 import tk.andrielson.carrinhos.androidapp.observable.VendedorObservable;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaProdutoFragment;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaVendaFragment;
@@ -51,7 +50,7 @@ public class MainActivity extends AppCompatActivity
             Intent intent;
             switch (fragmentoAtivo) {
                 case VENDA:
-                    intent = new Intent(MainActivity.this,VendaActivity.class);
+                    intent = new Intent(MainActivity.this, VendaActivity.class);
                     startActivity(intent);
                     break;
                 case PRODUTO:
@@ -205,6 +204,7 @@ public class MainActivity extends AppCompatActivity
     public void onClickVendedor(VendedorObservable item) {
         Intent intent = new Intent(MainActivity.this, VendedorActivity.class);
         intent.putExtra("vendedor", item.getVendedorModel());
+        LogUtil.Log(TAG, item.getVendedorModel().getNome(), Log.DEBUG);
         startActivity(intent);
     }
 

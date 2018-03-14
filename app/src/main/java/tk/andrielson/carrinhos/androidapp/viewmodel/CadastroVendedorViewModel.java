@@ -2,13 +2,10 @@ package tk.andrielson.carrinhos.androidapp.viewmodel;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Transformations;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
 import tk.andrielson.carrinhos.androidapp.data.dao.VendedorDao;
-import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
 import tk.andrielson.carrinhos.androidapp.observable.VendedorObservable;
 
 import static tk.andrielson.carrinhos.androidapp.DI.newVendedorDao;
@@ -19,10 +16,6 @@ public class CadastroVendedorViewModel extends AndroidViewModel {
 
     public CadastroVendedorViewModel(@NonNull Application application) {
         super(application);
-    }
-
-    public LiveData<VendedorObservable> getVendedor(@NonNull Long codigo) {
-        return Transformations.map((LiveData<Vendedor>) vendedorDao.getByCodigo(codigo), VendedorObservable::new);
     }
 
     public void salvarVendedor(VendedorObservable observable) {

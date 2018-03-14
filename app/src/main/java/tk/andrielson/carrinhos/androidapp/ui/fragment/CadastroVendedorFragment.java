@@ -1,6 +1,5 @@
 package tk.andrielson.carrinhos.androidapp.ui.fragment;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -16,7 +15,6 @@ import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentCadastroVendedorBinding;
 import tk.andrielson.carrinhos.androidapp.observable.VendedorObservable;
 import tk.andrielson.carrinhos.androidapp.ui.viewhandler.CadastroVendedorHandler;
-import tk.andrielson.carrinhos.androidapp.viewmodel.CadastroVendedorViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -81,6 +79,7 @@ public class CadastroVendedorFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cadastro_vendedor, container, false);
         CadastroVendedorHandler handler = new CadastroVendedorHandler(binding, mListener);
+        binding.setVendedor(vendedorObservable);
         binding.setHandler(handler);
         binding.inputComissao.setTransformationMethod(null);
         return binding.getRoot();
