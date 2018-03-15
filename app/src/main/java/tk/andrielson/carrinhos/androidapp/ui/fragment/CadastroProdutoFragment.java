@@ -56,11 +56,12 @@ public class CadastroProdutoFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (!(context instanceof OnFragmentInteractionListener)) {
+        if ((context instanceof OnFragmentInteractionListener)) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
             throw new RuntimeException(context.toString()
                     + " deve implementar OnFragmentInteractionListener");
         }
-        mListener = (OnFragmentInteractionListener) context;
     }
 
     @Override

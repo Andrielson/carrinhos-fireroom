@@ -1,20 +1,20 @@
 package tk.andrielson.carrinhos.androidapp.data.dao;
 
-import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import tk.andrielson.carrinhos.androidapp.data.model.ItemVendaImpl;
+import tk.andrielson.carrinhos.androidapp.data.model.ProdutoImpl;
 import tk.andrielson.carrinhos.androidapp.data.model.VendaImpl;
 import tk.andrielson.carrinhos.androidapp.data.model.VendedorImpl;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
@@ -23,7 +23,7 @@ import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
  * Created by anfesilva on 12/03/2018.
  */
 
-public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaImpl> {
+public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaImpl, ItemVendaImpl> {
     private static final String COLECAO = VendaImpl.COLECAO;
     private static final String TAG = VendaDaoImpl.class.getSimpleName();
 
@@ -32,13 +32,14 @@ public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaIm
     }
 
     @Override
-    public long insert(VendaImpl venda) {
+    public long insert(@NonNull VendaImpl venda) {
         String ultimoID = getColecaoID(COLECAO);
         Long novoCodigo = Long.valueOf(ultimoID) + 1;
         venda.setCodigo(novoCodigo);
         final String id = getIdFromCodigo(novoCodigo);
         DocumentReference novoDocumento = collection.document(id);
         WriteBatch batch = setColecaoID(COLECAO, id);
+        //FIXME: o Firestore não vai conseguir mapear VendaImpl para um objeto da coleção Venda
         batch.set(novoDocumento, venda);
         batch.commit().addOnSuccessListener(aVoid -> LogUtil.Log(TAG, "Nova venda " + id + " adicionada com sucesso!", Log.INFO)).addOnFailureListener(e -> {
             LogUtil.Log(TAG, "Falha ao adicionar a venda " + id, Log.ERROR);
@@ -48,10 +49,11 @@ public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaIm
     }
 
     @Override
-    public int update(VendaImpl venda) {
+    public int update(@NonNull VendaImpl venda) {
         final String id = getIdFromCodigo(venda.getCodigo());
         DocumentReference documento = collection.document(id);
         WriteBatch batch = db.batch();
+        //FIXME: o Firestore não vai conseguir mapear VendaImpl para um objeto da coleção Venda
         batch.set(documento, venda);
         batch.commit().addOnSuccessListener(aVoid -> LogUtil.Log(TAG, "Venda " + id + " atualizada com sucesso!", Log.INFO)).addOnFailureListener(e -> {
             LogUtil.Log(TAG, "Falha ao atualizar a venda " + id, Log.ERROR);
@@ -61,7 +63,7 @@ public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaIm
     }
 
     @Override
-    public int delete(VendaImpl venda) {
+    public int delete(@NonNull VendaImpl venda) {
         final String id = getIdFromCodigo(venda.getCodigo());
         DocumentReference documento = collection.document(id);
         WriteBatch batch = db.batch();
@@ -99,7 +101,7 @@ public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaIm
     }
 
     @Override
-    public LiveData<VendaImpl> getByCodigo(Long codigo) {
+    public LiveData<VendaImpl> getByCodigo(@NonNull Long codigo) {
         Query query = queryPadrao.whereEqualTo(VendaImpl.CODIGO, codigo);
         FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(query);
         return Transformations.map(liveData, input -> {
@@ -120,8 +122,8 @@ public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaIm
         });
     }
 
-    public LiveData<List<ItemVendaImpl>> getItens(Long codigo) {
-        Query query = db.collection("/vendas/000000000000000001/itens");
+    public LiveData<List<ItemVendaImpl>> getItens(@NonNull Long codigo) {
+        Query query = db.collection(String.format("/vendas/%s/itens", getIdFromCodigo(codigo)));
         FirestoreQueryLiveData itensLiveData = new FirestoreQueryLiveData(query);
         return Transformations.map(itensLiveData, input -> {
             List<ItemVendaImpl> lista = new ArrayList<>();
@@ -134,8 +136,14 @@ public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaIm
                 item.setQtVoltou(qtd != null ? qtd.intValue() : 0);
                 qtd = doc.getLong(ItemVendaImpl.QT_VENDEU);
                 item.setQtVendeu(qtd != null ? qtd.intValue() : 0);
+                String codigoProduto = doc.getDocumentReference(ItemVendaImpl.PRODUTO).getId();
+                ProdutoImpl produto = new ProdutoImpl();
+                produto.setCodigo(Long.valueOf(codigoProduto));
+                //TODO: salvar e recuperar o nome e a sigla do produto no item da venda
+                //produto.setSigla(SIGLA-DO-ITEM);
+                //produto.setNome(NOME-DO-ITEM);
+                item.setProduto(produto);
                 lista.add(item);
-                LogUtil.Log(TAG, String.valueOf(item.getValor()), Log.DEBUG);
             }
             return lista;
         });

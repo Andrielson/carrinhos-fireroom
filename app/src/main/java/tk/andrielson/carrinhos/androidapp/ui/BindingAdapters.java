@@ -9,6 +9,7 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.content.res.AppCompatResources;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.CompoundButton;
@@ -16,9 +17,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -55,15 +53,12 @@ public final class BindingAdapters {
         DrawableCompat.setTintList(imageView.getDrawable(), csl);
     }
 
-    @BindingAdapter("data")
-    public static void setDataToString(TextView textView, Date data) {
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        textView.setText(formatter.format(data));
-    }
-
-    @BindingAdapter("vendedor")
-    public static void setVendedorNome(TextView textView, Venda venda) {
-        textView.setText(venda.getVendedor().getNome());
+    @BindingAdapter("editavel")
+    public static void setEditavelEditText(EditText editText, boolean editavel) {
+        if (!editavel) {
+            editText.setEnabled(false);
+            editText.setInputType(InputType.TYPE_NULL);
+        }
     }
 
     @BindingAdapter("vendaStatus")

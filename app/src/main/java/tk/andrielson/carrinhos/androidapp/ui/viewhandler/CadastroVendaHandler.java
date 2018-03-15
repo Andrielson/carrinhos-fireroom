@@ -91,6 +91,13 @@ public final class CadastroVendaHandler {
             Toast.makeText(binding.getRoot().getContext(), "Por favor, corrija as informações incorretas!", Toast.LENGTH_SHORT).show();
     }
 
+    public void onBotaoFinalizarClick(VendaObservable observable) {
+        if (true)
+            listener.finalizarVenda(observable);
+        else
+            Toast.makeText(binding.getRoot().getContext(), "Por favor, corrija as informações incorretas!", Toast.LENGTH_SHORT).show();
+    }
+
     //TODO: generalizar validação da data no método abaixo
     private boolean ehDataValida() {
         String dia = binding.dataDia.getText().toString();

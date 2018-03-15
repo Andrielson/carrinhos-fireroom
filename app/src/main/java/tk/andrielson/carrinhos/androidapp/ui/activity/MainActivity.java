@@ -195,15 +195,15 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onClickProduto(ProdutoObservable item) {
-        Intent intent = new Intent(MainActivity.this, ProdutoActivity.class);
-        intent.putExtra("produto", item.getProdutoModel());
+        Intent intent = new Intent(this, ProdutoActivity.class);
+        intent.putExtra(ProdutoActivity.INTENT_EXTRA_PRODUTO, item.getProdutoModel());
         startActivity(intent);
     }
 
     @Override
     public void onClickVendedor(VendedorObservable item) {
-        Intent intent = new Intent(MainActivity.this, VendedorActivity.class);
-        intent.putExtra("vendedor", item.getVendedorModel());
+        Intent intent = new Intent(this, VendedorActivity.class);
+        intent.putExtra(VendedorActivity.INTENT_EXTRA_VENDEDOR, item.getVendedorModel());
         startActivity(intent);
     }
 

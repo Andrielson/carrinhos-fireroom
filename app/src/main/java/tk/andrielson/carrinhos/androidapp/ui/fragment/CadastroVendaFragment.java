@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import tk.andrielson.carrinhos.androidapp.R;
+import tk.andrielson.carrinhos.androidapp.data.model.Venda;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentCadastroVendaBinding;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentItemvendaBinding;
 import tk.andrielson.carrinhos.androidapp.observable.ItemVendaObservable;
@@ -36,8 +37,11 @@ import tk.andrielson.carrinhos.androidapp.viewmodel.CadastroVendaViewModel;
 public class CadastroVendaFragment extends Fragment {
 
     private static final String TAG = CadastroVendaFragment.class.getSimpleName();
+    private static final String ARG_VENDA = "venda";
+
     private OnFragmentInteractionListener mListener;
     private FragmentCadastroVendaBinding binding;
+    private VendaObservable vendaObservable;
 
     public CadastroVendaFragment() {
         // Required empty public constructor
@@ -47,12 +51,13 @@ public class CadastroVendaFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
+     * @param venda a venda a ser cadastrada ou exibida no fragment
      * @return A new instance of fragment CadastroVendaFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static CadastroVendaFragment newInstance() {
+    public static CadastroVendaFragment newInstance(@NonNull Venda venda) {
         CadastroVendaFragment fragment = new CadastroVendaFragment();
         Bundle args = new Bundle();
+        args.putParcelable(ARG_VENDA, venda);
         fragment.setArguments(args);
         return fragment;
     }
@@ -71,12 +76,18 @@ public class CadastroVendaFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null && getArguments().getParcelable(ARG_VENDA) != null)
+            //noinspection ConstantConditions
+            vendaObservable = new VendaObservable(getArguments().getParcelable(ARG_VENDA));
+        else
+            vendaObservable = new VendaObservable();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cadastro_venda, container, false);
         configuraCamposData();
+        binding.setVenda(vendaObservable);
         binding.setHandler(new CadastroVendaHandler(binding, mListener));
         return binding.getRoot();
     }
@@ -163,6 +174,8 @@ public class CadastroVendaFragment extends Fragment {
     public interface OnFragmentInteractionListener {
 
         void onClickSelecionarVendedor();
+
+        void finalizarVenda(VendaObservable observable);
 
         void salvarVenda(VendaObservable observable);
 

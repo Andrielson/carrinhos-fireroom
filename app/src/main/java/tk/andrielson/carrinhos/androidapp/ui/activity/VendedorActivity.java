@@ -6,18 +6,18 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import tk.andrielson.carrinhos.androidapp.R;
 import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
 import tk.andrielson.carrinhos.androidapp.observable.VendedorObservable;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.CadastroVendedorFragment;
-import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 import tk.andrielson.carrinhos.androidapp.viewmodel.CadastroVendedorViewModel;
 
 import static tk.andrielson.carrinhos.androidapp.DI.newVendedor;
 
 public class VendedorActivity extends AppCompatActivity implements CadastroVendedorFragment.OnFragmentInteractionListener {
+
+    public static final String INTENT_EXTRA_VENDEDOR = "vendedor";
 
     private static final String TAG = VendedorActivity.class.getSimpleName();
     private CadastroVendedorViewModel viewModel;
@@ -26,19 +26,17 @@ public class VendedorActivity extends AppCompatActivity implements CadastroVende
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vendedor);
+
         // Inicializa o ViewModel
         viewModel = ViewModelProviders.of(this).get(CadastroVendedorViewModel.class);
 
         //Carrega os dados de vendedor
         Vendedor vendedor;
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("vendedor") && intent.getParcelableExtra("vendedor") != null) {
-            vendedor = intent.getParcelableExtra("vendedor");
-            LogUtil.Log(TAG, vendedor.getNome(), Log.DEBUG);
-        } else {
+        if (intent != null && intent.hasExtra(INTENT_EXTRA_VENDEDOR) && intent.getParcelableExtra(INTENT_EXTRA_VENDEDOR) != null)
+            vendedor = intent.getParcelableExtra(INTENT_EXTRA_VENDEDOR);
+        else
             vendedor = newVendedor();
-            LogUtil.Log(TAG, "VENDEDOR NOVO", Log.DEBUG);
-        }
 
         // Cria o fragment e passa o vendedor
         Fragment fragment = CadastroVendedorFragment.newInstance(vendedor);
