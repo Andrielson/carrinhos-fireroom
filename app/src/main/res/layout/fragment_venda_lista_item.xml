@@ -10,7 +10,7 @@
 
         <variable
             name="venda"
-            type="tk.andrielson.carrinhos.androidapp.data.model.VendaImpl" />
+            type="tk.andrielson.carrinhos.androidapp.observable.VendaObservable" />
 
         <!--<variable
             name="handler"
@@ -34,9 +34,9 @@
             android:id="@+id/data"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:text="@{venda.data}"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textStyle="bold"
-            app:data="@{venda.data}"
             grid:layout_columnWeight="2"
             tools:text="12/03/2018" />
 
@@ -47,9 +47,9 @@
             android:layout_height="wrap_content"
             android:drawablePadding="6dp"
             android:drawableStart="@drawable/ic_monetization_on_black_16dp"
+            android:text="@{venda.total}"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textStyle="bold"
-            app:valorReal="@{venda.total}"
             grid:layout_columnWeight="1"
             tools:text="R$ 100,00" />
 
@@ -73,8 +73,8 @@
             android:layout_marginTop="4dp"
             android:drawablePadding="6dp"
             android:drawableStart="@drawable/ic_account_balance_black_16dp"
+            android:text="@{venda.valorPago}"
             android:textAppearance="?attr/textAppearanceListItem"
-            app:vendaValorPago="@{venda}"
             grid:layout_columnWeight="1"
             tools:text="R$ 60,00" />
 
@@ -98,8 +98,8 @@
             android:layout_marginTop="4dp"
             android:drawablePadding="6dp"
             android:drawableStart="@drawable/ic_account_box_black_16dp"
+            android:text="@{venda.valorComissao}"
             android:textAppearance="?attr/textAppearanceListItem"
-            app:vendaValorComissao="@{venda}"
             grid:layout_columnWeight="1"
             tools:text="R$ 40,00" />
 

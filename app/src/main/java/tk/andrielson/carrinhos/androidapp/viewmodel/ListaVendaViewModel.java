@@ -2,8 +2,10 @@ package tk.andrielson.carrinhos.androidapp.viewmodel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
+import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import tk.andrielson.carrinhos.androidapp.DI;
@@ -11,10 +13,7 @@ import tk.andrielson.carrinhos.androidapp.data.dao.VendaDao;
 import tk.andrielson.carrinhos.androidapp.data.dao.VendaDaoImpl;
 import tk.andrielson.carrinhos.androidapp.data.model.ItemVendaImpl;
 import tk.andrielson.carrinhos.androidapp.data.model.Venda;
-
-/**
- * Created by anfesilva on 07/03/2018.
- */
+import tk.andrielson.carrinhos.androidapp.observable.VendaObservable;
 
 public class ListaVendaViewModel extends ViewModel {
     private final MediatorLiveData<List<Venda>> mediatorLiveDataListaVendas;
@@ -28,14 +27,15 @@ public class ListaVendaViewModel extends ViewModel {
         //noinspection unchecked
         LiveData<List<Venda>> vendas = vendaDao.getAll();
         mediatorLiveDataListaVendas.addSource(vendas, mediatorLiveDataListaVendas::setValue);
-        VendaDaoImpl d = new VendaDaoImpl();
-        LiveData<List<ItemVendaImpl>> itens = d.getItens(null);
-        itens.observeForever(itemVendas -> {
-
-        });
     }
 
-    public LiveData<List<Venda>> getVendas() {
-        return mediatorLiveDataListaVendas;
+    public LiveData<List<VendaObservable>> getVendas() {
+        return Transformations.map(mediatorLiveDataListaVendas, input -> {
+            List<VendaObservable> lista = new ArrayList<>();
+            if (input != null)
+                for (Venda v : input)
+                    lista.add(new VendaObservable(v));
+            return lista;
+        });
     }
 }

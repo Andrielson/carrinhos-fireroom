@@ -35,10 +35,10 @@ public final class ItemVendaImpl
         }
     };
     private ProdutoImpl produto;
-    private Integer qtSaiu = 0;
-    private Integer qtVoltou = 0;
-    private Integer qtVendeu = 0;
-    private Long valor = 0L;
+    private Integer qtSaiu;
+    private Integer qtVoltou;
+    private Integer qtVendeu;
+    private Long valor;
 
     public ItemVendaImpl() {
     }
@@ -56,7 +56,6 @@ public final class ItemVendaImpl
     }
 
     @Contract(pure = true)
-    @NonNull
     @Override
     public ProdutoImpl getProduto() {
         return produto;
@@ -68,7 +67,6 @@ public final class ItemVendaImpl
     }
 
     @Contract(pure = true)
-    @NonNull
     @Override
     public Integer getQtSaiu() {
         return qtSaiu;
@@ -80,7 +78,6 @@ public final class ItemVendaImpl
     }
 
     @Contract(pure = true)
-    @NonNull
     @Override
     public Integer getQtVoltou() {
         return qtVoltou;
@@ -92,7 +89,6 @@ public final class ItemVendaImpl
     }
 
     @Contract(pure = true)
-    @NonNull
     @Override
     public Integer getQtVendeu() {
         return qtVendeu;
@@ -104,7 +100,6 @@ public final class ItemVendaImpl
     }
 
     @Contract(pure = true)
-    @NonNull
     @Override
     public Long getValor() {
         return valor;

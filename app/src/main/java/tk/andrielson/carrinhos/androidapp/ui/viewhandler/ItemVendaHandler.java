@@ -2,9 +2,8 @@ package tk.andrielson.carrinhos.androidapp.ui.viewhandler;
 
 import android.text.Editable;
 
-import java.util.Locale;
-
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentItemvendaBinding;
+import tk.andrielson.carrinhos.androidapp.utils.Util;
 
 /**
  * Created by anfesilva on 13/03/2018.
@@ -23,10 +22,16 @@ public class ItemVendaHandler {
         String strQtVoltou = binding.qtVoltou.getText().toString();
         int qtLevou = strQtLevou.isEmpty() ? 0 : Integer.valueOf(strQtLevou);
         int qtVoltou = strQtVoltou.isEmpty() ? 0 : Integer.valueOf(strQtVoltou);
+        if (qtVoltou > qtLevou) {
+            binding.qtVoltou.setError("Valor inválido!");
+            binding.qtVendeu.setText("0");
+            binding.valorTotal.setText(Util.longToRS(0L));
+            return;
+        }
         int qtVendeu = qtLevou - qtVoltou;
         long valor = binding.getItemVenda().produto.get().getProdutoModel().getPreco();
         long total = qtVendeu * valor;
         binding.qtVendeu.setText(String.valueOf(qtVendeu));
-        binding.valorTotal.setText(String.format(Locale.getDefault(), "R$ %.2f", (double) total / 100));
+        binding.valorTotal.setText(Util.longToRS(total));
     }
 }

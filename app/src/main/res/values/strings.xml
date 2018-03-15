@@ -66,16 +66,14 @@
     <string name="activity_venda_label">Venda</string>
 
     <!--<editor-fold desc="Fragment Cadastro de Venda">-->
+    <string name="barra">/</string>
     <string name="fragment_cadastro_venda_label_codigo">Código</string>
-    <string name="fragment_cadastro_venda_label_nome">Nome do venda</string>
-    <string name="fragment_cadastro_venda_label_sigla">Sigla</string>
+    <string name="fragment_cadastro_venda_label_data">Data da venda:</string>
+    <string name="fragment_cadastro_venda_selecione_vendedor">Selecione um vendedor</string>
     <string name="fragment_cadastro_venda_label_preco">Preço</string>
     <string name="fragment_cadastro_venda_label_habilitado">Habilitado</string>
     <string name="fragment_cadastro_venda_label_desabilitado">Desabilitado</string>
     <string name="fragment_cadastro_venda_label_botao_salvar">Salvar</string>
     <string name="fragment_cadastro_venda_label_botao_excluir">Excluir venda</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <!--</editor-fold>-->
 </resources>

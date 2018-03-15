@@ -18,13 +18,9 @@ import tk.andrielson.carrinhos.androidapp.data.model.ItemVenda;
 import tk.andrielson.carrinhos.androidapp.data.model.Venda;
 import tk.andrielson.carrinhos.androidapp.utils.Util;
 
-/**
- * Created by Andrielson on 13/03/2018.
- */
 @SuppressLint("DefaultLocale")
 @SuppressWarnings("unchecked")
-public final class VendaObservable {
-    public final ObservableField<String> codigo = new ObservableField<>();
+public final class VendaObservable extends AbsCodigoObservable {
     public final ObservableField<String> comissao = new ObservableField<>();
     public final ObservableField<String> data = new ObservableField<>();
     public final ObservableField<String> total = new ObservableField<>();
@@ -43,7 +39,7 @@ public final class VendaObservable {
 
     public VendaObservable(@NonNull Venda venda) {
         vendaModel = venda;
-        codigo.set(venda.getCodigo() == null ? "0" : String.valueOf(venda.getCodigo()));
+        codigoSet(venda.getCodigo());
         data.set(venda.getData() == null ? dateFormat.format(Calendar.getInstance().getTime()) : dateFormat.format(venda.getData()));
         total.set(Util.longToRS(venda.getTotal()));
         status.set(venda.getStatus());
@@ -66,7 +62,7 @@ public final class VendaObservable {
     }
 
     public Venda getVendaModel() {
-        vendaModel.setCodigo(Long.valueOf(codigo.get()));
+        vendaModel.setCodigo(codigoGet());
         vendaModel.setComissao(Util.RStoLong(comissao.get()).intValue());
         try {
             vendaModel.setData(dateFormat.parse(data.get()));

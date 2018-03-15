@@ -18,7 +18,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import tk.andrielson.carrinhos.androidapp.R;
-import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.data.model.Venda;
 import tk.andrielson.carrinhos.androidapp.observable.ProdutoObservable;
 import tk.andrielson.carrinhos.androidapp.observable.VendedorObservable;
@@ -154,7 +153,6 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
@@ -167,16 +165,17 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_vendas:
                 fragment = ListaVendaFragment.newInstance();
                 fragmentoAtivo = Fragmentos.VENDA;
+                toolbar.setTitle(R.string.activity_venda_label);
                 break;
             case R.id.nav_produtos:
                 fragment = ListaProdutoFragment.newInstance();
                 fragmentoAtivo = Fragmentos.PRODUTO;
-                toolbar.setTitle("Produtos");
+                toolbar.setTitle(R.string.activity_produto_label);
                 break;
             case R.id.nav_vendedores:
                 fragment = ListaVendedorFragment.newInstance();
                 fragmentoAtivo = Fragmentos.VENDEDOR;
-                toolbar.setTitle("Vendedores");
+                toolbar.setTitle(R.string.activity_vendedor_label);
                 break;
             case R.id.nav_atualizar:
                 break;

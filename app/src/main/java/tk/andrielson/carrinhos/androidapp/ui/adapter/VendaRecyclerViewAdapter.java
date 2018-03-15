@@ -12,16 +12,14 @@ import java.util.Objects;
 import tk.andrielson.carrinhos.androidapp.data.model.Venda;
 import tk.andrielson.carrinhos.androidapp.data.model.VendaImpl;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentVendaListaItemBinding;
+import tk.andrielson.carrinhos.androidapp.observable.VendaObservable;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaVendaFragment;
 
-/**
- * Created by Andrielson on 06/03/2018.
- */
 //TODO: estudar possibilidade de se tornar uma classe abstrata para todas as entidades
 public class VendaRecyclerViewAdapter extends RecyclerView.Adapter<VendaRecyclerViewAdapter.VendaViewHolder> {
     protected final ListaVendaFragment.OnListFragmentInteractionListener mListener;
 
-    protected List<? extends Venda> listaVenda;
+    protected List<VendaObservable> listaVenda;
 
     public VendaRecyclerViewAdapter(ListaVendaFragment.OnListFragmentInteractionListener mListener) {
         this.mListener = mListener;
@@ -45,7 +43,7 @@ public class VendaRecyclerViewAdapter extends RecyclerView.Adapter<VendaRecycler
         return (listaVenda != null) ? listaVenda.size() : 0;
     }
 
-    public void setListaVenda(final List<? extends Venda> novaLista) {
+    public void setListaVenda(final List<VendaObservable> novaLista) {
         if (this.listaVenda == null) {
             this.listaVenda = novaLista;
             notifyItemRangeInserted(0, novaLista.size());
@@ -57,10 +55,10 @@ public class VendaRecyclerViewAdapter extends RecyclerView.Adapter<VendaRecycler
     }
 
     private static final class DiffCallback extends DiffUtil.Callback {
-        private final List<? extends Venda> listaNova;
-        private final List<? extends Venda> listaAntiga;
+        private final List<VendaObservable> listaNova;
+        private final List<VendaObservable> listaAntiga;
 
-        DiffCallback(List<? extends Venda> listaNova, List<? extends Venda> listaAntiga) {
+        DiffCallback(List<VendaObservable> listaNova, List<VendaObservable> listaAntiga) {
             this.listaNova = listaNova;
             this.listaAntiga = listaAntiga;
         }
@@ -78,14 +76,14 @@ public class VendaRecyclerViewAdapter extends RecyclerView.Adapter<VendaRecycler
         @Override
         public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
             //TODO: implementar método equals nos objetos
-            return Objects.equals(listaAntiga.get(oldItemPosition).getCodigo(), listaNova.get(newItemPosition).getCodigo());
+            return Objects.equals(listaAntiga.get(oldItemPosition).codigo.get(), listaNova.get(newItemPosition).codigo.get());
         }
 
         @Override
         public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-            Venda p1 = listaAntiga.get(oldItemPosition);
-            Venda p2 = listaNova.get(newItemPosition);
-            return p1.hashCode() == p2.hashCode();
+            VendaObservable v1 = listaAntiga.get(oldItemPosition);
+            VendaObservable v2 = listaNova.get(newItemPosition);
+            return v1.hashCode() == v2.hashCode();
         }
     }
     
@@ -99,8 +97,8 @@ public class VendaRecyclerViewAdapter extends RecyclerView.Adapter<VendaRecycler
             this.binding = binding;
         }
 
-        public void bind(final Venda venda, final ListaVendaFragment.OnListFragmentInteractionListener listener) {
-            binding.setVenda((VendaImpl) venda);
+        public void bind(final VendaObservable venda, final ListaVendaFragment.OnListFragmentInteractionListener listener) {
+            binding.setVenda(venda);
 //            binding.setHandler(new ListaVendaItemHandler(listener, venda));
             binding.executePendingBindings();
         }

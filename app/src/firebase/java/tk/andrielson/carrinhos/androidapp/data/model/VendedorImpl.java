@@ -38,7 +38,7 @@ public final class VendedorImpl extends Vendedor {
     };
     private Long codigo = 0L;
     private String nome;
-    private Integer comissao = 0;
+    private Integer comissao;
     private Boolean ativo = Boolean.TRUE;
     private Boolean excluido = Boolean.FALSE;
 
