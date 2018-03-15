@@ -25,7 +25,7 @@
             android:text="@{itemVenda.produto.nome}"
             android:textAppearance="?attr/textAppearanceListItem"
             grid:layout_columnSpan="2"
-            tools:text="PICOLÉ DE LEITE" />
+            tools:text="PRODUTO PRINCIPAL" />
 
         <!--Linha 1, coluna 3-->
         <TextView

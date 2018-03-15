@@ -64,16 +64,23 @@
 
     <!--Activity Venda-->
     <string name="activity_venda_label">Venda</string>
+    <string name="activity_venda_title_nova_venda">Venda</string>
 
     <!--<editor-fold desc="Fragment Cadastro de Venda">-->
     <string name="barra">/</string>
-    <string name="fragment_cadastro_venda_label_codigo">Código</string>
     <string name="fragment_cadastro_venda_label_data">Data da venda:</string>
+    <string name="fragment_cadastro_venda_hint_dia">dia</string>
+    <string name="fragment_cadastro_venda_hint_mes">mês</string>
+    <string name="fragment_cadastro_venda_hint_ano">ano</string>
+    <string name="fragment_cadastro_venda_botao_hoje">Hoje</string>
     <string name="fragment_cadastro_venda_selecione_vendedor">Selecione um vendedor</string>
-    <string name="fragment_cadastro_venda_label_preco">Preço</string>
-    <string name="fragment_cadastro_venda_label_habilitado">Habilitado</string>
-    <string name="fragment_cadastro_venda_label_desabilitado">Desabilitado</string>
-    <string name="fragment_cadastro_venda_label_botao_salvar">Salvar</string>
-    <string name="fragment_cadastro_venda_label_botao_excluir">Excluir venda</string>
+    <string name="fragment_cadastro_venda_label_levou">Levou</string>
+    <string name="fragment_cadastro_venda_label_voltou">Voltou</string>
+    <string name="fragment_cadastro_venda_label_vendeu">Vendeu</string>
+    <string name="fragment_cadastro_venda_label_total">Total</string>
+    <string name="fragment_cadastro_venda_label_sigla">WWW</string>
+    <string name="fragment_cadastro_venda_label_salvar">Salvar</string>
+    <string name="fragment_cadastro_venda_label_finalizar">Finalizar</string>
+    <string name="fragment_cadastro_venda_label_excluir">Excluir venda</string>
     <!--</editor-fold>-->
 </resources>

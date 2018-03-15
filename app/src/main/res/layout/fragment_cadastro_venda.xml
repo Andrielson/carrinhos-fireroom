@@ -15,143 +15,261 @@
         <variable
             name="cadastroVendaListener"
             type="tk.andrielson.carrinhos.androidapp.ui.fragment.CadastroVendaFragment.OnFragmentInteractionListener" />
+
+        <variable
+            name="handler"
+            type="tk.andrielson.carrinhos.androidapp.ui.viewhandler.CadastroVendaHandler" />
+
+        <import type="android.view.View" />
     </data>
 
-    <ScrollView
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{venda.data}" />
+            android:layout_height="match_parent">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:baselineAlignBottom="true"
-                    android:contentDescription="@string/fragment_cadastro_venda_label_data"
-                    android:src="@drawable/ic_today_black_24dp" />
-
-                <EditText
-                    android:id="@+id/data_dia"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:hint="dia"
-                    android:imeOptions="actionNext"
-                    android:inputType="numberPassword"
-                    android:maxLength="2"
-                    android:textAlignment="center"
-                    tools:ignore="LabelFor" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/barra"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                <EditText
-                    android:id="@+id/data_mes"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:hint="mês"
-                    android:imeOptions="actionNext"
-                    android:inputType="numberPassword"
-                    android:maxLength="2"
-                    android:textAlignment="center"
-                    tools:ignore="LabelFor" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/barra"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                <EditText
-                    android:id="@+id/data_ano"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:hint="ano"
-                    android:imeOptions="actionNext"
-                    android:inputType="numberPassword"
-                    android:maxLength="4"
-                    android:textAlignment="center"
-                    tools:ignore="LabelFor" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="HOJE" />
-
-                <!--<Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ONTEM" />-->
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/botao_selecionar_vendedor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@android:color/transparent"
-                android:drawablePadding="@dimen/default_gap"
-                android:drawableStart="@drawable/ic_portrait_black_24dp"
-                android:onClick="@{() -> cadastroVendaListener.onClickSelecionarVendedor()}"
-                android:text="@string/fragment_cadastro_venda_selecione_vendedor"
-                android:textAlignment="textStart"
-                android:textAllCaps="true"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:id="@+id/layout_dos_itens"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                tools:ignore="UselessLeaf" />
+                android:padding="8dp">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawablePadding="6dp"
-                android:drawableStart="@drawable/ic_monetization_on_black_16dp"
-                android:text="@={venda.total}"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold"
-                tools:text="R$ 100,00" />
+                <!--Elementos de configuração da data-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawablePadding="6dp"
-                android:drawableStart="@drawable/ic_account_balance_black_16dp"
-                android:text="@={venda.valorPago}"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                tools:text="R$ 60,00" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:baselineAlignBottom="true"
+                        android:contentDescription="@string/fragment_cadastro_venda_label_data"
+                        android:src="@drawable/ic_today_black_24dp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawablePadding="6dp"
-                android:drawableStart="@drawable/ic_account_box_black_16dp"
-                android:text="@={venda.valorComissao}"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                tools:text="R$ 40,00" />
-        </LinearLayout>
-    </ScrollView>
+                    <EditText
+                        android:id="@+id/data_dia"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:afterTextChanged="@{handler::afterTextChangedDataDia}"
+                        android:hint="@string/fragment_cadastro_venda_hint_dia"
+                        android:imeOptions="actionNext"
+                        android:inputType="numberPassword"
+                        android:maxLength="2"
+                        android:textAlignment="center"
+                        tools:ignore="LabelFor" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/barra"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <EditText
+                        android:id="@+id/data_mes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:afterTextChanged="@{handler::afterTextChangedDataMes}"
+                        android:hint="@string/fragment_cadastro_venda_hint_mes"
+                        android:imeOptions="actionNext"
+                        android:inputType="numberPassword"
+                        android:maxLength="2"
+                        android:textAlignment="center"
+                        tools:ignore="LabelFor" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/barra"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <EditText
+                        android:id="@+id/data_ano"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/fragment_cadastro_venda_hint_ano"
+                        android:imeOptions="actionNext"
+                        android:inputType="numberPassword"
+                        android:maxLength="4"
+                        android:textAlignment="center"
+                        tools:ignore="LabelFor" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{() -> handler.preencheDataHoje()}"
+                        android:text="@string/fragment_cadastro_venda_botao_hoje"
+                        android:textAllCaps="true" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/botao_selecionar_vendedor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@android:color/transparent"
+                    android:drawablePadding="@dimen/default_gap"
+                    android:drawableStart="@drawable/ic_portrait_black_24dp"
+                    android:onClick="@{() -> cadastroVendaListener.onClickSelecionarVendedor()}"
+                    android:text="@string/fragment_cadastro_venda_selecione_vendedor"
+                    android:textAlignment="textStart"
+                    android:textAllCaps="true"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold" />
+
+                <!--Linha das labels da grid de itens-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/fragment_cadastro_venda_label_sigla"
+                        android:textAllCaps="true"
+                        android:visibility="invisible" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="3dp"
+                        android:layout_marginStart="3dp"
+                        android:layout_weight="1"
+                        android:text="@string/fragment_cadastro_venda_label_levou"
+                        android:textAllCaps="true" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="3dp"
+                        android:layout_marginStart="3dp"
+                        android:layout_weight="1"
+                        android:text="@string/fragment_cadastro_venda_label_voltou"
+                        android:textAllCaps="true" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="3dp"
+                        android:layout_marginStart="3dp"
+                        android:layout_weight="1"
+                        android:text="@string/fragment_cadastro_venda_label_vendeu"
+                        android:textAllCaps="true" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:text="@string/fragment_cadastro_venda_label_total"
+                        android:textAllCaps="true" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_dos_itens"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    tools:ignore="UselessLeaf" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:drawablePadding="6dp"
+                    android:drawableStart="@drawable/ic_monetization_on_black_16dp"
+                    android:text="@={venda.total}"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"
+                    tools:text="R$ 100,00" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="8dp"
+                    android:drawablePadding="6dp"
+                    android:drawableStart="@drawable/ic_account_balance_black_16dp"
+                    android:text="@={venda.valorPago}"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/carrinhoHabilitado"
+                    tools:text="R$ 60,00" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="8dp"
+                    android:drawablePadding="6dp"
+                    android:drawableStart="@drawable/ic_account_box_black_16dp"
+                    android:text="@={venda.valorComissao}"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/carrinhoDesabilitado"
+                    tools:text="R$ 40,00" />
+
+                <LinearLayout
+                    style="?attr/buttonBarStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/botao_salvar"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/text_margin"
+                        android:layout_weight="1"
+                        android:background="@color/colorPrimaryDark"
+                        android:onClick="@{() -> handler.onBotaoSalvarClick(venda)}"
+                        android:padding="10dp"
+                        android:text="@string/fragment_cadastro_venda_label_salvar"
+                        android:textAllCaps="true"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/botao_finalizar"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginStart="@dimen/text_margin"
+                        android:layout_weight="1"
+                        android:background="@color/colorAccent"
+                        android:padding="10dp"
+                        android:text="@string/fragment_cadastro_venda_label_finalizar"
+                        android:textAllCaps="true"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <Button
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="32dp"
+                    android:onClick="@{() -> handler.onBotaoExcluirClick(venda)}"
+                    android:padding="8dp"
+                    android:text="@string/fragment_cadastro_venda_label_excluir"
+                    android:textAllCaps="true"
+                    android:textColor="#FF0000" />
+                <!--android:visibility="@{venda.ehNovo() ? View.GONE : View.VISIBLE}"-->
+
+            </LinearLayout>
+        </ScrollView>
+    </android.support.design.widget.CoordinatorLayout>
 </layout>

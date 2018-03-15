@@ -10,7 +10,7 @@ import tk.andrielson.carrinhos.androidapp.observable.ProdutoObservable;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.CadastroProdutoFragment;
 import tk.andrielson.carrinhos.androidapp.utils.Util;
 
-public class CadastroProdutoHandler {
+public final class CadastroProdutoHandler {
     private static final String TAG = CadastroProdutoHandler.class.getSimpleName();
     private final CadastroProdutoFragment.OnFragmentInteractionListener listener;
     private final FragmentCadastroProdutoBinding binding;
