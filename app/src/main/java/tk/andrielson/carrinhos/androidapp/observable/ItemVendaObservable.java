@@ -37,8 +37,8 @@ public final class ItemVendaObservable {
     public ItemVenda getItemVendaModel() {
         //noinspection unchecked
         itemVendaModel.setProduto(produto.get().getProdutoModel());
-        itemVendaModel.setQtSaiu(Integer.valueOf(qtSaiu.get()));
-        itemVendaModel.setQtVoltou(Integer.valueOf(qtVoltou.get()));
+        itemVendaModel.setQtSaiu(Integer.valueOf(qtSaiu.get().isEmpty() ? "0" : qtSaiu.get()));
+        itemVendaModel.setQtVoltou(Integer.valueOf(qtVoltou.get().isEmpty() ? "0" : qtVoltou.get()));
         itemVendaModel.setQtVendeu(Integer.valueOf(qtVendeu.get()));
         itemVendaModel.setValor(Util.RStoLong(valor.get()));
         return itemVendaModel;

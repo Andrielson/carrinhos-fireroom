@@ -5,13 +5,16 @@ import android.arch.lifecycle.Transformations;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import tk.andrielson.carrinhos.androidapp.data.model.ItemVendaImpl;
 import tk.andrielson.carrinhos.androidapp.data.model.ProdutoImpl;
@@ -36,13 +39,19 @@ public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaIm
         String ultimoID = getColecaoID(COLECAO);
         Long novoCodigo = Long.valueOf(ultimoID) + 1;
         venda.setCodigo(novoCodigo);
-        final String id = getIdFromCodigo(novoCodigo);
-        DocumentReference novoDocumento = collection.document(id);
-        WriteBatch batch = setColecaoID(COLECAO, id);
+        final String idVenda = getIdFromCodigo(novoCodigo);
+        DocumentReference novoDocumento = collection.document(idVenda);
+        WriteBatch batch = setColecaoID(COLECAO, idVenda);
         //FIXME: o Firestore não vai conseguir mapear VendaImpl para um objeto da coleção Venda
-        batch.set(novoDocumento, venda);
-        batch.commit().addOnSuccessListener(aVoid -> LogUtil.Log(TAG, "Nova venda " + id + " adicionada com sucesso!", Log.INFO)).addOnFailureListener(e -> {
-            LogUtil.Log(TAG, "Falha ao adicionar a venda " + id, Log.ERROR);
+        batch.set(novoDocumento, vendaToMap(venda));
+        for (ItemVendaImpl itv : venda.getItens()) {
+            String idItem = getIdFromCodigo(itv.getProduto().getCodigo());
+            CollectionReference collectionItem = db.collection(String.format("/%s/%s/%s", VendaImpl.COLECAO, idVenda, ItemVendaImpl.COLECAO));
+            DocumentReference novoItem = collectionItem.document(idItem);
+            batch.set(novoItem, itemToMap(itv));
+        }
+        batch.commit().addOnSuccessListener(aVoid -> LogUtil.Log(TAG, "Nova venda " + idVenda + " adicionada com sucesso!", Log.INFO)).addOnFailureListener(e -> {
+            LogUtil.Log(TAG, "Falha ao adicionar a venda " + idVenda, Log.ERROR);
             LogUtil.Log(TAG, e.getMessage(), Log.ERROR);
         });
         return novoCodigo;
@@ -80,6 +89,7 @@ public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaIm
     @Override
     public LiveData<List<VendaImpl>> getAll() {
         FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(queryPadrao);
+        //FIXME: usar uma MediatorLiveData para fazer JOIN entre Venda e Vendedor
         return Transformations.map(liveData, input -> {
             List<VendaImpl> lista = new ArrayList<>();
             for (DocumentSnapshot doc : input.getDocuments()) {
@@ -123,8 +133,9 @@ public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaIm
     }
 
     public LiveData<List<ItemVendaImpl>> getItens(@NonNull Long codigo) {
-        Query query = db.collection(String.format("/vendas/%s/itens", getIdFromCodigo(codigo)));
+        Query query = db.collection(String.format("/%s/%s/%s", VendaImpl.COLECAO, getIdFromCodigo(codigo), ItemVendaImpl.COLECAO));
         FirestoreQueryLiveData itensLiveData = new FirestoreQueryLiveData(query);
+        //FIXME: usar uma MediatorLiveData para fazer JOIN entre ItemVenda e Produto
         return Transformations.map(itensLiveData, input -> {
             List<ItemVendaImpl> lista = new ArrayList<>();
             for (DocumentSnapshot doc : input.getDocuments()) {
@@ -147,5 +158,27 @@ public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaIm
             }
             return lista;
         });
+    }
+
+    private Map<String, Object> vendaToMap(VendaImpl venda) {
+        Map<String, Object> map = new HashMap<>(7, 1);
+        map.put(VendaImpl.CODIGO, venda.getCodigo());
+        map.put(VendaImpl.COMISSAO, venda.getComissao());
+        map.put(VendaImpl.DATA, venda.getData());
+        map.put(VendaImpl.STATUS, venda.getStatus());
+        map.put(VendaImpl.TOTAL, venda.getTotal());
+        map.put(VendaImpl.VENDEDOR, String.format("/%s/%s", VendedorImpl.COLECAO, getIdFromCodigo(venda.getVendedor().getCodigo())));
+        map.put(VendaImpl.VENDEDOR_NOME, venda.getVendedor().getNome());
+        return map;
+    }
+
+    private Map<String, Object> itemToMap(ItemVendaImpl item) {
+        Map<String, Object> map = new HashMap<>(5, 1);
+        map.put(ItemVendaImpl.QT_SAIU, item.getQtSaiu());
+        map.put(ItemVendaImpl.QT_VOLTOU, item.getQtVoltou());
+        map.put(ItemVendaImpl.QT_VENDEU, item.getQtVendeu());
+        map.put(ItemVendaImpl.VALOR, item.getValor());
+        map.put(ItemVendaImpl.PRODUTO, String.format("/%s/%s", ProdutoImpl.COLECAO, getIdFromCodigo(item.getProduto().getCodigo())));
+        return map;
     }
 }

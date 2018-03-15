@@ -85,16 +85,18 @@ public final class CadastroVendaHandler {
     }
 
     public void onBotaoSalvarClick(VendaObservable observable) {
-        if (true)
+        if (true) {
+            observable.status.set("ABERTA");
             listener.salvarVenda(observable);
-        else
+        } else
             Toast.makeText(binding.getRoot().getContext(), "Por favor, corrija as informações incorretas!", Toast.LENGTH_SHORT).show();
     }
 
     public void onBotaoFinalizarClick(VendaObservable observable) {
-        if (true)
+        if (true) {
+            observable.status.set("FINALIZADA");
             listener.finalizarVenda(observable);
-        else
+        } else
             Toast.makeText(binding.getRoot().getContext(), "Por favor, corrija as informações incorretas!", Toast.LENGTH_SHORT).show();
     }
 

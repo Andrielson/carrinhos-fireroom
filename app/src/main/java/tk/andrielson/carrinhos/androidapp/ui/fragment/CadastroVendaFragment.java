@@ -1,5 +1,6 @@
 package tk.andrielson.carrinhos.androidapp.ui.fragment;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -13,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+
+import java.util.List;
 
 import tk.andrielson.carrinhos.androidapp.R;
 import tk.andrielson.carrinhos.androidapp.data.model.Venda;
@@ -114,7 +117,9 @@ public class CadastroVendaFragment extends Fragment {
 
     //TODO: encontrar uma forma de parar a observação da LiveData
     private void configuraUI(final CadastroVendaViewModel viewModel) {
-        viewModel.getItensVenda().observe(this, itens -> {
+        LiveData<List<ItemVendaObservable>> listLiveData;
+        listLiveData = vendaObservable.ehNovo() ? viewModel.getItensVenda() : viewModel.getItensVenda(vendaObservable.codigo.get());
+        listLiveData.observe(this, itens -> {
             if (itens != null) {
                 LayoutInflater layoutInflater = LayoutInflater.from(binding.layoutDosItens.getContext());
                 binding.layoutDosItens.removeAllViews();
@@ -127,9 +132,8 @@ public class CadastroVendaFragment extends Fragment {
                     itemvendaBinding.qtLevou.setTransformationMethod(null);
                     itemvendaBinding.qtVoltou.setTransformationMethod(null);
                     binding.layoutDosItens.addView(itemvendaBinding.getRoot());
-                    if (vendaObservable.itens.get().indexOf(ito) == 0) {
+                    if (vendaObservable.itens.get().indexOf(ito) == 0)
                         setProximoCampo(itemvendaBinding.qtLevou);
-                    }
                 }
                 binding.setVenda(vendaObservable);
                 binding.setCadastroVendaListener(mListener);
@@ -140,9 +144,7 @@ public class CadastroVendaFragment extends Fragment {
 
     private void configuraCamposData() {
         binding.dataDia.setTransformationMethod(null);
-        //setProximoCampo(binding.dataDia, binding.dataMes, 2, 1, 31);
         binding.dataMes.setTransformationMethod(null);
-        //setProximoCampo(binding.dataMes, binding.dataAno, 2, 1, 12);
         binding.dataAno.setTransformationMethod(null);
     }
 

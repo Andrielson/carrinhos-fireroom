@@ -92,12 +92,14 @@ public class VendaActivity extends AppCompatActivity
 
     @Override
     public void salvarVenda(VendaObservable observable) {
-        Toast.makeText(this, "Um dia vai salvar...", Toast.LENGTH_SHORT).show();
+        viewModel.salvarVenda(observable);
+        finish();
     }
 
     @Override
     public void excluirVenda(VendaObservable observable) {
-        Toast.makeText(this, "Um dia vai excluir...", Toast.LENGTH_SHORT).show();
+        viewModel.excluirVenda(observable);
+        finish();
     }
 
     @Override
