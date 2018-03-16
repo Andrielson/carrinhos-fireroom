@@ -8,10 +8,6 @@ import com.facebook.stetho.Stetho;
 
 import org.jetbrains.annotations.Contract;
 
-/**
- * Created by Andrielson on 28/02/2018.
- */
-
 public final class CarrinhosApp extends Application {
 
     @SuppressLint("StaticFieldLeak")

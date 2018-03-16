@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -16,6 +17,7 @@ import java.util.Locale;
 import tk.andrielson.carrinhos.androidapp.DI;
 import tk.andrielson.carrinhos.androidapp.data.model.ItemVenda;
 import tk.andrielson.carrinhos.androidapp.data.model.Venda;
+import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 import tk.andrielson.carrinhos.androidapp.utils.Util;
 
 @SuppressLint("DefaultLocale")
@@ -40,6 +42,7 @@ public final class VendaObservable extends AbsCodigoObservable {
     public VendaObservable(@NonNull Venda venda) {
         vendaModel = venda;
         codigoSet(venda.getCodigo());
+        LogUtil.Log("VendaObservable", "codigoSet: " + venda.getCodigo(), Log.DEBUG);
         data.set(venda.getData() == null ? dateFormat.format(Calendar.getInstance().getTime()) : dateFormat.format(venda.getData()));
         total.set(Util.longToRS(venda.getTotal()));
         status.set(venda.getStatus());
@@ -64,6 +67,7 @@ public final class VendaObservable extends AbsCodigoObservable {
 
     public Venda getVendaModel() {
         vendaModel.setCodigo(codigoGet());
+        LogUtil.Log("VendaObservable", "codigoGet: " + vendaModel.getCodigo(), Log.DEBUG);
         vendaModel.setComissao(Util.RStoLong(comissao.get()).intValue());
         try {
             vendaModel.setData(dateFormat.parse(data.get()));
@@ -93,6 +97,30 @@ public final class VendaObservable extends AbsCodigoObservable {
         long valorPago = valorTotal - valorComissao;
         this.valorComissao.set(Util.longToRS(valorComissao));
         this.valorPago.set(Util.longToRS(valorPago));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        VendaObservable that = (VendaObservable) o;
+
+        return comissao.equals(that.comissao) && data.equals(that.data) && total.equals(that.total) && status.equals(that.status) && valorComissao.equals(that.valorComissao) && valorPago.equals(that.valorPago) && vendedor.equals(that.vendedor) && itens.equals(that.itens) && vendaModel.equals(that.vendaModel);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = comissao.hashCode();
+        result = 31 * result + data.hashCode();
+        result = 31 * result + total.hashCode();
+        result = 31 * result + status.hashCode();
+        result = 31 * result + valorComissao.hashCode();
+        result = 31 * result + valorPago.hashCode();
+        result = 31 * result + vendedor.hashCode();
+        result = 31 * result + itens.hashCode();
+        result = 31 * result + vendaModel.hashCode();
+        return result;
     }
 
     private class TotalAtualizador extends Observable.OnPropertyChangedCallback {

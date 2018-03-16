@@ -8,10 +8,6 @@ import tk.andrielson.carrinhos.androidapp.utils.Util;
 
 import static tk.andrielson.carrinhos.androidapp.DI.newItemVenda;
 
-/**
- * Created by Andrielson on 13/03/2018.
- */
-
 public final class ItemVendaObservable {
     public final ObservableField<ProdutoObservable> produto = new ObservableField<>();
     public final ObservableField<String> qtSaiu = new ObservableField<>();

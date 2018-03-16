@@ -8,10 +8,6 @@ import org.jetbrains.annotations.Contract;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by anfesilva on 12/03/2018.
- */
-
 public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
 
     public static final String COLECAO = "vendas";
@@ -29,7 +25,6 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
     private Date data;
     private Long total = 0L;
     private VendedorImpl vendedor;
-    private String vendedorNome;
     private String status;
     private List<ItemVendaImpl> itens;
 
@@ -92,15 +87,6 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
     }
 
     @Contract(pure = true)
-    public String getVendedorNome() {
-        return vendedorNome;
-    }
-
-    public void setVendedorNome(String vendedorNome) {
-        this.vendedorNome = vendedorNome;
-    }
-
-    @Contract(pure = true)
     @Override
     public List<ItemVendaImpl> getItens() {
         return itens;
@@ -127,14 +113,7 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
 
         VendaImpl venda = (VendaImpl) o;
 
-        if (codigo != null ? !codigo.equals(venda.codigo) : venda.codigo != null) return false;
-        if (comissao != null ? !comissao.equals(venda.comissao) : venda.comissao != null)
-            return false;
-        if (data != null ? !data.equals(venda.data) : venda.data != null) return false;
-        if (total != null ? !total.equals(venda.total) : venda.total != null) return false;
-        if (vendedor != null ? !vendedor.equals(venda.vendedor) : venda.vendedor != null)
-            return false;
-        return itens != null ? itens.equals(venda.itens) : venda.itens == null;
+        return (codigo != null ? codigo.equals(venda.codigo) : venda.codigo == null) && (comissao != null ? comissao.equals(venda.comissao) : venda.comissao == null) && (data != null ? data.equals(venda.data) : venda.data == null) && (total != null ? total.equals(venda.total) : venda.total == null) && (vendedor != null ? vendedor.equals(venda.vendedor) : venda.vendedor == null) && (itens != null ? itens.equals(venda.itens) : venda.itens == null);
     }
 
     @Override

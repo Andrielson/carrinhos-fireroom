@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import tk.andrielson.carrinhos.androidapp.R;
@@ -14,6 +15,7 @@ import tk.andrielson.carrinhos.androidapp.observable.VendaObservable;
 import tk.andrielson.carrinhos.androidapp.observable.VendedorObservable;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.CadastroVendaFragment;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaVendedorFragment;
+import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 import tk.andrielson.carrinhos.androidapp.viewmodel.CadastroVendaViewModel;
 
 import static tk.andrielson.carrinhos.androidapp.DI.newVenda;

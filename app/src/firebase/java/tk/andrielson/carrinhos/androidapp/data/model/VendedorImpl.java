@@ -116,7 +116,7 @@ public final class VendedorImpl extends Vendedor {
     public int hashCode() {
         int result = codigo.hashCode();
         result = 31 * result + (nome != null ? nome.hashCode() : 0);
-        result = 31 * result + comissao.hashCode();
+        result = 31 * result + (comissao != null ? comissao.hashCode() : 0);
         result = 31 * result + ativo.hashCode();
         result = 31 * result + excluido.hashCode();
         return result;

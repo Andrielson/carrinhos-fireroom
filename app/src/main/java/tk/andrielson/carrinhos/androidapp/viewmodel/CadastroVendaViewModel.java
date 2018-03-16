@@ -6,7 +6,6 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.Transformations;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -20,7 +19,6 @@ import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.data.model.Venda;
 import tk.andrielson.carrinhos.androidapp.observable.ItemVendaObservable;
 import tk.andrielson.carrinhos.androidapp.observable.VendaObservable;
-import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
 import static tk.andrielson.carrinhos.androidapp.DI.newProdutoDao;
 import static tk.andrielson.carrinhos.androidapp.DI.newVenda;
@@ -64,11 +62,11 @@ public class CadastroVendaViewModel extends AndroidViewModel {
                     for (j = produtosAtivos.size() - 1; j >= 0; j--) {
                         ItemVendaObservable ito = produtosAtivos.get(j);
                         // Se encontrar esse item entre os observáveis, substitui os valores
-                        LogUtil.Log(TAG, "ITO: " + ito.produto.get().codigo.get(), Log.DEBUG);
-                        LogUtil.Log(TAG, "ITV: " + itv.getProduto().getCodigo(), Log.DEBUG);
-                        if (itv.getProduto().getCodigo().equals(Long.valueOf(ito.produto.get().codigo.get())))
+                        if (itv.getProduto().getCodigo().equals(Long.valueOf(ito.produto.get().codigo.get()))) {
                             //remove
                             produtosAtivos.remove(j);
+                            break;
+                        }
                     }
                     //adiciona
                     produtosAtivos.add(new ItemVendaObservable(itv));

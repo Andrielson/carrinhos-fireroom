@@ -1,6 +1,5 @@
 package tk.andrielson.carrinhos.androidapp.ui.fragment;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -12,11 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
-
-import tk.andrielson.carrinhos.androidapp.DI;
 import tk.andrielson.carrinhos.androidapp.R;
-import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentProdutoListaBinding;
 import tk.andrielson.carrinhos.androidapp.observable.ProdutoObservable;
 import tk.andrielson.carrinhos.androidapp.ui.adapter.ProdutoRecyclerViewAdapter;
@@ -90,10 +85,11 @@ public class ListaProdutoFragment extends Fragment {
     private void configuraUI(ListaProdutoViewModel viewModel) {
         viewModel.getProdutos().observe(this, produtos -> {
             if (produtos != null) {
-                binding.setIsLoading(false);
+                binding.setCarregando(false);
                 adapter.setListaProduto(produtos);
+                binding.setListaVazia(produtos.isEmpty());
             } else {
-                binding.setIsLoading(true);
+                binding.setCarregando(true);
             }
             binding.executePendingBindings();
         });

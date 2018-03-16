@@ -76,9 +76,9 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         if (savedInstanceState != null && savedInstanceState.getSerializable(STATE_FRAGMENTOS) != null)
-            fragmentoAtivo = (Fragmentos) savedInstanceState.getSerializable(STATE_FRAGMENTOS);
+            carregaFragment((Fragmentos) savedInstanceState.getSerializable(STATE_FRAGMENTOS));
         else
-            fragmentoAtivo = Fragmentos.INICIO;
+            carregaFragment(Fragmentos.VENDA);
 
         LogUtil.Log(TAG, "onCreate", Log.VERBOSE);
     }
@@ -164,25 +164,18 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        Fragment fragment = null;
         switch (id) {
             case R.id.nav_inicio:
                 fragmentoAtivo = Fragmentos.INICIO;
                 break;
             case R.id.nav_vendas:
-                fragment = ListaVendaFragment.newInstance();
-                fragmentoAtivo = Fragmentos.VENDA;
-                toolbar.setTitle(R.string.activity_venda_label);
+                carregaFragment(Fragmentos.VENDA);
                 break;
             case R.id.nav_produtos:
-                fragment = ListaProdutoFragment.newInstance();
-                fragmentoAtivo = Fragmentos.PRODUTO;
-                toolbar.setTitle(R.string.activity_produto_label);
+                carregaFragment(Fragmentos.PRODUTO);
                 break;
             case R.id.nav_vendedores:
-                fragment = ListaVendedorFragment.newInstance();
-                fragmentoAtivo = Fragmentos.VENDEDOR;
-                toolbar.setTitle(R.string.activity_vendedor_label);
+                carregaFragment(Fragmentos.VENDEDOR);
                 break;
             case R.id.nav_atualizar:
                 break;
@@ -190,11 +183,6 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_sobre:
                 break;
-        }
-        if (fragment != null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, fragment);
-            ft.commit();
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -219,6 +207,29 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(this, VendaActivity.class);
         intent.putExtra(VendaActivity.INTENT_EXTRA_VENDA, item.getVendaModel());
         startActivity(intent);
+    }
+
+    private void carregaFragment(Fragmentos frag) {
+        Fragment fragment = null;
+        fragmentoAtivo = frag;
+        switch (frag) {
+            case VENDA:
+                fragment = ListaVendaFragment.newInstance();
+                toolbar.setTitle(R.string.activity_venda_label);
+                break;
+            case PRODUTO:
+                fragment = ListaProdutoFragment.newInstance();
+                toolbar.setTitle(R.string.activity_produto_label);
+                break;
+            case VENDEDOR:
+                fragment = ListaVendedorFragment.newInstance();
+                toolbar.setTitle(R.string.activity_vendedor_label);
+                break;
+            default:
+        }
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, fragment);
+        ft.commit();
     }
 
     private enum Fragmentos {

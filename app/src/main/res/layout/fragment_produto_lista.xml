@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:name="tk.andrielson.carrinhos.androidapp.ui.fragment.ListaProdutoFragment"
+    tools:context="tk.andrielson.carrinhos.androidapp.ui.fragment.ListaProdutoFragment">
 
     <data>
 
         <variable
-            name="isLoading"
+            name="carregando"
+            type="boolean" />
+
+        <variable
+            name="listaVazia"
             type="boolean" />
 
         <import type="android.view.View" />
@@ -25,9 +31,8 @@
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/fragment_produto_lista_carregando_produtos"
             android:textAlignment="center"
-            android:visibility="@{isLoading ? View.VISIBLE : View.GONE}"
+            android:visibility="@{carregando ? View.VISIBLE : View.GONE}"
             tools:visibility="gone" />
-        <!--app:visibleGone="@{isLoading}"-->
 
         <TextView
             android:id="@+id/empty_tv"
@@ -36,18 +41,16 @@
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/fragment_produto_lista_vazia"
             android:textAlignment="center"
-            android:visibility="gone"
+            android:visibility="@{listaVazia ? View.VISIBLE : View.GONE}"
             tools:visibility="gone" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/list"
-            android:name="tk.andrielson.carrinhos.androidapp.ui.fragment.ProdutoFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             app:layoutManager="LinearLayoutManager"
-            tools:context="tk.andrielson.carrinhos.androidapp.ui.fragment.ListaProdutoFragment"
             tools:listitem="@layout/fragment_produto_lista_item"
             tools:visibility="visible" />
     </LinearLayout>

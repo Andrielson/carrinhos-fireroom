@@ -5,6 +5,7 @@ import android.arch.lifecycle.Transformations;
 import android.support.annotation.NonNull;
 import android.support.v4.util.SimpleArrayMap;
 import android.util.Log;
+import android.util.LongSparseArray;
 
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -149,15 +150,15 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao<Pro
     }
 
     @NonNull
-    public LiveData<SimpleArrayMap<Long, ProdutoImpl>> getForJoin() {
+    public LiveData<LongSparseArray<ProdutoImpl>> getForJoin() {
         FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(db.collection(COLECAO));
         return Transformations.map(liveData, input -> {
-            SimpleArrayMap<Long, ProdutoImpl> arrayMap = new SimpleArrayMap<>(input.size());
+            LongSparseArray<ProdutoImpl> produtoArray = new LongSparseArray<>();
             for (DocumentSnapshot doc : input.getDocuments()) {
                 ProdutoImpl produto = doc.toObject(ProdutoImpl.class);
-                arrayMap.put(produto.getCodigo(), produto);
+                produtoArray.put(produto.getCodigo(), produto);
             }
-            return arrayMap;
+            return produtoArray;
         });
     }
 

@@ -4,19 +4,22 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.Transformations;
 import android.support.annotation.NonNull;
-import android.support.v4.util.SimpleArrayMap;
 import android.util.Log;
+import android.util.LongSparseArray;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
 
 import tk.andrielson.carrinhos.androidapp.data.model.ItemVendaImpl;
 import tk.andrielson.carrinhos.androidapp.data.model.ProdutoImpl;
@@ -60,13 +63,18 @@ public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaIm
 
     @Override
     public int update(@NonNull VendaImpl venda) {
-        final String id = getIdFromCodigo(venda.getCodigo());
-        DocumentReference documento = collection.document(id);
+        final String idVenda = getIdFromCodigo(venda.getCodigo());
+        DocumentReference documento = collection.document(idVenda);
         WriteBatch batch = db.batch();
-        //FIXME: o Firestore não vai conseguir mapear VendaImpl para um objeto da coleção Venda
-        batch.set(documento, venda);
-        batch.commit().addOnSuccessListener(aVoid -> LogUtil.Log(TAG, "Venda " + id + " atualizada com sucesso!", Log.INFO)).addOnFailureListener(e -> {
-            LogUtil.Log(TAG, "Falha ao atualizar a venda " + id, Log.ERROR);
+        batch.set(documento, vendaToMap(venda));
+        for (ItemVendaImpl itv : venda.getItens()) {
+            String idItem = getIdFromCodigo(itv.getProduto().getCodigo());
+            CollectionReference collectionItem = db.collection(String.format("/%s/%s/%s", VendaImpl.COLECAO, idVenda, ItemVendaImpl.COLECAO));
+            DocumentReference novoItem = collectionItem.document(idItem);
+            batch.set(novoItem, itemToMap(itv));
+        }
+        batch.commit().addOnSuccessListener(aVoid -> LogUtil.Log(TAG, "Venda " + idVenda + " atualizada com sucesso!", Log.INFO)).addOnFailureListener(e -> {
+            LogUtil.Log(TAG, "Falha ao atualizar a venda " + idVenda, Log.ERROR);
             LogUtil.Log(TAG, e.getMessage(), Log.ERROR);
         });
         return 0;
@@ -74,24 +82,31 @@ public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaIm
 
     @Override
     public int delete(@NonNull VendaImpl venda) {
-        final String id = getIdFromCodigo(venda.getCodigo());
-        DocumentReference documento = collection.document(id);
-        WriteBatch batch = db.batch();
-        batch.delete(documento);
-        batch.commit()
-                .addOnSuccessListener(aVoid -> LogUtil.Log(TAG, "Venda " + id + " removida com sucesso!", Log.INFO))
-                .addOnFailureListener(e -> {
-                    LogUtil.Log(TAG, "Falha ao remover a venda " + id, Log.ERROR);
-                    LogUtil.Log(TAG, e.getMessage(), Log.ERROR);
-                });
+        final String idVenda = getIdFromCodigo(venda.getCodigo());
+        final WriteBatch batch = db.batch();
+        Query queryItens = db.collection(String.format("/%s/%s/%s", VendaImpl.COLECAO, idVenda, ItemVendaImpl.COLECAO));
+        queryItens.get().addOnSuccessListener(Executors.newSingleThreadExecutor(), new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot documentSnapshots) {
+                if (!documentSnapshots.isEmpty())
+                    for (DocumentSnapshot doc : documentSnapshots.getDocuments())
+                        batch.delete(doc.getReference());
+                batch.delete(collection.document(idVenda));
+                batch.commit()
+                        .addOnSuccessListener(aVoid -> LogUtil.Log(TAG, "Venda " + idVenda + " removida com sucesso!", Log.INFO))
+                        .addOnFailureListener(e -> {
+                            LogUtil.Log(TAG, "Falha ao remover a venda " + idVenda, Log.ERROR);
+                            LogUtil.Log(TAG, e.getMessage(), Log.ERROR);
+                        });
+            }
+        });
         return 0;
     }
 
     @Override
     public LiveData<List<VendaImpl>> getAll() {
         FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(queryPadrao);
-        //FIXME: usar uma MediatorLiveData para fazer JOIN entre Venda e Vendedor
-        return Transformations.map(liveData, input -> {
+        LiveData<List<VendaImpl>> vendas = Transformations.map(liveData, input -> {
             List<VendaImpl> lista = new ArrayList<>();
             for (DocumentSnapshot doc : input.getDocuments()) {
                 try {
@@ -103,7 +118,6 @@ public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaIm
                     venda.setStatus(doc.getString(VendaImpl.STATUS));
                     VendedorImpl vendedor = new VendedorImpl();
                     vendedor.setCodigo(Long.valueOf(doc.getDocumentReference(VendaImpl.VENDEDOR).getId()));
-                    vendedor.setNome(doc.getString(VendaImpl.VENDEDOR_NOME));
                     venda.setVendedor(vendedor);
                     lista.add(venda);
                 } catch (java.lang.RuntimeException e) {
@@ -113,11 +127,27 @@ public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaIm
                     LogUtil.Log(TAG, VendaImpl.DATA + ": " + doc.getDate(VendaImpl.DATA), Log.ERROR);
                     LogUtil.Log(TAG, VendaImpl.TOTAL + ": " + doc.getLong(VendaImpl.TOTAL), Log.ERROR);
                     LogUtil.Log(TAG, VendaImpl.STATUS + ": " + doc.getString(VendaImpl.STATUS), Log.ERROR);
-                    LogUtil.Log(TAG, VendaImpl.VENDEDOR_NOME + ": " + doc.getString(VendaImpl.VENDEDOR_NOME), Log.ERROR);
                 }
             }
             return lista;
         });
+
+        // Usa MediatorLiveData pra fazer um JOIN entre Vendas e Vendedores
+        final MediatorLiveData<List<VendaImpl>> mediatorLiveData = new MediatorLiveData<>();
+        mediatorLiveData.addSource(vendas, mediatorLiveData::setValue);
+        VendedorDaoImpl vendedorDao = new VendedorDaoImpl();
+        LiveData<LongSparseArray<VendedorImpl>> vendedores = vendedorDao.getForJoin();
+        mediatorLiveData.addSource(vendedores, joinVendedores -> {
+            List<VendaImpl> lista = mediatorLiveData.getValue();
+            if (lista != null && joinVendedores != null) {
+                for (VendaImpl vda : lista) {
+                    Long cod = vda.getVendedor().getCodigo();
+                    vda.setVendedor(joinVendedores.get(cod));
+                }
+                mediatorLiveData.setValue(lista);
+            }
+        });
+        return mediatorLiveData;
     }
 
     @Override
@@ -145,7 +175,6 @@ public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaIm
     public LiveData<List<ItemVendaImpl>> getItens(@NonNull Long codigo) {
         Query query = db.collection(String.format("/%s/%s/%s", VendaImpl.COLECAO, getIdFromCodigo(codigo), ItemVendaImpl.COLECAO));
         FirestoreQueryLiveData itensLiveData = new FirestoreQueryLiveData(query);
-        //FIXME: usar uma MediatorLiveData para fazer JOIN entre ItemVenda e Produto
         LiveData<List<ItemVendaImpl>> itens = Transformations.map(itensLiveData, input -> {
             List<ItemVendaImpl> lista = new ArrayList<>();
             for (DocumentSnapshot doc : input.getDocuments()) {
@@ -160,26 +189,28 @@ public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaIm
                 String codigoProduto = doc.getDocumentReference(ItemVendaImpl.PRODUTO).getId();
                 ProdutoImpl produto = new ProdutoImpl();
                 produto.setCodigo(Long.valueOf(codigoProduto));
-                /*
-                TODO: salvar e recuperar o nome e a sigla do produto no item da venda
-                produto.setSigla(SIGLA-DO-ITEM);
-                produto.setNome(NOME-DO-ITEM);
-                */
+                //
+                //TODO: salvar e recuperar o nome e a sigla do produto no item da venda
+                //produto.setSigla(SIGLA-DO-ITEM);
+                //produto.setNome(NOME-DO-ITEM);
+                //
                 item.setProduto(produto);
                 lista.add(item);
             }
             return lista;
         });
+
+        // Usa MediatorLiveData pra fazer um JOIN entre Itens e Produtos
         final MediatorLiveData<List<ItemVendaImpl>> mediatorLiveData = new MediatorLiveData<>();
         mediatorLiveData.addSource(itens, mediatorLiveData::setValue);
         ProdutoDaoImpl produtoDao = new ProdutoDaoImpl();
-        LiveData<SimpleArrayMap<Long, ProdutoImpl>> produtosLiveData = produtoDao.getForJoin();
-        mediatorLiveData.addSource(produtosLiveData, produtosArraymap -> {
+        LiveData<LongSparseArray<ProdutoImpl>> produtosLiveData = produtoDao.getForJoin();
+        mediatorLiveData.addSource(produtosLiveData, produtos -> {
             List<ItemVendaImpl> lista = mediatorLiveData.getValue();
-            if (lista != null && produtosArraymap != null) {
+            if (lista != null && produtos != null) {
                 for (ItemVendaImpl itv : lista) {
                     Long cod = itv.getProduto().getCodigo();
-                    itv.setProduto(produtosArraymap.get(cod));
+                    itv.setProduto(produtos.get(cod));
                 }
                 mediatorLiveData.setValue(lista);
             }
@@ -195,7 +226,6 @@ public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaIm
         map.put(VendaImpl.STATUS, venda.getStatus());
         map.put(VendaImpl.TOTAL, venda.getTotal());
         map.put(VendaImpl.VENDEDOR, db.collection(VendedorImpl.COLECAO).document(getIdFromCodigo(venda.getVendedor().getCodigo())));
-        map.put(VendaImpl.VENDEDOR_NOME, venda.getVendedor().getNome());
         return map;
     }
 

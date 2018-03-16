@@ -8,12 +8,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -81,18 +78,17 @@ public class CadastroVendaFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null && getArguments().getParcelable(ARG_VENDA) != null)
+        if (getArguments() == null || getArguments().getParcelable(ARG_VENDA) == null)
+            vendaObservable = new VendaObservable();
+        else
             //noinspection ConstantConditions
             vendaObservable = new VendaObservable(getArguments().getParcelable(ARG_VENDA));
-        else
-            vendaObservable = new VendaObservable();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cadastro_venda, container, false);
         configuraCamposData();
-        binding.setVenda(vendaObservable);
         binding.setHandler(new CadastroVendaHandler(binding, mListener));
         return binding.getRoot();
     }
@@ -120,12 +116,16 @@ public class CadastroVendaFragment extends Fragment {
     //TODO: encontrar uma forma de parar a observação da LiveData
     private void configuraUI(final CadastroVendaViewModel viewModel) {
         LiveData<List<ItemVendaObservable>> listLiveData;
-        listLiveData = vendaObservable.ehNovo() ? viewModel.getItensVenda() : viewModel.getItensVenda(vendaObservable.codigo.get());
+        if (vendaObservable.ehNovo())
+            listLiveData = viewModel.getItensVenda();
+        else {
+            listLiveData = viewModel.getItensVenda(vendaObservable.codigo.get());
+            binding.botaoSelecionarVendedor.setText(vendaObservable.vendedor.get().nome.get());
+        }
         listLiveData.observe(this, itens -> {
             if (itens != null) {
                 LayoutInflater layoutInflater = LayoutInflater.from(binding.layoutDosItens.getContext());
                 binding.layoutDosItens.removeAllViews();
-                VendaObservable vendaObservable = new VendaObservable();
                 vendaObservable.setItensVendaObservable(itens);
                 for (ItemVendaObservable ito : vendaObservable.itens.get()) {
                     FragmentItemvendaBinding itemvendaBinding = FragmentItemvendaBinding.inflate(layoutInflater, binding.layoutDosItens, false);

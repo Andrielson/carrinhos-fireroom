@@ -4,8 +4,10 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.util.LongSparseArray;
 
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.WriteBatch;
 
@@ -118,5 +120,18 @@ public final class VendedorDaoImpl extends FirestoreDao implements VendedorDao<V
         Query query = queryPadrao.whereEqualTo("codigo", codigo);
         FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(query);
         return Transformations.map(liveData, new Deserializer<>(VendedorImpl.class));
+    }
+
+    @NonNull
+    public LiveData<LongSparseArray<VendedorImpl>> getForJoin() {
+        FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(db.collection(COLECAO));
+        return Transformations.map(liveData, input -> {
+            LongSparseArray<VendedorImpl> vendedorArray = new LongSparseArray<>();
+            for (DocumentSnapshot doc : input.getDocuments()) {
+                VendedorImpl produto = doc.toObject(VendedorImpl.class);
+                vendedorArray.put(produto.getCodigo(), produto);
+            }
+            return vendedorArray;
+        });
     }
 }
