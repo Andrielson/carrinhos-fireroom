@@ -12,22 +12,22 @@
             name="venda"
             type="tk.andrielson.carrinhos.androidapp.observable.VendaObservable" />
 
-        <!--<variable
-            name="handler"
-            type="tk.andrielson.carrinhos.androidapp.ui.viewhandler.ListaVendaItemHandler" />-->
+        <variable
+            name="listener"
+            type="tk.andrielson.carrinhos.androidapp.ui.fragment.ListaVendaFragment.OnListFragmentInteractionListener" />
     </data>
 
     <android.support.v7.widget.GridLayout
         android:id="@+id/fragment_venda_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:background="#F5F5F5"
-        android:padding="4dp"
+        android:onClick="@{() -> listener.onClickVenda(venda)}"
         grid:alignmentMode="alignBounds"
         grid:columnCount="2"
         grid:rowOrderPreserved="false"
         grid:useDefaultMargins="true">
-        <!--android:onClick="@{handler::onClickVenda}"-->
 
         <!--Linha 1, Coluna 1-->
         <TextView

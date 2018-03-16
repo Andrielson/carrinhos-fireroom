@@ -90,6 +90,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:afterTextChanged="@{handler::afterTextChangedDataAno}"
                         android:hint="@string/fragment_cadastro_venda_hint_ano"
                         android:imeOptions="actionNext"
                         android:inputType="numberPassword"
@@ -118,6 +119,7 @@
                     android:textAlignment="textStart"
                     android:textAllCaps="true"
                     android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black"
                     android:textStyle="bold" />
 
                 <!--Linha das labels da grid de itens-->

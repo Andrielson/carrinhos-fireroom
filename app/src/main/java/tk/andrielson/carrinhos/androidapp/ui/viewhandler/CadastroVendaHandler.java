@@ -35,9 +35,13 @@ public final class CadastroVendaHandler {
         DateFormat diaFormat = new SimpleDateFormat("dd", Locale.getDefault());
         DateFormat mesFormat = new SimpleDateFormat("MM", Locale.getDefault());
         DateFormat anoFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
-        binding.dataDia.setText(diaFormat.format(Calendar.getInstance().getTime()));
-        binding.dataMes.setText(mesFormat.format(Calendar.getInstance().getTime()));
-        binding.dataAno.setText(anoFormat.format(Calendar.getInstance().getTime()));
+        String dia = diaFormat.format(Calendar.getInstance().getTime());
+        String mes = mesFormat.format(Calendar.getInstance().getTime());
+        String ano = anoFormat.format(Calendar.getInstance().getTime());
+        binding.dataDia.setText(dia);
+        binding.dataMes.setText(mes);
+        binding.dataAno.setText(ano);
+        binding.getVenda().data.set(String.format("%s/%s/%s", dia, mes, ano));
     }
 
     public void afterTextChangedDataDia(Editable s) {
@@ -55,6 +59,7 @@ public final class CadastroVendaHandler {
                     return;
                 }
             }
+            salvaData();
             setNextFocus(binding.dataMes);
         }
     }
@@ -74,7 +79,17 @@ public final class CadastroVendaHandler {
                     return;
                 }
             }
+            salvaData();
             setNextFocus(binding.dataAno);
+        }
+    }
+
+    public void afterTextChangedDataAno(Editable s) {
+        if (s.toString().length() == 4) {
+            if (Integer.valueOf(s.toString()) < 2000 || Integer.valueOf(s.toString()) > 2018) {
+                binding.dataAno.setError("Ano inválido!");
+            }
+            salvaData();
         }
     }
 
@@ -102,10 +117,7 @@ public final class CadastroVendaHandler {
 
     //TODO: generalizar validação da data no método abaixo
     private boolean ehDataValida() {
-        String dia = binding.dataDia.getText().toString();
-        String mes = binding.dataMes.getText().toString();
-        String ano = binding.dataAno.getText().toString();
-        String data = String.format("%s/%s/%s", dia, mes, ano);
+        String data = getData();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         try {
             dateFormat.parse(data);
@@ -114,6 +126,18 @@ public final class CadastroVendaHandler {
             return false;
         }
         return true;
+    }
+
+    private void salvaData() {
+        if (ehDataValida())
+            binding.getVenda().data.set(getData());
+    }
+
+    private String getData() {
+        String dia = binding.dataDia.getText().toString();
+        String mes = binding.dataMes.getText().toString();
+        String ano = binding.dataAno.getText().toString();
+        return String.format("%s/%s/%s", dia, mes, ano);
     }
 
     private void setNextFocus(@NonNull final EditText editText) {

@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import tk.andrielson.carrinhos.androidapp.R;
-import tk.andrielson.carrinhos.androidapp.data.model.Venda;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentVendaListaBinding;
+import tk.andrielson.carrinhos.androidapp.observable.VendaObservable;
 import tk.andrielson.carrinhos.androidapp.ui.adapter.VendaRecyclerViewAdapter;
 import tk.andrielson.carrinhos.androidapp.viewmodel.ListaVendaViewModel;
 
@@ -107,6 +107,6 @@ public class ListaVendaFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(Venda item);
+        void onClickVenda(VendaObservable item);
     }
 }

@@ -58,7 +58,8 @@ public final class VendaObservable extends AbsCodigoObservable {
                 lista.add(ito);
             }
         itens.set(lista);
-        //TODO: calculaValoresComissaoPago();
+        if (!ehNovo())
+            calculaValoresComissaoPago();
     }
 
     public Venda getVendaModel() {

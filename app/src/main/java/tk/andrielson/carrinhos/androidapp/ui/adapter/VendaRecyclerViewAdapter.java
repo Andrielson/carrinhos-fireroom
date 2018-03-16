@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import java.util.List;
 import java.util.Objects;
 
-import tk.andrielson.carrinhos.androidapp.data.model.Venda;
-import tk.andrielson.carrinhos.androidapp.data.model.VendaImpl;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentVendaListaItemBinding;
 import tk.andrielson.carrinhos.androidapp.observable.VendaObservable;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaVendaFragment;
@@ -86,7 +84,7 @@ public class VendaRecyclerViewAdapter extends RecyclerView.Adapter<VendaRecycler
             return v1.hashCode() == v2.hashCode();
         }
     }
-    
+
     public class VendaViewHolder extends RecyclerView.ViewHolder {
 
         private final String TAG = VendaViewHolder.class.getSimpleName();
@@ -99,7 +97,7 @@ public class VendaRecyclerViewAdapter extends RecyclerView.Adapter<VendaRecycler
 
         public void bind(final VendaObservable venda, final ListaVendaFragment.OnListFragmentInteractionListener listener) {
             binding.setVenda(venda);
-//            binding.setHandler(new ListaVendaItemHandler(listener, venda));
+            binding.setListener(listener);
             binding.executePendingBindings();
         }
 

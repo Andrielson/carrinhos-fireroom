@@ -6,6 +6,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.Transformations;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.data.model.Venda;
 import tk.andrielson.carrinhos.androidapp.observable.ItemVendaObservable;
 import tk.andrielson.carrinhos.androidapp.observable.VendaObservable;
+import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
 import static tk.andrielson.carrinhos.androidapp.DI.newProdutoDao;
 import static tk.andrielson.carrinhos.androidapp.DI.newVenda;
@@ -27,6 +29,7 @@ import static tk.andrielson.carrinhos.androidapp.DI.newVendaDao;
 
 @SuppressWarnings("unchecked")
 public class CadastroVendaViewModel extends AndroidViewModel {
+    private static final String TAG = CadastroVendaViewModel.class.getSimpleName();
     private final MediatorLiveData<List<ItemVendaObservable>> itensVenda;
     private final VendaObservable vendaObservable = new VendaObservable(newVenda());
     private final VendaDao vendaDao = newVendaDao();
@@ -55,17 +58,21 @@ public class CadastroVendaViewModel extends AndroidViewModel {
         itensVenda.addSource(liveData, itensDaVenda -> {
             List<ItemVendaObservable> produtosAtivos = itensVenda.getValue();
             if (produtosAtivos != null && itensDaVenda != null) {
-                for (ItemVenda itv : itensDaVenda)
-                    for (ItemVendaObservable ito : produtosAtivos) {
+                int i, j;
+                for (i = itensDaVenda.size() - 1; i >= 0; i--) {
+                    ItemVenda itv = itensDaVenda.get(i);
+                    for (j = produtosAtivos.size() - 1; j >= 0; j--) {
+                        ItemVendaObservable ito = produtosAtivos.get(j);
                         // Se encontrar esse item entre os observáveis, substitui os valores
+                        LogUtil.Log(TAG, "ITO: " + ito.produto.get().codigo.get(), Log.DEBUG);
+                        LogUtil.Log(TAG, "ITV: " + itv.getProduto().getCodigo(), Log.DEBUG);
                         if (itv.getProduto().getCodigo().equals(Long.valueOf(ito.produto.get().codigo.get())))
                             //remove
-                            //FIXME: ConcurrentModificationException
-                            produtosAtivos.remove(ito);
-                        //adiciona
-                        //FIXME: ConcurrentModificationException
-                        produtosAtivos.add(new ItemVendaObservable(itv));
+                            produtosAtivos.remove(j);
                     }
+                    //adiciona
+                    produtosAtivos.add(new ItemVendaObservable(itv));
+                }
                 itensVenda.setValue(produtosAtivos);
             }
         });
@@ -76,10 +83,11 @@ public class CadastroVendaViewModel extends AndroidViewModel {
         Venda venda = observable.getVendaModel();
 
         //Remove os itens que não foram vendidos
-        //FIXME: ConcurrentModificationException
-        for (ItemVenda itv : (List<ItemVenda>) venda.getItens())
+        for (int i = venda.getItens().size() - 1; i >= 0; i--) {
+            ItemVenda itv = (ItemVenda) venda.getItens().get(i);
             if (itv.getQtVendeu().equals(0))
                 venda.getItens().remove(itv);
+        }
 
         if (observable.ehNovo()) {
             vendaDao.insert(venda);

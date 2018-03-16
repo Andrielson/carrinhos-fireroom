@@ -49,7 +49,8 @@ public class VendaActivity extends AppCompatActivity
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_holder, cadastroVendaFragment);
         ft.commit();
-        onClickSelecionarVendedor();
+        if (venda.getCodigo() == null || venda.getCodigo().equals(0L))
+            onClickSelecionarVendedor();
     }
 
     /*TODO: verificar qual fragment está sendo exibido e manipular a ação do botão voltar

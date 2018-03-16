@@ -18,8 +18,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import tk.andrielson.carrinhos.androidapp.R;
-import tk.andrielson.carrinhos.androidapp.data.model.Venda;
 import tk.andrielson.carrinhos.androidapp.observable.ProdutoObservable;
+import tk.andrielson.carrinhos.androidapp.observable.VendaObservable;
 import tk.andrielson.carrinhos.androidapp.observable.VendedorObservable;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaProdutoFragment;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaVendaFragment;
@@ -74,8 +74,13 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        if (savedInstanceState != null && savedInstanceState.getSerializable(STATE_FRAGMENTOS) != null)
+            fragmentoAtivo = (Fragmentos) savedInstanceState.getSerializable(STATE_FRAGMENTOS);
+        else
+            fragmentoAtivo = Fragmentos.INICIO;
+
         LogUtil.Log(TAG, "onCreate", Log.VERBOSE);
-        fragmentoAtivo = Fragmentos.INICIO;
     }
 
     @Override
@@ -88,6 +93,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null && savedInstanceState.getSerializable(STATE_FRAGMENTOS) != null)
+            fragmentoAtivo = (Fragmentos) savedInstanceState.getSerializable(STATE_FRAGMENTOS);
         LogUtil.Log(TAG, "onRestoreInstanceState", Log.DEBUG);
     }
 
@@ -123,7 +130,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -208,8 +215,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onListFragmentInteraction(Venda item) {
-
+    public void onClickVenda(VendaObservable item) {
+        Intent intent = new Intent(this, VendaActivity.class);
+        intent.putExtra(VendaActivity.INTENT_EXTRA_VENDA, item.getVendaModel());
+        startActivity(intent);
     }
 
     private enum Fragmentos {

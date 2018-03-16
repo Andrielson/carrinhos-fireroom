@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import tk.andrielson.carrinhos.androidapp.R;
 import tk.andrielson.carrinhos.androidapp.data.model.Venda;
@@ -132,8 +134,8 @@ public class CadastroVendaFragment extends Fragment {
                     itemvendaBinding.qtLevou.setTransformationMethod(null);
                     itemvendaBinding.qtVoltou.setTransformationMethod(null);
                     binding.layoutDosItens.addView(itemvendaBinding.getRoot());
-                    if (vendaObservable.itens.get().indexOf(ito) == 0)
-                        setProximoCampo(itemvendaBinding.qtLevou);
+//                    if (vendaObservable.itens.get().indexOf(ito) == 0)
+//                        setProximoCampo(itemvendaBinding.qtLevou);
                 }
                 binding.setVenda(vendaObservable);
                 binding.setCadastroVendaListener(mListener);
@@ -146,31 +148,18 @@ public class CadastroVendaFragment extends Fragment {
         binding.dataDia.setTransformationMethod(null);
         binding.dataMes.setTransformationMethod(null);
         binding.dataAno.setTransformationMethod(null);
+        preencheDataVenda();
     }
 
-    private void setProximoCampo(final EditText editText) {
-        binding.dataAno.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.toString().length() == 4) {
-                    if (Integer.valueOf(s.toString()) < 2000 || Integer.valueOf(s.toString()) > 2018) {
-                        binding.dataAno.setError("Ano inválido!");
-                        return;
-                    }
-                    editText.setFocusable(true);
-                    editText.setFocusableInTouchMode(true);
-                    editText.requestFocus();
-                }
-            }
-        });
+    private void preencheDataVenda() {
+        String strData = vendaObservable.data.get();
+        Pattern pattern = Pattern.compile("(\\d{2})/(\\d{2})/(\\d{4})");
+        Matcher matcher = pattern.matcher(strData);
+        if (matcher.find()) {
+            binding.dataDia.setText(matcher.group(1));
+            binding.dataMes.setText(matcher.group(2));
+            binding.dataAno.setText(matcher.group(3));
+        }
     }
 
     public interface OnFragmentInteractionListener {

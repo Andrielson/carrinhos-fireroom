@@ -50,6 +50,7 @@ public abstract class FirestoreDao {
         return (map != null && map.containsKey(colecao)) ? map.get(colecao) : "0";
     }
 
+    // FIXME: quando não há o campo da coleção, gera erro. Verificar se compensa criar
     protected WriteBatch setColecaoID(@NonNull String colecao, String novoID) {
         WriteBatch batch = db.batch();
         DocumentReference doc = db.collection(COLECAOIDS).document(colecao);
