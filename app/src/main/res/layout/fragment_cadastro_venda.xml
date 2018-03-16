@@ -246,6 +246,7 @@
                         android:layout_marginStart="@dimen/text_margin"
                         android:layout_weight="1"
                         android:background="@color/colorAccent"
+                        android:onClick="@{() -> handler.onBotaoFinalizarClick(venda)}"
                         android:padding="10dp"
                         android:text="@string/fragment_cadastro_venda_label_finalizar"
                         android:textAllCaps="true"

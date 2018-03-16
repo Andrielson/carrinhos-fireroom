@@ -166,8 +166,6 @@ public class CadastroVendaFragment extends Fragment {
 
         void onClickSelecionarVendedor();
 
-        void finalizarVenda(VendaObservable observable);
-
         void salvarVenda(VendaObservable observable);
 
         void excluirVenda(VendaObservable observable);

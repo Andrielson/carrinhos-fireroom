@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentCadastroVendaBinding;
+import tk.andrielson.carrinhos.androidapp.observable.ItemVendaObservable;
 import tk.andrielson.carrinhos.androidapp.observable.VendaObservable;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.CadastroVendaFragment;
 
@@ -100,7 +101,7 @@ public final class CadastroVendaHandler {
     }
 
     public void onBotaoSalvarClick(VendaObservable observable) {
-        if (true) {
+        if (ehDataValida() && saoItensValidos()) {
             observable.status.set("ABERTA");
             listener.salvarVenda(observable);
         } else
@@ -108,9 +109,9 @@ public final class CadastroVendaHandler {
     }
 
     public void onBotaoFinalizarClick(VendaObservable observable) {
-        if (true) {
+        if (ehDataValida() && saoItensValidos()) {
             observable.status.set("FINALIZADA");
-            listener.finalizarVenda(observable);
+            listener.salvarVenda(observable);
         } else
             Toast.makeText(binding.getRoot().getContext(), "Por favor, corrija as informações incorretas!", Toast.LENGTH_SHORT).show();
     }
@@ -126,6 +127,20 @@ public final class CadastroVendaHandler {
             return false;
         }
         return true;
+    }
+
+    private boolean saoItensValidos() {
+        boolean valido = false;
+        for (ItemVendaObservable ito : binding.getVenda().itens.get()) {
+            int qtSaiu = Integer.valueOf(ito.qtSaiu.get());
+            int qtVoltou = Integer.valueOf(ito.qtVoltou.get());
+            int qtVendeu = Integer.valueOf(ito.qtVendeu.get());
+            if (qtSaiu < 0 || qtVoltou < 0 || (qtVoltou > qtSaiu))
+                return false;
+            if (qtVendeu > 0)
+                valido = true;
+        }
+        return valido;
     }
 
     private void salvaData() {
