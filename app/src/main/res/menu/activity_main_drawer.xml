@@ -20,6 +20,10 @@
             android:id="@+id/nav_vendedores"
             android:icon="@drawable/ic_menu_send"
             android:title="@string/activity_main_drawer_menu_vendedores" />
+        <item
+            android:id="@+id/nav_relatorios"
+            android:icon="@drawable/ic_menu_send"
+            android:title="@string/activity_main_drawer_menu_vendedores" />
     </group>
 
     <item android:title="@string/activity_main_drawer_menu_aplicativo">

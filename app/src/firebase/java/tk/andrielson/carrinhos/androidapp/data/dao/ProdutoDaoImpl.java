@@ -132,7 +132,7 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao<Pro
      * Consulta todos os produtos do banco de dados, ordenando pelos parâmetros de ordenação,
      * encapsulada numa LiveData observável, para manter a lista sempre atualizada.
      *
-     * @param ordenacao uma mapa no qual a chave indica por qual atributo deve ser ordenado e o valor
+     * @param ordenacao um mapa no qual a chave indica por qual atributo deve ser ordenado e o valor
      *                  indica a direção (ascendente ou descendente) da ordenação.
      * @return a lista de produtos encapsulada em uma LiveData
      */

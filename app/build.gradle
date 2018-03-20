@@ -95,9 +95,9 @@ dependencies {
 
     // Android Architeture Lifecycle
     implementation "android.arch.lifecycle:extensions:$archLifecycleVersion"
-    implementation 'com.android.support:support-v4:27.1.0'
-    implementation 'com.android.support:recyclerview-v7:27.1.0'
-    annotationProcessor "android.arch.lifecycle:compiler:$archLifecycleVersion"
+    //annotationProcessor "android.arch.lifecycle:compiler:$archLifecycleVersion"
+    // Java8 support for Lifecycles (recommended instead of android.arch.lifecycle:compiler)
+    implementation "android.arch.lifecycle:common-java8:$archLifecycleVersion"
 
     // Facebook Stetho
     implementation "com.facebook.stetho:stetho:$stethoVersion"

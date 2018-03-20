@@ -74,9 +74,7 @@ public abstract class FirestoreDao {
                 }
                 return map;
             });
-            liveDataIDs.observeForever(map -> {
-                LogUtil.Log(TAG, "Lista de IDs das coleções atualizada!", Log.INFO);
-            });
+            liveDataIDs.observeForever(map -> LogUtil.Log(TAG, "Lista de IDs das coleções atualizada!", Log.INFO));
         }
 
         @Contract(pure = true)

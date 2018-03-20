@@ -6,9 +6,11 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.Transformations;
 import android.support.annotation.NonNull;
+import android.support.v4.util.SimpleArrayMap;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import tk.andrielson.carrinhos.androidapp.DI;
@@ -35,7 +37,9 @@ public class CadastroVendaViewModel extends AndroidViewModel {
     public CadastroVendaViewModel(@NonNull Application application) {
         super(application);
         ProdutoDao produtoDao = newProdutoDao();
-        LiveData<List<ItemVendaObservable>> itensProdutosAtivos = Transformations.map((LiveData<List<Produto>>) produtoDao.getAll(), input -> {
+        SimpleArrayMap<String, String> ordenacao = new SimpleArrayMap<>(1);
+        ordenacao.put("codigo", "ASC");
+        LiveData<List<ItemVendaObservable>> itensProdutosAtivos = Transformations.map((LiveData<List<Produto>>) produtoDao.getAll(ordenacao), input -> {
             List<ItemVendaObservable> lista = new ArrayList<>();
             if (input != null)
                 for (Produto p : input)
@@ -71,6 +75,13 @@ public class CadastroVendaViewModel extends AndroidViewModel {
                     //adiciona
                     produtosAtivos.add(new ItemVendaObservable(itv));
                 }
+                Collections.sort(produtosAtivos, (o1, o2) -> {
+                    String strCod1 = o1.produto.get().codigo.get();
+                    String strCod2 = o2.produto.get().codigo.get();
+                    long cod1 = strCod1 != null && !strCod1.isEmpty() ? Long.valueOf(strCod1) : 0L;
+                    long cod2 = strCod2 != null && !strCod2.isEmpty() ? Long.valueOf(strCod2) : 0L;
+                    return Long.compare(cod1, cod2);
+                });
                 itensVenda.setValue(produtosAtivos);
             }
         });

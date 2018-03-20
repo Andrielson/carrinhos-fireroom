@@ -13,10 +13,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.concurrent.Executors;
 
-/**
- * Created by anfesilva on 07/03/2018.
- */
-
 public class FirestoreQueryLiveData extends LiveData<QuerySnapshot> {
     private static final String TAG = FirestoreQueryLiveData.class.getSimpleName();
 

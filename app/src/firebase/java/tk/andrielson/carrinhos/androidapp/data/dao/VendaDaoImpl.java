@@ -7,12 +7,10 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.util.LongSparseArray;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
@@ -26,10 +24,6 @@ import tk.andrielson.carrinhos.androidapp.data.model.ProdutoImpl;
 import tk.andrielson.carrinhos.androidapp.data.model.VendaImpl;
 import tk.andrielson.carrinhos.androidapp.data.model.VendedorImpl;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
-
-/**
- * Created by anfesilva on 12/03/2018.
- */
 
 public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaImpl, ItemVendaImpl> {
     private static final String COLECAO = VendaImpl.COLECAO;
@@ -85,27 +79,26 @@ public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaIm
         final String idVenda = getIdFromCodigo(venda.getCodigo());
         final WriteBatch batch = db.batch();
         Query queryItens = db.collection(String.format("/%s/%s/%s", VendaImpl.COLECAO, idVenda, ItemVendaImpl.COLECAO));
-        queryItens.get().addOnSuccessListener(Executors.newSingleThreadExecutor(), new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot documentSnapshots) {
-                if (!documentSnapshots.isEmpty())
-                    for (DocumentSnapshot doc : documentSnapshots.getDocuments())
-                        batch.delete(doc.getReference());
-                batch.delete(collection.document(idVenda));
-                batch.commit()
-                        .addOnSuccessListener(aVoid -> LogUtil.Log(TAG, "Venda " + idVenda + " removida com sucesso!", Log.INFO))
-                        .addOnFailureListener(e -> {
-                            LogUtil.Log(TAG, "Falha ao remover a venda " + idVenda, Log.ERROR);
-                            LogUtil.Log(TAG, e.getMessage(), Log.ERROR);
-                        });
-            }
+        queryItens.get().addOnSuccessListener(Executors.newSingleThreadExecutor(), documentSnapshots -> {
+            if (!documentSnapshots.isEmpty())
+                for (DocumentSnapshot doc : documentSnapshots.getDocuments())
+                    batch.delete(doc.getReference());
+            batch.delete(collection.document(idVenda));
+            batch.commit()
+                    .addOnSuccessListener(aVoid -> LogUtil.Log(TAG, "Venda " + idVenda + " removida com sucesso!", Log.INFO))
+                    .addOnFailureListener(e -> {
+                        LogUtil.Log(TAG, "Falha ao remover a venda " + idVenda, Log.ERROR);
+                        LogUtil.Log(TAG, e.getMessage(), Log.ERROR);
+                    });
         });
         return 0;
     }
 
     @Override
     public LiveData<List<VendaImpl>> getAll() {
-        FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(queryPadrao);
+        Query query = queryPadrao.orderBy(VendaImpl.STATUS, Query.Direction.ASCENDING)
+                .orderBy(VendaImpl.DATA, Query.Direction.DESCENDING);
+        FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(query);
         LiveData<List<VendaImpl>> vendas = Transformations.map(liveData, input -> {
             List<VendaImpl> lista = new ArrayList<>();
             for (DocumentSnapshot doc : input.getDocuments()) {

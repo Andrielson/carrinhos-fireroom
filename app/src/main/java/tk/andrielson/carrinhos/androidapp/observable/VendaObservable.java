@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -17,7 +16,6 @@ import java.util.Locale;
 import tk.andrielson.carrinhos.androidapp.DI;
 import tk.andrielson.carrinhos.androidapp.data.model.ItemVenda;
 import tk.andrielson.carrinhos.androidapp.data.model.Venda;
-import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 import tk.andrielson.carrinhos.androidapp.utils.Util;
 
 @SuppressLint("DefaultLocale")
@@ -42,7 +40,6 @@ public final class VendaObservable extends AbsCodigoObservable {
     public VendaObservable(@NonNull Venda venda) {
         vendaModel = venda;
         codigoSet(venda.getCodigo());
-        LogUtil.Log("VendaObservable", "codigoSet: " + venda.getCodigo(), Log.DEBUG);
         data.set(venda.getData() == null ? dateFormat.format(Calendar.getInstance().getTime()) : dateFormat.format(venda.getData()));
         total.set(Util.longToRS(venda.getTotal()));
         status.set(venda.getStatus());
@@ -57,7 +54,7 @@ public final class VendaObservable extends AbsCodigoObservable {
         if (venda.getItens() != null)
             for (ItemVenda itv : (List<ItemVenda>) venda.getItens()) {
                 ItemVendaObservable ito = new ItemVendaObservable(itv);
-                ito.valor.addOnPropertyChangedCallback(new TotalAtualizador(this));
+                ito.total.addOnPropertyChangedCallback(new TotalAtualizador(this));
                 lista.add(ito);
             }
         itens.set(lista);
@@ -67,7 +64,6 @@ public final class VendaObservable extends AbsCodigoObservable {
 
     public Venda getVendaModel() {
         vendaModel.setCodigo(codigoGet());
-        LogUtil.Log("VendaObservable", "codigoGet: " + vendaModel.getCodigo(), Log.DEBUG);
         vendaModel.setComissao(Util.RStoLong(comissao.get()).intValue());
         try {
             vendaModel.setData(dateFormat.parse(data.get()));
@@ -86,7 +82,7 @@ public final class VendaObservable extends AbsCodigoObservable {
 
     public void setItensVendaObservable(List<ItemVendaObservable> lista) {
         for (ItemVendaObservable ito : lista)
-            ito.valor.addOnPropertyChangedCallback(new TotalAtualizador(this));
+            ito.total.addOnPropertyChangedCallback(new TotalAtualizador(this));
         itens.set(lista);
     }
 
