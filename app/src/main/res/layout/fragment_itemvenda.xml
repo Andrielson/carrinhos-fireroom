@@ -78,7 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="end"
-            android:text="@={itemVenda.valor}"
+            android:text="@={itemVenda.total}"
             android:textAppearance="?attr/textAppearanceListItem"
             tools:text="R$ 20,00" />
     </LinearLayout>

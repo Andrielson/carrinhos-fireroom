@@ -4,6 +4,7 @@ import android.content.res.ColorStateList;
 import android.databinding.BindingAdapter;
 import android.databinding.InverseBindingAdapter;
 import android.databinding.InverseBindingListener;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -58,6 +59,7 @@ public final class BindingAdapters {
         if (!editavel) {
             editText.setEnabled(false);
             editText.setInputType(InputType.TYPE_NULL);
+            editText.setTextColor(Color.BLACK);
         }
     }
 

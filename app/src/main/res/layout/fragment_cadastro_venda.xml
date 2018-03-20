@@ -99,11 +99,13 @@
                         tools:ignore="LabelFor" />
 
                     <Button
+                        android:id="@+id/botao_hoje"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:onClick="@{() -> handler.preencheDataHoje()}"
                         android:text="@string/fragment_cadastro_venda_botao_hoje"
-                        android:textAllCaps="true" />
+                        android:textAllCaps="true"
+                        android:visibility="@{venda.estahFinalizada() ? View.GONE : View.VISIBLE}" />
                 </LinearLayout>
 
                 <Button
@@ -114,6 +116,7 @@
                     android:background="@android:color/transparent"
                     android:drawablePadding="@dimen/default_gap"
                     android:drawableStart="@drawable/ic_portrait_black_24dp"
+                    android:enabled="@{!venda.estahFinalizada()}"
                     android:onClick="@{() -> cadastroVendaListener.onClickSelecionarVendedor()}"
                     android:text="@string/fragment_cadastro_venda_selecione_vendedor"
                     android:textAlignment="textStart"
@@ -126,6 +129,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -181,6 +185,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/text_margin"
                     android:drawablePadding="6dp"
                     android:drawableStart="@drawable/ic_monetization_on_black_16dp"
                     android:text="@={venda.total}"
@@ -218,7 +223,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="@{venda.estahFinalizada() ? View.GONE : View.VISIBLE}">
 
                     <Button
                         android:id="@+id/botao_salvar"

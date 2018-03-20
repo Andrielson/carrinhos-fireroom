@@ -14,6 +14,7 @@ public final class ItemVendaObservable {
     public final ObservableField<String> qtVoltou = new ObservableField<>();
     public final ObservableField<String> qtVendeu = new ObservableField<>();
     public final ObservableField<String> valor = new ObservableField<>();
+    public final ObservableField<String> total = new ObservableField<>();
 
     private final ItemVenda itemVendaModel;
 
@@ -27,7 +28,15 @@ public final class ItemVendaObservable {
         qtSaiu.set(String.valueOf(itemVenda.getQtSaiu() == null ? "" : itemVenda.getQtSaiu()));
         qtVoltou.set(String.valueOf(itemVenda.getQtVoltou() == null ? "" : itemVenda.getQtVoltou()));
         qtVendeu.set(String.valueOf(itemVenda.getQtVendeu() == null ? "0" : itemVenda.getQtVendeu()));
-        valor.set(Util.longToRS(itemVenda.getValor()));
+        if (itemVenda.getValor() != null)
+            valor.set(Util.longToRS(itemVenda.getValor()));
+        else if (itemVenda.getProduto() != null && itemVenda.getProduto().getPreco() != null)
+            valor.set(Util.longToRS(itemVenda.getProduto().getPreco()));
+        else
+            valor.set(Util.longToRS(0L));
+        long vendeu = itemVenda.getQtVendeu() == null ? 0 : itemVenda.getQtVendeu();
+        long valor = itemVenda.getValor() == null ? 0 : itemVenda.getValor();
+        total.set(Util.longToRS(vendeu * valor));
     }
 
     public ItemVenda getItemVendaModel() {

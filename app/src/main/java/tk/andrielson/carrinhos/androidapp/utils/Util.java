@@ -1,5 +1,8 @@
 package tk.andrielson.carrinhos.androidapp.utils;
 
+import android.graphics.Color;
+import android.widget.EditText;
+
 import org.jetbrains.annotations.Contract;
 
 import java.util.Locale;
@@ -21,5 +24,13 @@ public final class Util {
         if (valor.isEmpty())
             return 0L;
         return Long.valueOf(valor.replaceAll("\\D", ""));
+    }
+
+    public static void disableEditText(EditText editText) {
+        editText.setFocusable(false);
+        editText.setEnabled(false);
+        editText.setCursorVisible(false);
+        editText.setKeyListener(null);
+        editText.setBackgroundColor(Color.TRANSPARENT);
     }
 }

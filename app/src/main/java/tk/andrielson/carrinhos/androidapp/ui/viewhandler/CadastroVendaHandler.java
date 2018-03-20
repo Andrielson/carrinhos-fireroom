@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentCadastroVendaBinding;
@@ -116,25 +117,25 @@ public final class CadastroVendaHandler {
             Toast.makeText(binding.getRoot().getContext(), "Por favor, corrija as informações incorretas!", Toast.LENGTH_SHORT).show();
     }
 
-    //TODO: generalizar validação da data no método abaixo
     private boolean ehDataValida() {
-        String data = getData();
+        String strData = getData();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         try {
-            dateFormat.parse(data);
+            Date data = dateFormat.parse(strData);
+            Date hoje = Calendar.getInstance().getTime();
+            return data.compareTo(hoje) <= 0;
         } catch (ParseException e) {
             //data inválida
             return false;
         }
-        return true;
     }
 
     private boolean saoItensValidos() {
         boolean valido = false;
         for (ItemVendaObservable ito : binding.getVenda().itens.get()) {
-            int qtSaiu = Integer.valueOf(ito.qtSaiu.get());
-            int qtVoltou = Integer.valueOf(ito.qtVoltou.get());
-            int qtVendeu = Integer.valueOf(ito.qtVendeu.get());
+            int qtSaiu = ito.qtSaiu.get().isEmpty() ? 0 : Integer.valueOf(ito.qtSaiu.get());
+            int qtVoltou = ito.qtVoltou.get().isEmpty() ? 0 : Integer.valueOf(ito.qtVoltou.get());
+            int qtVendeu = ito.qtVendeu.get().isEmpty() ? 0 : Integer.valueOf(ito.qtVendeu.get());
             if (qtSaiu < 0 || qtVoltou < 0 || (qtVoltou > qtSaiu))
                 return false;
             if (qtVendeu > 0)

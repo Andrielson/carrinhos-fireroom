@@ -4,13 +4,16 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -131,8 +134,14 @@ public class CadastroVendaFragment extends Fragment {
                     FragmentItemvendaBinding itemvendaBinding = FragmentItemvendaBinding.inflate(layoutInflater, binding.layoutDosItens, false);
                     itemvendaBinding.setItemVenda(ito);
                     itemvendaBinding.setHandler(new ItemVendaHandler(itemvendaBinding));
-                    itemvendaBinding.qtLevou.setTransformationMethod(null);
-                    itemvendaBinding.qtVoltou.setTransformationMethod(null);
+                    if (vendaObservable.estahFinalizada()) {
+                        desabilitaEditText(itemvendaBinding.qtLevou);
+                        desabilitaEditText(itemvendaBinding.qtVoltou);
+                    } else {
+                        itemvendaBinding.qtLevou.setTransformationMethod(null);
+                        itemvendaBinding.qtVoltou.setTransformationMethod(null);
+                    }
+                    itemvendaBinding.executePendingBindings();
                     binding.layoutDosItens.addView(itemvendaBinding.getRoot());
 //                    if (vendaObservable.itens.get().indexOf(ito) == 0)
 //                        setProximoCampo(itemvendaBinding.qtLevou);
@@ -140,8 +149,17 @@ public class CadastroVendaFragment extends Fragment {
                 binding.setVenda(vendaObservable);
                 binding.setCadastroVendaListener(mListener);
                 binding.executePendingBindings();
+                if (vendaObservable.estahFinalizada()) {
+                    desabilitaVendaFinalizada();
+                }
             }
         });
+    }
+
+    private void desabilitaVendaFinalizada() {
+        desabilitaEditText(binding.dataDia);
+        desabilitaEditText(binding.dataMes);
+        desabilitaEditText(binding.dataAno);
     }
 
     private void configuraCamposData() {
@@ -160,6 +178,13 @@ public class CadastroVendaFragment extends Fragment {
             binding.dataMes.setText(matcher.group(2));
             binding.dataAno.setText(matcher.group(3));
         }
+    }
+
+    private void desabilitaEditText(@NonNull EditText editText) {
+        editText.setEnabled(false);
+        editText.setInputType(InputType.TYPE_NULL);
+        editText.setBackgroundColor(Color.TRANSPARENT);
+        editText.setTextColor(Color.BLACK);
     }
 
     public interface OnFragmentInteractionListener {

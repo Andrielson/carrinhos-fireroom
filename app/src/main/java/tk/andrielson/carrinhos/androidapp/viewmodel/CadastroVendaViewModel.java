@@ -80,10 +80,10 @@ public class CadastroVendaViewModel extends AndroidViewModel {
     public void salvarVenda(VendaObservable observable) {
         Venda venda = observable.getVendaModel();
 
-        //Remove os itens que não foram vendidos
+        //Remove os itens que não foram levados
         for (int i = venda.getItens().size() - 1; i >= 0; i--) {
             ItemVenda itv = (ItemVenda) venda.getItens().get(i);
-            if (itv.getQtVendeu().equals(0))
+            if (itv.getQtSaiu().equals(0))
                 venda.getItens().remove(itv);
         }
 

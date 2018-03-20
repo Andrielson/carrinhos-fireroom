@@ -99,6 +99,10 @@ public final class VendaObservable extends AbsCodigoObservable {
         this.valorPago.set(Util.longToRS(valorPago));
     }
 
+    public boolean estahFinalizada() {
+        return "FINALIZADA".equalsIgnoreCase(status.get());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -134,7 +138,7 @@ public final class VendaObservable extends AbsCodigoObservable {
         public void onPropertyChanged(Observable observable, int i) {
             long total = 0;
             for (ItemVendaObservable ito : vendaObservable.itens.get())
-                total += Util.RStoLong(ito.valor.get());
+                total += Util.RStoLong(ito.total.get());
             vendaObservable.total.set(Util.longToRS(total));
             vendaObservable.calculaValoresComissaoPago();
         }

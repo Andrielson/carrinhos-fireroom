@@ -103,6 +103,7 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
         long tmpData = in.readLong();
         data = tmpData != -1 ? new Date(tmpData) : null;
         total = in.readByte() == 0x00 ? null : in.readLong();
+        status = in.readString();
         vendedor = (VendedorImpl) in.readValue(VendedorImpl.class.getClassLoader());
     }
 
@@ -122,6 +123,7 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
         result = 31 * result + (comissao != null ? comissao.hashCode() : 0);
         result = 31 * result + (data != null ? data.hashCode() : 0);
         result = 31 * result + (total != null ? total.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + (vendedor != null ? vendedor.hashCode() : 0);
         result = 31 * result + (itens != null ? itens.hashCode() : 0);
         return result;
@@ -154,6 +156,7 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
             dest.writeByte((byte) (0x01));
             dest.writeLong(total);
         }
+        dest.writeString(status);
         dest.writeValue(vendedor);
     }
 
