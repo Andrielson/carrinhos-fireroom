@@ -96,10 +96,10 @@ public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaIm
 
     @Override
     public LiveData<List<VendaImpl>> getAll() {
-        Query query = queryPadrao.orderBy(VendaImpl.STATUS, Query.Direction.ASCENDING)
-                .orderBy(VendaImpl.DATA, Query.Direction.DESCENDING);
+        Query query = queryPadrao.orderBy(VendaImpl.DATA, Query.Direction.DESCENDING);
         FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(query);
         LiveData<List<VendaImpl>> vendas = Transformations.map(liveData, input -> {
+            if (input == null) return null;
             List<VendaImpl> lista = new ArrayList<>();
             for (DocumentSnapshot doc : input.getDocuments()) {
                 try {

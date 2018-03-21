@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import tk.andrielson.carrinhos.androidapp.R;
 import tk.andrielson.carrinhos.androidapp.observable.ProdutoObservable;
@@ -24,13 +25,16 @@ import tk.andrielson.carrinhos.androidapp.observable.VendedorObservable;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaProdutoFragment;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaVendaFragment;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaVendedorFragment;
+import tk.andrielson.carrinhos.androidapp.ui.fragment.RelatorioVendasPorDiaFragment;
+import tk.andrielson.carrinhos.androidapp.ui.fragment.RelatoriosFragment;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         ListaProdutoFragment.OnListFragmentInteractionListener,
         ListaVendedorFragment.OnListFragmentInteractionListener,
-        ListaVendaFragment.OnListFragmentInteractionListener {
+        ListaVendaFragment.OnListFragmentInteractionListener,
+        RelatoriosFragment.OnFragmentInteractionListener {
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String STATE_FRAGMENTOS = "FRAGMENTOS";
     private Fragmentos fragmentoAtivo;
@@ -177,6 +181,9 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_vendedores:
                 carregaFragment(Fragmentos.VENDEDOR);
                 break;
+            case R.id.nav_relatorios:
+                carregaFragment(Fragmentos.RELATORIOS);
+                break;
             case R.id.nav_atualizar:
                 break;
             case R.id.nav_backup:
@@ -209,6 +216,21 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
+    @Override
+    public void onClickVendas() {
+        carregaFragment(Fragmentos.RELATORIO_VENDAS_POR_DIA);
+    }
+
+    @Override
+    public void onClickProdutos() {
+        Toast.makeText(this, "Calma...", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onClickVendedores() {
+        Toast.makeText(this, "Calma...", Toast.LENGTH_SHORT).show();
+    }
+
     private void carregaFragment(Fragmentos frag) {
         Fragment fragment = null;
         fragmentoAtivo = frag;
@@ -225,6 +247,14 @@ public class MainActivity extends AppCompatActivity
                 fragment = ListaVendedorFragment.newInstance();
                 toolbar.setTitle(R.string.activity_vendedor_label);
                 break;
+            case RELATORIOS:
+                fragment = new RelatoriosFragment();
+                toolbar.setTitle("Relatórios");
+                break;
+            case RELATORIO_VENDAS_POR_DIA:
+                fragment = new RelatorioVendasPorDiaFragment();
+                toolbar.setTitle("Relatório de Vendas");
+                break;
             default:
         }
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -236,6 +266,8 @@ public class MainActivity extends AppCompatActivity
         INICIO,
         PRODUTO,
         VENDEDOR,
-        VENDA
+        VENDA,
+        RELATORIOS,
+        RELATORIO_VENDAS_POR_DIA
     }
 }

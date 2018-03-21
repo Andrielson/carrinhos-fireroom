@@ -103,6 +103,7 @@ dependencies {
     implementation "com.facebook.stetho:stetho:$stethoVersion"
 
     //Firebase
+    implementation 'com.android.support:support-v4:27.1.0'
     firebaseImplementation "com.google.firebase:firebase-core:$firebaseVersion"
     firebaseImplementation "com.google.firebase:firebase-firestore:$firebaseVersion"
     firebaseImplementation 'com.firebaseui:firebase-ui-firestore:3.2.2'

@@ -1,30 +1,42 @@
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     tools:context="tk.andrielson.carrinhos.androidapp.ui.fragment.RelatoriosFragment">
 
-    <LinearLayout
+    <data>
+
+        <variable
+            name="listener"
+            type="tk.andrielson.carrinhos.androidapp.ui.fragment.RelatoriosFragment.OnFragmentInteractionListener" />
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="@dimen/text_margin">
+        android:layout_height="match_parent">
 
-        <Button
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Vendas" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/text_margin">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Produtos" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{() -> listener.onClickVendas()}"
+                android:text="Vendas" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Vendedores" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{() -> listener.onClickProdutos()}"
+                android:text="Produtos" />
 
-    </LinearLayout>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{() -> listener.onClickVendedores()}"
+                android:text="Vendedores" />
 
-</android.support.design.widget.CoordinatorLayout>
+        </LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
+</layout>
