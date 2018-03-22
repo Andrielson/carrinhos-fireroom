@@ -5,7 +5,6 @@ import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
 import android.support.v4.util.SimpleArrayMap;
-import android.util.Log;
 
 import org.jetbrains.annotations.Contract;
 
@@ -19,7 +18,6 @@ import java.util.Locale;
 
 import tk.andrielson.carrinhos.androidapp.data.dao.RelatoriosDaoImpl;
 import tk.andrielson.carrinhos.androidapp.observable.RelatorioVendaPorDia;
-import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
 public final class RelatorioVendasPorDiaViewModel extends ViewModel {
     private static final String TAG = RelatorioVendasPorDiaViewModel.class.getSimpleName();

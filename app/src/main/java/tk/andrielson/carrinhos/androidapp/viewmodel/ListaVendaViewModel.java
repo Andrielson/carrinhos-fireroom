@@ -10,8 +10,6 @@ import java.util.List;
 
 import tk.andrielson.carrinhos.androidapp.DI;
 import tk.andrielson.carrinhos.androidapp.data.dao.VendaDao;
-import tk.andrielson.carrinhos.androidapp.data.dao.VendaDaoImpl;
-import tk.andrielson.carrinhos.androidapp.data.model.ItemVendaImpl;
 import tk.andrielson.carrinhos.androidapp.data.model.Venda;
 import tk.andrielson.carrinhos.androidapp.observable.VendaObservable;
 

@@ -10,36 +10,21 @@ ext {
     uniqueVersionCode = { version, suffix -> Integer.parseInt(String.format("%s%02d", version.replaceAll("[^0-9]", ""), suffix)) }
 }
 
-def googleservices = false
-
 android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "tk.andrielson.carrinhos.androidapp"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 4
-        versionName "0.0.4"
+        versionCode 1
+        versionName "0.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-    flavorDimensions "DATABASE", "VERSAO"
+    flavorDimensions "CLIENTE", "VERSAO"
     productFlavors {
-        firebase {
-            dimension "DATABASE"
-            applicationIdSuffix = "firebase"
-            googleservices = true
-        }
-        room {
-            dimension "DATABASE"
-            applicationIdSuffix = "room"
-        }
-        realm {
-            dimension "DATABASE"
-            applicationIdSuffix = "realm"
-        }
-        objectbox {
-            dimension "DATABASE"
-            applicationIdSuffix = "objectbox"
+        casadosorvetesnp {
+            dimension "CLIENTE"
+            applicationIdSuffix = "casadosorvetesnp"
         }
         TESTE {
             dimension "VERSAO"
@@ -67,10 +52,10 @@ android {
     }
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
-            def base = variant.productFlavors[0].name
+            def cliente = variant.productFlavors[0].name
             def modo = variant.productFlavors[1].name
             def version = variant.versionName
-            output.outputFileName = "Carrinhos" + base + "_" + modo + "_" + version + ".apk"
+            output.outputFileName = "Carrinhos" + cliente + "_" + modo + "_" + version + ".apk"
         }
     }
     dataBinding {
@@ -95,25 +80,23 @@ dependencies {
 
     // Android Architeture Lifecycle
     implementation "android.arch.lifecycle:extensions:$archLifecycleVersion"
-    //annotationProcessor "android.arch.lifecycle:compiler:$archLifecycleVersion"
-    // Java8 support for Lifecycles (recommended instead of android.arch.lifecycle:compiler)
     implementation "android.arch.lifecycle:common-java8:$archLifecycleVersion"
 
-    // Facebook Stetho
-    implementation "com.facebook.stetho:stetho:$stethoVersion"
+    // Android Architeture Room Persistence Library
+    implementation "android.arch.persistence.room:runtime:$archRoomVersion"
+    annotationProcessor "android.arch.persistence.room:compiler:$archRoomVersion"
 
     //Firebase
     implementation 'com.android.support:support-v4:27.1.0'
-    firebaseImplementation "com.google.firebase:firebase-core:$firebaseVersion"
-    firebaseImplementation "com.google.firebase:firebase-firestore:$firebaseVersion"
-    firebaseImplementation 'com.firebaseui:firebase-ui-firestore:3.2.2'
+    implementation "com.google.firebase:firebase-core:$firebaseVersion"
+    implementation "com.google.firebase:firebase-firestore:$firebaseVersion"
+    implementation 'com.firebaseui:firebase-ui-firestore:3.2.2'
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
         transitive = true
     }
 
-    // Android Architeture Room Persistence Library
-    roomImplementation "android.arch.persistence.room:runtime:$archRoomVersion"
-    roomAnnotationProcessor "android.arch.persistence.room:compiler:$archRoomVersion"
+    // Facebook Stetho
+    implementation "com.facebook.stetho:stetho:$stethoVersion"
 
     // Ferramentas de teste
     testImplementation 'junit:junit:4.12'
@@ -121,11 +104,4 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'org.jetbrains:annotations-java5:15.0'
 }
-
-
-
-
-
-if (googleservices) {
     apply plugin: 'com.google.gms.google-services'
-}
