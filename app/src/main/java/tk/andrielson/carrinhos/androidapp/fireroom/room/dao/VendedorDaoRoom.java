@@ -8,22 +8,20 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import java.util.List;
-
-import tk.andrielson.carrinhos.androidapp.data.model.VendedorImpl;
+import tk.andrielson.carrinhos.androidapp.fireroom.room.entities.VendedorRoom;
 
 @Dao
 public abstract class VendedorDaoRoom {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public abstract void insert(VendedorImpl... vendedores);
+    public abstract void insert(VendedorRoom... vendedores);
 
     @Update
-    public abstract void update(VendedorImpl... vendedores);
+    public abstract void update(VendedorRoom... vendedores);
 
     @Delete
-    public abstract void delete(VendedorImpl... vendedores);
+    public abstract void delete(VendedorRoom... vendedores);
 
     @Query("SELECT * FROM tb_vendedor")
-    public abstract LiveData<List<VendedorImpl>> getAll();
+    public abstract LiveData<VendedorRoom[]> getAll();
 }

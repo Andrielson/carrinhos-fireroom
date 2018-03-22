@@ -16,7 +16,7 @@ import java.util.List;
 
 import tk.andrielson.carrinhos.androidapp.fireroom.firestore.FirestoreQueryLiveData;
 import tk.andrielson.carrinhos.androidapp.data.dao.ProdutoDao;
-import tk.andrielson.carrinhos.androidapp.data.model.ProdutoImpl;
+import tk.andrielson.carrinhos.androidapp.fireroom.model.ProdutoImpl;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
 /**

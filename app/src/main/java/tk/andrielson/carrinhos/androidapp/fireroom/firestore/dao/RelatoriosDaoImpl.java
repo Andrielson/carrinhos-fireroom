@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import tk.andrielson.carrinhos.androidapp.fireroom.firestore.FirestoreQueryLiveData;
-import tk.andrielson.carrinhos.androidapp.data.model.VendaImpl;
+import tk.andrielson.carrinhos.androidapp.fireroom.model.VendaImpl;
 
 public final class RelatoriosDaoImpl {
 

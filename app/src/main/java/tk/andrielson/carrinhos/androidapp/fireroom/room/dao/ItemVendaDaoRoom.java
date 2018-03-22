@@ -8,19 +8,19 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import tk.andrielson.carrinhos.androidapp.fireroom.room.entities.ProdutoRoom;
+import tk.andrielson.carrinhos.androidapp.fireroom.room.entities.ItemVendaRoom;
 
 @Dao
-public abstract class ProdutoDaoRoom {
+public abstract class ItemVendaDaoRoom {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public abstract void insert(ProdutoRoom... produtos);
+    public abstract void insert(ItemVendaRoom... itens);
 
     @Update
-    public abstract void update(ProdutoRoom... produtos);
+    public abstract void update(ItemVendaRoom... itens);
 
     @Delete
-    public abstract void delete(ProdutoRoom... produtos);
+    public abstract void delete(ItemVendaRoom... itens);
 
-    @Query("SELECT * FROM tb_produto")
-    public abstract LiveData<ProdutoRoom[]> getAll();
+    @Query("SELECT * FROM tb_item_venda WHERE cod_venda = :cod_venda")
+    public abstract LiveData<ItemVendaRoom[]> getItensVenda(Long cod_venda);
 }

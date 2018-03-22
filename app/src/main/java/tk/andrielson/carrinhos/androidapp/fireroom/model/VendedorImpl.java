@@ -1,37 +1,33 @@
-package tk.andrielson.carrinhos.androidapp.data.model;
+package tk.andrielson.carrinhos.androidapp.fireroom.model;
 
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import org.jetbrains.annotations.Contract;
 
-/**
- * Created by Andrielson on 11/03/2018.
- */
-@Entity(tableName = "tb_vendedor")
+import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
+
+//@Entity(tableName = "tb_vendedor")
 public final class VendedorImpl extends Vendedor {
 
     //<editor-fold desc="Campos do objeto JSON do Firestore">
-    @Ignore
+//    @Ignore
     public static final String COLECAO = "vendedores";
-    @Ignore
+    //    @Ignore
     public static final String CODIGO = "codigo";
-    @Ignore
+    //    @Ignore
     public static final String NOME = "nome";
-    @Ignore
+    //    @Ignore
     public static final String COMISSAO = "comissao";
-    @Ignore
+    //    @Ignore
     public static final String ATIVO = "ativo";
-    @Ignore
+    //    @Ignore
     public static final String EXCLUIDO = "excluido";
     //</editor-fold>
 
     @SuppressWarnings("unused")
-    @Ignore
+//    @Ignore
     public static final Parcelable.Creator<VendedorImpl> CREATOR = new Parcelable.Creator<VendedorImpl>() {
         @NonNull
         @Override
@@ -46,19 +42,19 @@ public final class VendedorImpl extends Vendedor {
             return new VendedorImpl[size];
         }
     };
-    @PrimaryKey
+    //    @PrimaryKey
     private Long codigo = 0L;
     private String nome;
     private Integer comissao;
     private Boolean ativo = Boolean.TRUE;
-    @Ignore
+    //    @Ignore
     private Boolean excluido = Boolean.FALSE;
 
     public VendedorImpl() {
 
     }
 
-    @Ignore
+    //    @Ignore
     private VendedorImpl(Parcel in) {
         codigo = in.readByte() == 0x00 ? null : in.readLong();
         nome = in.readString();

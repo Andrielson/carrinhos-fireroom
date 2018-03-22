@@ -1,4 +1,4 @@
-package tk.andrielson.carrinhos.androidapp.data.model;
+package tk.andrielson.carrinhos.androidapp.fireroom.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -8,22 +8,39 @@ import org.jetbrains.annotations.Contract;
 import java.util.Date;
 import java.util.List;
 
+import tk.andrielson.carrinhos.androidapp.data.model.Venda;
+
+//@Entity(tableName = "tb_venda", foreignKeys = @ForeignKey(entity = VendedorImpl.class, parentColumns = "codigo", childColumns = "vendedor"))
 public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
 
+    //<editor-fold desc="Campos do objeto JSON do Firebase">
+//    @Ignore
     public static final String COLECAO = "vendas";
+    //    @Ignore
     public static final String CODIGO = "codigo";
+    //    @Ignore
     public static final String COMISSAO = "comissao";
+    //    @Ignore
     public static final String DATA = "data";
+    //    @Ignore
     public static final String TOTAL = "total";
+    //    @Ignore
     public static final String VENDEDOR = "vendedor";
+    //    @Ignore
     public static final String VENDEDOR_NOME = "vendedor_nome";
+    //    @Ignore
     public static final String STATUS = "status";
+    //    @Ignore
     public static final String ITENS = "itens";
+    //</editor-fold>
 
+    //    @PrimaryKey
     private Long codigo = 0L;
     private Integer comissao = 0;
     private Date data;
+    //    @Ignore
     private Long total = 0L;
+    //    @Ignore
     private VendedorImpl vendedor;
     private String status;
     private List<ItemVendaImpl> itens;
@@ -32,7 +49,6 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
 
     }
 
-    @Contract(pure = true)
     public Long getCodigo() {
         return codigo;
     }
@@ -41,7 +57,6 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
         this.codigo = codigo;
     }
 
-    @Contract(pure = true)
     public Integer getComissao() {
         return comissao;
     }
@@ -50,7 +65,6 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
         this.comissao = comissao;
     }
 
-    @Contract(pure = true)
     public Date getData() {
         return data;
     }
@@ -59,7 +73,6 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
         this.data = data;
     }
 
-    @Contract(pure = true)
     public Long getTotal() {
         return total;
     }
@@ -68,7 +81,6 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
         this.total = total;
     }
 
-    @Contract(pure = true)
     public VendedorImpl getVendedor() {
         return vendedor;
     }
@@ -77,7 +89,6 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
         this.vendedor = vendedor;
     }
 
-    @Contract(pure = true)
     public String getStatus() {
         return status;
     }
@@ -86,7 +97,6 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
         this.status = status;
     }
 
-    @Contract(pure = true)
     @Override
     public List<ItemVendaImpl> getItens() {
         return itens;
@@ -97,6 +107,7 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
         this.itens = itens;
     }
 
+    //    @Ignore
     private VendaImpl(Parcel in) {
         codigo = in.readByte() == 0x00 ? null : in.readLong();
         comissao = in.readByte() == 0x00 ? null : in.readInt();
@@ -161,6 +172,7 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
     }
 
     @SuppressWarnings("unused")
+//    @Ignore
     public static final Parcelable.Creator<VendaImpl> CREATOR = new Parcelable.Creator<VendaImpl>() {
         @Override
         public VendaImpl createFromParcel(Parcel in) {

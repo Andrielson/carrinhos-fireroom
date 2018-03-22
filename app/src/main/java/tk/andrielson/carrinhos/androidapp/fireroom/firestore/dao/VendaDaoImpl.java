@@ -21,10 +21,10 @@ import java.util.concurrent.Executors;
 
 import tk.andrielson.carrinhos.androidapp.fireroom.firestore.FirestoreQueryLiveData;
 import tk.andrielson.carrinhos.androidapp.data.dao.VendaDao;
-import tk.andrielson.carrinhos.androidapp.data.model.ItemVendaImpl;
-import tk.andrielson.carrinhos.androidapp.data.model.ProdutoImpl;
-import tk.andrielson.carrinhos.androidapp.data.model.VendaImpl;
-import tk.andrielson.carrinhos.androidapp.data.model.VendedorImpl;
+import tk.andrielson.carrinhos.androidapp.fireroom.model.ItemVendaImpl;
+import tk.andrielson.carrinhos.androidapp.fireroom.model.ProdutoImpl;
+import tk.andrielson.carrinhos.androidapp.fireroom.model.VendaImpl;
+import tk.andrielson.carrinhos.androidapp.fireroom.model.VendedorImpl;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
 public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaImpl, ItemVendaImpl> {

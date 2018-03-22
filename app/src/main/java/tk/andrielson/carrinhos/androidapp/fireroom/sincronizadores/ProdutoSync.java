@@ -8,7 +8,7 @@ import com.google.firebase.firestore.DocumentChange;
 import java.util.ArrayList;
 import java.util.List;
 
-import tk.andrielson.carrinhos.androidapp.data.model.ProdutoImpl;
+import tk.andrielson.carrinhos.androidapp.fireroom.model.ProdutoImpl;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.AppDatabase;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.dao.ProdutoDaoRoom;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;

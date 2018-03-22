@@ -8,7 +8,7 @@
 
         <variable
             name="itemVenda"
-            type="tk.andrielson.carrinhos.androidapp.data.model.ItemVendaImpl" />
+            type="tk.andrielson.carrinhos.androidapp.fireroom.model.ItemVendaImpl" />
     </data>
 
     <android.support.v7.widget.GridLayout

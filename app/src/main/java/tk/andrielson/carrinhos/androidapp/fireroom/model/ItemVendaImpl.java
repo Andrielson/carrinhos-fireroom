@@ -1,4 +1,4 @@
-package tk.andrielson.carrinhos.androidapp.data.model;
+package tk.andrielson.carrinhos.androidapp.fireroom.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -6,9 +6,7 @@ import android.support.annotation.NonNull;
 
 import org.jetbrains.annotations.Contract;
 
-/**
- * Created by anfesilva on 12/03/2018.
- */
+import tk.andrielson.carrinhos.androidapp.data.model.ItemVenda;
 
 public final class ItemVendaImpl
         extends ItemVenda<ProdutoImpl> {
