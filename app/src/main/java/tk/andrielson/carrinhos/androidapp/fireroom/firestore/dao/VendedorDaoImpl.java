@@ -1,4 +1,4 @@
-package tk.andrielson.carrinhos.androidapp.data.dao;
+package tk.andrielson.carrinhos.androidapp.fireroom.firestore.dao;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
@@ -13,6 +13,8 @@ import com.google.firebase.firestore.WriteBatch;
 
 import java.util.List;
 
+import tk.andrielson.carrinhos.androidapp.fireroom.firestore.FirestoreQueryLiveData;
+import tk.andrielson.carrinhos.androidapp.data.dao.VendedorDao;
 import tk.andrielson.carrinhos.androidapp.data.model.VendedorImpl;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 

@@ -1,4 +1,4 @@
-package tk.andrielson.carrinhos.androidapp.data.dao;
+package tk.andrielson.carrinhos.androidapp.fireroom.firestore.dao;
 
 import android.annotation.SuppressLint;
 import android.arch.core.util.Function;
@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import tk.andrielson.carrinhos.androidapp.fireroom.firestore.FirestoreQueryLiveData;
 import tk.andrielson.carrinhos.androidapp.data.model.AbsEntidadePadrao;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 

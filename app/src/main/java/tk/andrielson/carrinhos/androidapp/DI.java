@@ -3,11 +3,11 @@ package tk.andrielson.carrinhos.androidapp;
 import android.support.annotation.NonNull;
 
 import tk.andrielson.carrinhos.androidapp.data.dao.ProdutoDao;
-import tk.andrielson.carrinhos.androidapp.data.dao.ProdutoDaoImpl;
+import tk.andrielson.carrinhos.androidapp.fireroom.firestore.dao.ProdutoDaoImpl;
 import tk.andrielson.carrinhos.androidapp.data.dao.VendaDao;
-import tk.andrielson.carrinhos.androidapp.data.dao.VendaDaoImpl;
+import tk.andrielson.carrinhos.androidapp.fireroom.firestore.dao.VendaDaoImpl;
 import tk.andrielson.carrinhos.androidapp.data.dao.VendedorDao;
-import tk.andrielson.carrinhos.androidapp.data.dao.VendedorDaoImpl;
+import tk.andrielson.carrinhos.androidapp.fireroom.firestore.dao.VendedorDaoImpl;
 import tk.andrielson.carrinhos.androidapp.data.model.ItemVenda;
 import tk.andrielson.carrinhos.androidapp.data.model.ItemVendaImpl;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;

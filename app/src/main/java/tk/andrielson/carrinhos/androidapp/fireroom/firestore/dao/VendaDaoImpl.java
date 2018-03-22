@@ -1,4 +1,4 @@
-package tk.andrielson.carrinhos.androidapp.data.dao;
+package tk.andrielson.carrinhos.androidapp.fireroom.firestore.dao;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
 
+import tk.andrielson.carrinhos.androidapp.fireroom.firestore.FirestoreQueryLiveData;
+import tk.andrielson.carrinhos.androidapp.data.dao.VendaDao;
 import tk.andrielson.carrinhos.androidapp.data.model.ItemVendaImpl;
 import tk.andrielson.carrinhos.androidapp.data.model.ProdutoImpl;
 import tk.andrielson.carrinhos.androidapp.data.model.VendaImpl;

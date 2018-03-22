@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import tk.andrielson.carrinhos.androidapp.data.dao.RelatoriosDaoImpl;
+import tk.andrielson.carrinhos.androidapp.fireroom.firestore.dao.RelatoriosDaoImpl;
 import tk.andrielson.carrinhos.androidapp.observable.RelatorioVendaPorDia;
 
 public final class RelatorioVendasPorDiaViewModel extends ViewModel {

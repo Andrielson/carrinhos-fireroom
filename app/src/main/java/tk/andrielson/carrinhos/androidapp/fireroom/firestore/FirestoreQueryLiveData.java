@@ -1,4 +1,4 @@
-package tk.andrielson.carrinhos.androidapp.data.dao;
+package tk.andrielson.carrinhos.androidapp.fireroom.firestore;
 
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;

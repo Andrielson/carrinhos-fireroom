@@ -1,4 +1,4 @@
-package tk.andrielson.carrinhos.androidapp.data.dao;
+package tk.andrielson.carrinhos.androidapp.fireroom.firestore.dao;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
@@ -16,6 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import tk.andrielson.carrinhos.androidapp.fireroom.firestore.FirestoreQueryLiveData;
 import tk.andrielson.carrinhos.androidapp.data.model.VendaImpl;
 
 public final class RelatoriosDaoImpl {

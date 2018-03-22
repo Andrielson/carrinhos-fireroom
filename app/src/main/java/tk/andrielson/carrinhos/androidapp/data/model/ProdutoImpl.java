@@ -1,5 +1,8 @@
 package tk.andrielson.carrinhos.androidapp.data.model;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -7,20 +10,28 @@ import android.support.annotation.NonNull;
 /**
  * Created by Andrielson on 03/03/2018.
  */
-
+@Entity(tableName = "tb_produto")
 public final class ProdutoImpl extends Produto {
 
     //<editor-fold desc="Campos do objeto JSON do Firebase">
+    @Ignore
     public static final String COLECAO = "produtos";
+    @Ignore
     public static final String CODIGO = "codigo";
+    @Ignore
     public static final String NOME = "nome";
+    @Ignore
     public static final String SIGLA = "sigla";
+    @Ignore
     public static final String PRECO = "preco";
+    @Ignore
     public static final String ATIVO = "ativo";
+    @Ignore
     public static final String EXCLUIDO = "excluido";
     //</editor-fold>
 
     @SuppressWarnings("unused")
+    @Ignore
     public static final Parcelable.Creator<ProdutoImpl> CREATOR = new Parcelable.Creator<ProdutoImpl>() {
         @Override
         public ProdutoImpl createFromParcel(Parcel in) {
@@ -32,16 +43,19 @@ public final class ProdutoImpl extends Produto {
             return new ProdutoImpl[size];
         }
     };
+    @PrimaryKey
     private Long codigo = 0L;
     private String nome;
     private String sigla;
     private Long preco = 0L;
     private Boolean ativo = Boolean.TRUE;
+    @Ignore
     private Boolean excluido = Boolean.FALSE;
 
     public ProdutoImpl() {
     }
 
+    @Ignore
     public ProdutoImpl(Long codigo, String nome, String sigla, Long preco) {
         this.codigo = codigo;
         this.nome = nome;
@@ -49,6 +63,7 @@ public final class ProdutoImpl extends Produto {
         this.preco = preco;
     }
 
+    @Ignore
     private ProdutoImpl(Parcel in) {
         codigo = in.readByte() == 0x00 ? null : in.readLong();
         nome = in.readString();
