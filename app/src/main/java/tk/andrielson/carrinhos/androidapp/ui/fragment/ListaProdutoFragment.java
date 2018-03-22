@@ -88,9 +88,8 @@ public class ListaProdutoFragment extends Fragment {
                 binding.setCarregando(false);
                 adapter.setListaProduto(produtos);
                 binding.setListaVazia(produtos.isEmpty());
-            } else {
+            } else
                 binding.setCarregando(true);
-            }
             binding.executePendingBindings();
         });
     }

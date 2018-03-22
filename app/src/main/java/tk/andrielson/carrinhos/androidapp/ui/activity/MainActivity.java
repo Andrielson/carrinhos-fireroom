@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import tk.andrielson.carrinhos.androidapp.R;
+import tk.andrielson.carrinhos.androidapp.data.dao.BackupDaoImpl;
 import tk.andrielson.carrinhos.androidapp.observable.ProdutoObservable;
 import tk.andrielson.carrinhos.androidapp.observable.VendaObservable;
 import tk.andrielson.carrinhos.androidapp.observable.VendedorObservable;
@@ -187,6 +188,9 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_atualizar:
                 break;
             case R.id.nav_backup:
+                BackupDaoImpl backupDao = new BackupDaoImpl();
+                backupDao.backupProdutos();
+                backupDao.backupVendedores();
                 break;
             case R.id.nav_sobre:
                 break;

@@ -6,7 +6,11 @@
     <data>
 
         <variable
-            name="isLoading"
+            name="carregando"
+            type="boolean" />
+
+        <variable
+            name="listaVazia"
             type="boolean" />
 
         <import type="android.view.View" />
@@ -25,7 +29,7 @@
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/fragment_venda_lista_carregando_vendas"
             android:textAlignment="center"
-            android:visibility="@{isLoading ? View.VISIBLE : View.GONE}"
+            android:visibility="@{carregando ? View.VISIBLE : View.GONE}"
             tools:visibility="gone" />
 
         <TextView
@@ -35,7 +39,7 @@
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/fragment_venda_lista_vazia"
             android:textAlignment="center"
-            android:visibility="gone"
+            android:visibility="@{listaVazia ? View.VISIBLE : View.GONE}"
             tools:visibility="gone" />
 
         <android.support.v7.widget.RecyclerView

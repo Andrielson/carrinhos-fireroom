@@ -4,16 +4,19 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 import android.support.annotation.NonNull;
 import android.support.v4.util.SimpleArrayMap;
-import android.util.Log;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import tk.andrielson.carrinhos.androidapp.data.model.VendaImpl;
-import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
 public final class RelatoriosDaoImpl {
 
@@ -22,7 +25,16 @@ public final class RelatoriosDaoImpl {
 
     @NonNull
     public LiveData<SimpleArrayMap<Date, SimpleArrayMap<String, Long>>> vendasPorDia() {
-        Query query = db.collection(VendaImpl.COLECAO).orderBy(VendaImpl.DATA, Query.Direction.DESCENDING);
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        Date inicio;
+        Date fim;
+        try {
+            inicio = dateFormat.parse("15/01/2018");
+        } catch (ParseException e) {
+            inicio = Calendar.getInstance().getTime();
+            e.printStackTrace();
+        }
+        Query query = db.collection(VendaImpl.COLECAO).whereGreaterThanOrEqualTo(VendaImpl.DATA, inicio).orderBy(VendaImpl.DATA, Query.Direction.DESCENDING);
         FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(query);
         return Transformations.map(liveData, input -> {
             if (input == null)
@@ -34,12 +46,11 @@ public final class RelatoriosDaoImpl {
                 Long total = arrayMap.containsKey("total") ? arrayMap.get("total") : 0L;
                 total += docSnap.getLong(VendaImpl.TOTAL);
                 arrayMap.put("total", total);
-                Long pago = arrayMap.containsKey("pago") ? arrayMap.get("pago") : 0L;
-                pago += docSnap.getLong(VendaImpl.TOTAL) * (1 - docSnap.getLong(VendaImpl.COMISSAO) / 100L);
-                arrayMap.put("pago", pago);
                 Long comissao = arrayMap.containsKey("comissao") ? arrayMap.get("comissao") : 0L;
                 comissao += docSnap.getLong(VendaImpl.TOTAL) * docSnap.getLong(VendaImpl.COMISSAO) / 100L;
                 arrayMap.put("comissao", comissao);
+                Long pago = total - comissao;
+                arrayMap.put("pago", pago);
                 simpleArrayMap.put(data, arrayMap);
             }
             return simpleArrayMap;

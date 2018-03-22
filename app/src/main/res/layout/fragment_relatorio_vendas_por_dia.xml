@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical|center_horizontal"
-            android:text="@string/fragment_produto_lista_carregando_produtos"
+            android:text="@string/fragment_relatorios_carregando"
             android:textAlignment="center"
             android:visibility="@{carregando ? View.VISIBLE : View.GONE}"
             tools:visibility="gone" />
@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical|center_horizontal"
-            android:text="@string/fragment_produto_lista_vazia"
+            android:text="@string/fragment_relatorios_venda_vazio"
             android:textAlignment="center"
             android:visibility="@{listaVazia ? View.VISIBLE : View.GONE}"
             tools:visibility="gone" />

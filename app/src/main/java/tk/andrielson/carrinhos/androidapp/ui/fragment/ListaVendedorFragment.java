@@ -86,11 +86,11 @@ public class ListaVendedorFragment extends Fragment {
     private void configuraUI(ListaVendedorViewModel viewModel) {
         viewModel.getVendedores().observe(this, vendedores -> {
             if (vendedores != null) {
-                binding.setIsLoading(false);
+                binding.setCarregando(false);
                 adapter.setListaVendedor(vendedores);
-            } else {
-                binding.setIsLoading(true);
-            }
+                binding.setListaVazia(vendedores.isEmpty());
+            } else
+                binding.setCarregando(true);
             binding.executePendingBindings();
         });
     }

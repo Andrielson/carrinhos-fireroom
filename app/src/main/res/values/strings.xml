@@ -60,7 +60,7 @@
 
     <!--<editor-fold desc="Fragment Lista de Vendas">-->
     <string name="fragment_venda_lista_carregando_vendas">Carregando vendas…</string>
-    <string name="fragment_venda_lista_vazia">Nenhum venda adicionado</string>
+    <string name="fragment_venda_lista_vazia">Nenhum venda adicionada</string>
     <!--</editor-fold>-->
 
     <!--Activity Venda-->
@@ -83,8 +83,8 @@
     <string name="fragment_cadastro_venda_label_salvar">Salvar</string>
     <string name="fragment_cadastro_venda_label_finalizar">Finalizar</string>
     <string name="fragment_cadastro_venda_label_excluir">Excluir venda</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <!--</editor-fold>-->
+
+    <string name="fragment_relatorios_carregando">Carregando relatório…</string>
+    <string name="fragment_relatorios_venda_vazio">Nenhum venda encontrada</string>
 </resources>
