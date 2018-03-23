@@ -13,24 +13,24 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "tb_item_venda",
         foreignKeys = {
-                @ForeignKey(entity = VendaRoom.class, parentColumns = "codigo", childColumns = "cod_venda", onDelete = CASCADE, deferred = true),
-                @ForeignKey(entity = ProdutoRoom.class, parentColumns = "codigo", childColumns = "cod_produto", deferred = true)},
+                @ForeignKey(entity = VendaRoom.class, parentColumns = "venda_codigo", childColumns = "venda_codigo", onDelete = CASCADE, deferred = true),
+                @ForeignKey(entity = ProdutoRoom.class, parentColumns = "produto_codigo", childColumns = "produto_codigo", deferred = true)},
         indices = {
-                @Index(name = "venda_produto", value = {"cod_venda", "cod_produto"}, unique = true),
-                @Index(name = "idx_item_venda", value = {"cod_venda"}),
-                @Index(name = "idx_item_produto", value = {"cod_produto"})})
+                @Index(name = "venda_produto", value = {"venda_codigo", "produto_codigo"}, unique = true),
+                @Index(name = "idx_item_venda", value = {"venda_codigo"}),
+                @Index(name = "idx_item_produto", value = {"produto_codigo"})})
 public final class ItemVendaRoom {
     @PrimaryKey(autoGenerate = true)
     public Long id;
-    @ColumnInfo(name = "cod_venda")
+    @ColumnInfo(name = "venda_codigo")
     public Long venda;
-    @ColumnInfo(name = "cod_produto")
+    @ColumnInfo(name = "produto_codigo")
     public Long produto;
     @ColumnInfo(name = "qt_saiu")
     public Integer qtSaiu;
     @ColumnInfo(name = "qt_voltou")
     public Integer qtVoltou;
-    @ColumnInfo(name = "valor")
+    @ColumnInfo(name = "valor_item")
     public Long valor;
 
     public ItemVendaRoom() {

@@ -4,24 +4,16 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
-import android.support.v4.util.SimpleArrayMap;
 
 import org.jetbrains.annotations.Contract;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
-import tk.andrielson.carrinhos.androidapp.fireroom.firestore.dao.RelatoriosDaoImpl;
 import tk.andrielson.carrinhos.androidapp.observable.RelatorioVendaPorDia;
 
 public final class RelatorioVendasPorDiaViewModel extends ViewModel {
     private static final String TAG = RelatorioVendasPorDiaViewModel.class.getSimpleName();
-    private final MediatorLiveData<List<RelatorioVendaPorDia>> mediatorLiveData= new MediatorLiveData<>();
+    private final MediatorLiveData<List<RelatorioVendaPorDia>> mediatorLiveData = new MediatorLiveData<>();
 
     public RelatorioVendasPorDiaViewModel() {
         mediatorLiveData.setValue(null);

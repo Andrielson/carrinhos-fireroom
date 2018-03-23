@@ -1,28 +1,19 @@
 package tk.andrielson.carrinhos.androidapp.fireroom.firestore.dao;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Transformations;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.util.LongSparseArray;
 
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.WriteBatch;
 
-import java.util.List;
-
-import tk.andrielson.carrinhos.androidapp.fireroom.firestore.FirestoreQueryLiveData;
-import tk.andrielson.carrinhos.androidapp.data.dao.VendedorDao;
-import tk.andrielson.carrinhos.androidapp.fireroom.model.VendedorImpl;
+import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.VendedorFirestore;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
 /**
  * Implementação de VendedorDao para o banco Firestore.
  */
 public final class VendedorDaoImpl extends FirestoreDao {
-    private static final String COLECAO = VendedorImpl.COLECAO;
+    private static final String COLECAO = VendedorFirestore.COLECAO;
     private static final String TAG = VendedorDaoImpl.class.getSimpleName();
 
     /**
@@ -38,10 +29,10 @@ public final class VendedorDaoImpl extends FirestoreDao {
      * @param vendedor o vendedor a ser inserido
      * @return o código gerado para o vendedor
      */
-    public long insert(@NonNull VendedorImpl vendedor) {
+    public long insert(@NonNull VendedorFirestore vendedor) {
         String ultimoID = getColecaoID(COLECAO);
         Long novoCodigo = Long.valueOf(ultimoID) + 1;
-        vendedor.setCodigo(novoCodigo);
+        vendedor.codigo = novoCodigo;
         final String id = getIdFromCodigo(novoCodigo);
         DocumentReference novoDocumento = collection.document(id);
         WriteBatch batch = setColecaoID(COLECAO, id);
@@ -59,8 +50,8 @@ public final class VendedorDaoImpl extends FirestoreDao {
      * @param vendedor o vendedor a ser atualizado
      * @return o número de vendedors atualizados
      */
-    public int update(@NonNull VendedorImpl vendedor) {
-        final String id = getIdFromCodigo(vendedor.getCodigo());
+    public int update(@NonNull VendedorFirestore vendedor) {
+        final String id = getIdFromCodigo(vendedor.codigo);
         DocumentReference documento = collection.document(id);
         WriteBatch batch = db.batch();
         batch.set(documento, vendedor);
@@ -77,13 +68,13 @@ public final class VendedorDaoImpl extends FirestoreDao {
      * @param vendedor o vendedor a ser removido
      * @return o número de vendedor removidos
      */
-    public int delete(@NonNull VendedorImpl vendedor) {
-        final String id = getIdFromCodigo(vendedor.getCodigo());
+    public int delete(@NonNull VendedorFirestore vendedor) {
+        final String id = getIdFromCodigo(vendedor.codigo);
         DocumentReference documento = collection.document(id);
         WriteBatch batch = db.batch();
         //Depois de implementar as vendas, pesquisar se o vendedor possui relação com alguma venda
         //se tiver, marcar a flag excluído.
-        //batch.update(documento, VendedorImpl.EXCLUIDO, true);
+        //batch.update(documento, VendedorFirestore.EXCLUIDO, true);
         batch.delete(documento);
         batch.commit()
                 .addOnSuccessListener(aVoid -> LogUtil.Log(TAG, "Vendedor " + id + " removido com sucesso!", Log.INFO))
@@ -92,43 +83,5 @@ public final class VendedorDaoImpl extends FirestoreDao {
                     LogUtil.Log(TAG, e.getMessage(), Log.ERROR);
                 });
         return 0;
-    }
-
-    /**
-     * Consulta todos os vendedors do banco de dados e retorna uma lista
-     * encapsulada numa LiveData observável, para manter a lista sempre atualizada.
-     *
-     * @return a lista de vendedors encapsulada em uma LiveData
-     */
-    public LiveData<List<VendedorImpl>> getAll() {
-        Query query = queryPadrao.orderBy(VendedorImpl.NOME);
-        FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(query);
-        return Transformations.map(liveData, new ListaDeserializer<>(VendedorImpl.class));
-    }
-
-    /**
-     * Procura um vendedor especificado pelo código informado e o retorna encapsulado
-     * numa LiveData para sempre manter a informação atualizada.
-     *
-     * @param codigo o código do vendedor a ser procurado/retornado
-     * @return o vendedor encapsulado em uma LiveData
-     */
-    public LiveData<VendedorImpl> getByCodigo(@NonNull final Long codigo) {
-        Query query = queryPadrao.whereEqualTo("codigo", codigo);
-        FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(query);
-        return Transformations.map(liveData, new Deserializer<>(VendedorImpl.class));
-    }
-
-    @NonNull
-    public LiveData<LongSparseArray<VendedorImpl>> getForJoin() {
-        FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(db.collection(COLECAO));
-        return Transformations.map(liveData, input -> {
-            LongSparseArray<VendedorImpl> vendedorArray = new LongSparseArray<>();
-            for (DocumentSnapshot doc : input.getDocuments()) {
-                VendedorImpl produto = doc.toObject(VendedorImpl.class);
-                vendedorArray.put(produto.getCodigo(), produto);
-            }
-            return vendedorArray;
-        });
     }
 }

@@ -1,9 +1,5 @@
 package tk.andrielson.carrinhos.androidapp.data.model;
 
-/**
- * Created by anfesilva on 12/03/2018.
- */
-
 public abstract class ItemVenda<P extends Produto> extends AbsEntidadePadrao {
     public abstract P getProduto();
 

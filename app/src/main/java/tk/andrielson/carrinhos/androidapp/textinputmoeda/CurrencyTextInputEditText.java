@@ -12,10 +12,6 @@ import java.util.Locale;
 
 import tk.andrielson.carrinhos.androidapp.R;
 
-/**
- * Created by anfesilva on 09/03/2018.
- */
-
 public class CurrencyTextInputEditText extends TextInputEditText {
     private Locale currentLocale;
 
@@ -279,7 +275,8 @@ public class CurrencyTextInputEditText extends TextInputEditText {
     private Locale retrieveLocale() {
         Locale locale;
         try {
-            locale = getResources().getConfiguration().locale;
+//            locale = getResources().getConfiguration().locale;
+            locale = Locale.getDefault();
         } catch (Exception e) {
             Log.w("CurrencyEditText", String.format("An error occurred while retrieving users device locale, using fallback locale '%s'", defaultLocale), e);
             locale = defaultLocale;

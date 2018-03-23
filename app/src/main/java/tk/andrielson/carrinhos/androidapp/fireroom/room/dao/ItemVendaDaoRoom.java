@@ -24,10 +24,10 @@ public abstract class ItemVendaDaoRoom {
     @Delete
     public abstract void delete(ItemVendaRoom... itens);
 
-    @Query("DELETE FROM tb_item_venda WHERE cod_venda = :cod_venda")
+    @Query("DELETE FROM tb_item_venda WHERE venda_codigo = :cod_venda")
     public abstract void delete(Long cod_venda);
 
-    @Query("DELETE FROM tb_item_venda WHERE cod_venda IN (:vendas)")
+    @Query("DELETE FROM tb_item_venda WHERE venda_codigo IN (:vendas)")
     public abstract void delete(List<Long> vendas);
 
     @Transaction
@@ -36,6 +36,6 @@ public abstract class ItemVendaDaoRoom {
         insert(itens);
     }
 
-    @Query("SELECT * FROM tb_item_venda WHERE cod_venda = :cod_venda")
+    @Query("SELECT * FROM tb_item_venda WHERE venda_codigo = :cod_venda")
     public abstract LiveData<ItemVendaRoom[]> getItensVenda(Long cod_venda);
 }

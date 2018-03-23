@@ -21,6 +21,6 @@ public abstract class ProdutoDaoRoom {
     @Delete
     public abstract void delete(ProdutoRoom... produtos);
 
-    @Query("SELECT * FROM tb_produto")
+    @Query("SELECT * FROM tb_produto ORDER BY produto_nome")
     public abstract LiveData<ProdutoRoom[]> getAll();
 }

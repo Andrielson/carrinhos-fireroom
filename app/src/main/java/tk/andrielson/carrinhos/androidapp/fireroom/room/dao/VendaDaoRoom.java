@@ -24,6 +24,11 @@ public abstract class VendaDaoRoom {
     @Query("SELECT * FROM tb_venda")
     public abstract LiveData<VendaRoom[]> getAll();
 
-    @Query("SELECT a.*, b.* FROM tb_venda a INNER JOIN tb_vendedor b ON a.cod_vendedor = b.codigo")
-    public abstract LiveData<VendaRoom.VendaTeste[]> getAllComVendedor();
+    @Query("SELECT a.*, b.*, SUM((c.qt_saiu - c.qt_voltou) * c.valor_item) AS venda_total " +
+            "FROM tb_venda a " +
+            "INNER JOIN tb_vendedor b USING (vendedor_codigo) " +
+            "INNER JOIN tb_item_venda c USING (venda_codigo) " +
+            "GROUP BY a.venda_codigo " +
+            "ORDER BY a.venda_status ASC, a.venda_data DESC, b.vendedor_nome ASC")
+    public abstract LiveData<VendaRoom.VendaComVendedorTotal[]> getAllComVendedor();
 }

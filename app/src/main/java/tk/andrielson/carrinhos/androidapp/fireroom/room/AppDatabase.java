@@ -18,7 +18,7 @@ import tk.andrielson.carrinhos.androidapp.fireroom.room.entities.ProdutoRoom;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.entities.VendaRoom;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.entities.VendedorRoom;
 
-@Database(entities = {ProdutoRoom.class, VendedorRoom.class, VendaRoom.class, ItemVendaRoom.class}, exportSchema = false, version = 1)
+@Database(entities = {ProdutoRoom.class, VendedorRoom.class, VendaRoom.class, ItemVendaRoom.class}, exportSchema = false, version = 3)
 @TypeConverters(DateToStringConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract ProdutoDaoRoom produtoDao();
