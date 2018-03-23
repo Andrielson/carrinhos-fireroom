@@ -23,4 +23,7 @@ public abstract class VendaDaoRoom {
 
     @Query("SELECT * FROM tb_venda")
     public abstract LiveData<VendaRoom[]> getAll();
+
+    @Query("SELECT a.*, b.* FROM tb_venda a INNER JOIN tb_vendedor b ON a.cod_vendedor = b.codigo")
+    public abstract LiveData<VendaRoom.VendaTeste[]> getAllComVendedor();
 }

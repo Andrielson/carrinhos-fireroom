@@ -17,7 +17,8 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
                 @ForeignKey(entity = ProdutoRoom.class, parentColumns = "codigo", childColumns = "cod_produto", deferred = true)},
         indices = {
                 @Index(name = "venda_produto", value = {"cod_venda", "cod_produto"}, unique = true),
-                @Index(name = "idx_item_venda", value = {"cod_venda"})})
+                @Index(name = "idx_item_venda", value = {"cod_venda"}),
+                @Index(name = "idx_item_produto", value = {"cod_produto"})})
 public final class ItemVendaRoom {
     @PrimaryKey(autoGenerate = true)
     public Long id;
@@ -35,19 +36,20 @@ public final class ItemVendaRoom {
     public ItemVendaRoom() {
     }
 
-    public ItemVendaRoom(ItemVendaImpl item, Long venda) {
-        this.venda = venda;
-        this.produto = item.getProduto().getCodigo();
-        this.qtSaiu = item.getQtSaiu();
-        this.qtVoltou = item.getQtVoltou();
-        this.valor = item.getValor();
-    }
-
     public ItemVendaRoom(ItemVendaFirestore item, Long venda) {
         this.venda = venda;
         this.produto = Long.valueOf(item.produto.getId());
         this.qtSaiu = item.qt_saiu;
         this.qtVoltou = item.qt_voltou;
         this.valor = item.valor;
+    }
+
+    public ItemVendaImpl getModel() {
+        ItemVendaImpl itemVenda = new ItemVendaImpl();
+        itemVenda.setQtSaiu(qtSaiu);
+        itemVenda.setQtVoltou(qtVoltou);
+        itemVenda.setQtVendeu(qtSaiu - qtVoltou);
+        itemVenda.setValor(valor);
+        return itemVenda;
     }
 }

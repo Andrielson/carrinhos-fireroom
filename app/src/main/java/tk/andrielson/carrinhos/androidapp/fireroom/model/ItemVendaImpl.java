@@ -4,19 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-import org.jetbrains.annotations.Contract;
-
 import tk.andrielson.carrinhos.androidapp.data.model.ItemVenda;
 
-public final class ItemVendaImpl
-        extends ItemVenda<ProdutoImpl> {
+public final class ItemVendaImpl extends ItemVenda<ProdutoImpl> {
 
-    public static final String COLECAO = "itens";
-    public static final String PRODUTO = "produto";
-    public static final String QT_SAIU = "qt_saiu";
-    public static final String QT_VENDEU = "qt_vendeu";
-    public static final String QT_VOLTOU = "qt_voltou";
-    public static final String VALOR = "valor";
     @SuppressWarnings("unused")
     public static final Parcelable.Creator<ItemVendaImpl> CREATOR = new Parcelable.Creator<ItemVendaImpl>() {
         @NonNull
@@ -26,12 +17,12 @@ public final class ItemVendaImpl
         }
 
         @NonNull
-        @Contract(pure = true)
         @Override
         public ItemVendaImpl[] newArray(int size) {
             return new ItemVendaImpl[size];
         }
     };
+
     private ProdutoImpl produto;
     private Integer qtSaiu;
     private Integer qtVoltou;
@@ -53,7 +44,6 @@ public final class ItemVendaImpl
         valor = in.readByte() == 0x00 ? null : in.readLong();
     }
 
-    @Contract(pure = true)
     @Override
     public ProdutoImpl getProduto() {
         return produto;
@@ -64,7 +54,6 @@ public final class ItemVendaImpl
         this.produto = produto;
     }
 
-    @Contract(pure = true)
     @Override
     public Integer getQtSaiu() {
         return qtSaiu;
@@ -75,7 +64,6 @@ public final class ItemVendaImpl
         this.qtSaiu = qtSaiu;
     }
 
-    @Contract(pure = true)
     @Override
     public Integer getQtVoltou() {
         return qtVoltou;
@@ -86,7 +74,6 @@ public final class ItemVendaImpl
         this.qtVoltou = qtVoltou;
     }
 
-    @Contract(pure = true)
     @Override
     public Integer getQtVendeu() {
         return qtVendeu;
@@ -97,7 +84,6 @@ public final class ItemVendaImpl
         this.qtVendeu = qtVendeu;
     }
 
-    @Contract(pure = true)
     @Override
     public Long getValor() {
         return valor;
@@ -136,7 +122,6 @@ public final class ItemVendaImpl
         return result;
     }
 
-    @Contract(pure = true)
     @Override
     public int describeContents() {
         return 0;

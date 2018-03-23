@@ -17,9 +17,6 @@ import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.ItemVen
 import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.ProdutoFirestore;
 import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.VendaFirestore;
 import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.VendedorFirestore;
-import tk.andrielson.carrinhos.androidapp.fireroom.model.ProdutoImpl;
-import tk.andrielson.carrinhos.androidapp.fireroom.model.VendaImpl;
-import tk.andrielson.carrinhos.androidapp.fireroom.model.VendedorImpl;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.AppDatabase;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.dao.ItemVendaDaoRoom;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.dao.ProdutoDaoRoom;
@@ -48,7 +45,7 @@ public final class SincronizadorFirestoreRoom {
     }
 
     private void sincronizaProdutos() {
-        FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(firestore.collection(ProdutoImpl.COLECAO), true);
+        FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(firestore.collection(ProdutoFirestore.COLECAO), true);
         liveData.observeForever(snapshots -> {
             if (snapshots != null)
                 Executors.newSingleThreadExecutor().execute(() -> {
@@ -88,7 +85,7 @@ public final class SincronizadorFirestoreRoom {
     }
 
     private void sincronizaVendedores() {
-        FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(firestore.collection(VendedorImpl.COLECAO), true);
+        FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(firestore.collection(VendedorFirestore.COLECAO), true);
         liveData.observeForever(snapshots -> {
             if (snapshots != null)
                 Executors.newSingleThreadExecutor().execute(() -> {
@@ -128,7 +125,7 @@ public final class SincronizadorFirestoreRoom {
     }
 
     private void sincronizaVendas() {
-        FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(firestore.collection(VendaImpl.COLECAO), true);
+        FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(firestore.collection(VendaFirestore.COLECAO), true);
         liveData.observeForever(snapshots -> {
             if (snapshots != null)
                 Executors.newSingleThreadExecutor().execute(() -> {

@@ -4,30 +4,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-import org.jetbrains.annotations.Contract;
-
 import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
 
 //@Entity(tableName = "tb_vendedor")
 public final class VendedorImpl extends Vendedor {
 
-    //<editor-fold desc="Campos do objeto JSON do Firestore">
-//    @Ignore
-    public static final String COLECAO = "vendedores";
-    //    @Ignore
-    public static final String CODIGO = "codigo";
-    //    @Ignore
-    public static final String NOME = "nome";
-    //    @Ignore
-    public static final String COMISSAO = "comissao";
-    //    @Ignore
-    public static final String ATIVO = "ativo";
-    //    @Ignore
-    public static final String EXCLUIDO = "excluido";
-    //</editor-fold>
-
     @SuppressWarnings("unused")
-//    @Ignore
     public static final Parcelable.Creator<VendedorImpl> CREATOR = new Parcelable.Creator<VendedorImpl>() {
         @NonNull
         @Override
@@ -36,25 +18,21 @@ public final class VendedorImpl extends Vendedor {
         }
 
         @NonNull
-        @Contract(pure = true)
         @Override
         public VendedorImpl[] newArray(int size) {
             return new VendedorImpl[size];
         }
     };
-    //    @PrimaryKey
     private Long codigo = 0L;
     private String nome;
     private Integer comissao;
     private Boolean ativo = Boolean.TRUE;
-    //    @Ignore
     private Boolean excluido = Boolean.FALSE;
 
     public VendedorImpl() {
 
     }
 
-    //    @Ignore
     private VendedorImpl(Parcel in) {
         codigo = in.readByte() == 0x00 ? null : in.readLong();
         nome = in.readString();

@@ -19,18 +19,20 @@ public final class VendedorRoom {
 
     }
 
-    public VendedorRoom(VendedorImpl vendedor) {
-        this.codigo = vendedor.getCodigo();
-        this.nome = vendedor.getNome();
-        this.comissao = vendedor.getComissao();
-        this.ativo = vendedor.getAtivo();
-    }
-
     public VendedorRoom(VendedorFirestore vendedor) {
         this.codigo = vendedor.codigo;
         this.nome = vendedor.nome;
         this.comissao = vendedor.comissao;
         this.ativo = vendedor.ativo;
         this.excluido = vendedor.excluido;
+    }
+
+    public VendedorImpl getModel() {
+        VendedorImpl vendedor = new VendedorImpl();
+        vendedor.setCodigo(codigo);
+        vendedor.setNome(nome);
+        vendedor.setComissao(comissao);
+        vendedor.setAtivo(ativo);
+        return vendedor;
     }
 }

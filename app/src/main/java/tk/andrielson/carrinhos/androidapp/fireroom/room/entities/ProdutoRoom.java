@@ -20,15 +20,6 @@ public final class ProdutoRoom {
 
     }
 
-    public ProdutoRoom(ProdutoImpl produto) {
-        this.codigo = produto.getCodigo();
-        this.nome = produto.getNome();
-        this.sigla = produto.getSigla();
-        this.preco = produto.getPreco();
-        this.ativo = produto.getAtivo();
-        this.excluido = false;
-    }
-
     public ProdutoRoom(ProdutoFirestore produto) {
         this.codigo = produto.codigo;
         this.nome = produto.nome;
@@ -36,5 +27,15 @@ public final class ProdutoRoom {
         this.preco = produto.preco;
         this.ativo = produto.ativo;
         this.excluido = produto.excluido;
+    }
+
+    public ProdutoImpl getModel() {
+        ProdutoImpl produto = new ProdutoImpl();
+        produto.setCodigo(codigo);
+        produto.setNome(nome);
+        produto.setSigla(sigla);
+        produto.setPreco(preco);
+        produto.setAtivo(ativo);
+        return produto;
     }
 }

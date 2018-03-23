@@ -1,9 +1,11 @@
 package tk.andrielson.carrinhos.androidapp.fireroom.room.entities;
 
 import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -12,9 +14,10 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.VendaFirestore;
-import tk.andrielson.carrinhos.androidapp.fireroom.model.VendaImpl;
 
-@Entity(tableName = "tb_venda", foreignKeys = @ForeignKey(entity = VendedorRoom.class, parentColumns = "codigo", childColumns = "cod_vendedor"))
+@Entity(tableName = "tb_venda",
+        foreignKeys = @ForeignKey(entity = VendedorRoom.class, parentColumns = "codigo", childColumns = "cod_vendedor"),
+        indices = {@Index(name = "idx_venda_vendedor", value = {"cod_vendedor"})})
 public final class VendaRoom {
 
     @Ignore
@@ -31,19 +34,18 @@ public final class VendaRoom {
 
     }
 
-    public VendaRoom(@NonNull VendaImpl venda) {
-        this.codigo = venda.getCodigo();
-        this.data = formato.format(venda.getData());
-        this.comissao = venda.getComissao();
-        this.status = venda.getStatus();
-        this.vendedor = venda.getVendedor().getCodigo();
-    }
-
     public VendaRoom(@NonNull VendaFirestore venda) {
         this.codigo = venda.codigo;
         this.data = formato.format(venda.data);
         this.comissao = venda.comissao;
         this.status = venda.status;
         this.vendedor = Long.valueOf(venda.vendedor.getId());
+    }
+
+    public static class VendaTeste {
+        @Embedded
+        public VendaRoom venda;
+        @Embedded
+        public VendedorRoom vendedor;
     }
 }
