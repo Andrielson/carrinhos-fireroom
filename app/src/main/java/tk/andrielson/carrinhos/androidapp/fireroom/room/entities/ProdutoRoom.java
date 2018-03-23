@@ -4,7 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
-import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.ProdutoFirestore;
+import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.ProdutoFire;
 import tk.andrielson.carrinhos.androidapp.fireroom.model.ProdutoImpl;
 
 @Entity(tableName = "tb_produto")
@@ -27,7 +27,7 @@ public final class ProdutoRoom {
 
     }
 
-    public ProdutoRoom(ProdutoFirestore produto) {
+    public ProdutoRoom(ProdutoFire produto) {
         this.codigo = produto.codigo;
         this.nome = produto.nome;
         this.sigla = produto.sigla;

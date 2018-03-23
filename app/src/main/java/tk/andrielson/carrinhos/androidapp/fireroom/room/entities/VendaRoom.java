@@ -14,7 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.VendaFirestore;
+import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.VendaFire;
 import tk.andrielson.carrinhos.androidapp.fireroom.model.VendaImpl;
 
 @Entity(tableName = "tb_venda",
@@ -40,7 +40,7 @@ public final class VendaRoom {
 
     }
 
-    public VendaRoom(@NonNull VendaFirestore venda) {
+    public VendaRoom(@NonNull VendaFire venda) {
         this.codigo = venda.codigo;
         this.data = formato.format(venda.data);
         this.comissao = venda.comissao;

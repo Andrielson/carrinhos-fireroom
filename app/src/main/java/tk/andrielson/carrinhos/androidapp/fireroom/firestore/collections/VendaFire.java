@@ -13,7 +13,7 @@ import tk.andrielson.carrinhos.androidapp.data.model.ItemVenda;
 import tk.andrielson.carrinhos.androidapp.fireroom.firestore.dao.FirestoreDao;
 import tk.andrielson.carrinhos.androidapp.fireroom.model.VendaImpl;
 
-public final class VendaFirestore {
+public final class VendaFire {
     public static final String COLECAO = "vendas";
     public static final String CODIGO = "codigo";
     public static final String COMISSAO = "comissao";
@@ -37,16 +37,16 @@ public final class VendaFirestore {
     public String status;
     public CollectionReference itens;
 
-    public VendaFirestore() {
+    public VendaFire() {
     }
 
-    public VendaFirestore(@NonNull VendaImpl venda) {
+    public VendaFire(@NonNull VendaImpl venda) {
         this.codigo = venda.getCodigo();
         this.data = venda.getData();
         this.comissao = venda.getComissao();
         this.status = venda.getStatus();
         this.vendedor_nome = venda.getVendedor().getNome();
-        this.vendedor = FirebaseFirestore.getInstance().collection(VendedorFirestore.COLECAO).document(FirestoreDao.getIdFromCodigo(venda.getVendedor().getCodigo()));
+        this.vendedor = FirebaseFirestore.getInstance().collection(VendedorFire.COLECAO).document(FirestoreDao.getIdFromCodigo(venda.getVendedor().getCodigo()));
         valor_total = 0L;
         for (ItemVenda itv : venda.getItens()) {
             int saiu = itv.getQtSaiu() == null ? 0 : itv.getQtSaiu();
@@ -56,6 +56,6 @@ public final class VendaFirestore {
         }
         valor_comissao = valor_total * comissao / 100;
         valor_pago = valor_total - valor_comissao;
-        this.itens = FirebaseFirestore.getInstance().collection(String.format("/%s/%s/%s", COLECAO, FirestoreDao.getIdFromCodigo(codigo), ItemVendaFirestore.COLECAO));
+        this.itens = FirebaseFirestore.getInstance().collection(String.format("/%s/%s/%s", COLECAO, FirestoreDao.getIdFromCodigo(codigo), ItemVendaFire.COLECAO));
     }
 }

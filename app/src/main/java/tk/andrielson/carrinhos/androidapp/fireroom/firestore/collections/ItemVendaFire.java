@@ -7,7 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import tk.andrielson.carrinhos.androidapp.data.model.ItemVenda;
 import tk.andrielson.carrinhos.androidapp.fireroom.firestore.dao.FirestoreDao;
 
-public final class ItemVendaFirestore {
+public final class ItemVendaFire {
     public static final String COLECAO = "itens";
     public static final String PRODUTO = "produto";
     public static final String QT_SAIU = "qt_saiu";
@@ -24,10 +24,10 @@ public final class ItemVendaFirestore {
     public String produto_nome;
     public String produto_sigla;
 
-    public ItemVendaFirestore() {
+    public ItemVendaFire() {
     }
 
-    public ItemVendaFirestore(ItemVenda item) {
+    public ItemVendaFire(ItemVenda item) {
         this.qt_saiu = item.getQtSaiu() == null ? 0 : item.getQtSaiu();
         this.qt_voltou = item.getQtVoltou() == null ? 0 : item.getQtVoltou();
         this.qt_vendeu = qt_saiu - qt_voltou;
@@ -35,6 +35,6 @@ public final class ItemVendaFirestore {
         this.total = valor * qt_vendeu;
         this.produto_nome = item.getProduto() == null ? "" : item.getProduto().getNome();
         this.produto_sigla = item.getProduto() == null ? "" : item.getProduto().getSigla();
-        this.produto = FirebaseFirestore.getInstance().collection(ProdutoFirestore.COLECAO).document(FirestoreDao.getIdFromCodigo(item.getProduto().getCodigo()));
+        this.produto = FirebaseFirestore.getInstance().collection(ProdutoFire.COLECAO).document(FirestoreDao.getIdFromCodigo(item.getProduto().getCodigo()));
     }
 }

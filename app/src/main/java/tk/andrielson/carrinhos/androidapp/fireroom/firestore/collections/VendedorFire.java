@@ -3,7 +3,7 @@ package tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections;
 
 import tk.andrielson.carrinhos.androidapp.fireroom.model.VendedorImpl;
 
-public final class VendedorFirestore {
+public final class VendedorFire {
     public static final String COLECAO = "vendedores";
     public static final String CODIGO = "codigo";
     public static final String NOME = "nome";
@@ -17,10 +17,10 @@ public final class VendedorFirestore {
     public Boolean ativo;
     public Boolean excluido;
 
-    public VendedorFirestore() {
+    public VendedorFire() {
     }
 
-    public VendedorFirestore(VendedorImpl vendedor) {
+    public VendedorFire(VendedorImpl vendedor) {
         this.codigo = vendedor.getCodigo();
         this.nome = vendedor.getNome();
         this.comissao = vendedor.getComissao();

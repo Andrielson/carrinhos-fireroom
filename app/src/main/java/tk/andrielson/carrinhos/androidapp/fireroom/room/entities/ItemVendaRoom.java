@@ -6,7 +6,7 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
-import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.ItemVendaFirestore;
+import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.ItemVendaFire;
 import tk.andrielson.carrinhos.androidapp.fireroom.model.ItemVendaImpl;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
@@ -36,7 +36,7 @@ public final class ItemVendaRoom {
     public ItemVendaRoom() {
     }
 
-    public ItemVendaRoom(ItemVendaFirestore item, Long venda) {
+    public ItemVendaRoom(ItemVendaFire item, Long venda) {
         this.venda = venda;
         this.produto = Long.valueOf(item.produto.getId());
         this.qtSaiu = item.qt_saiu;

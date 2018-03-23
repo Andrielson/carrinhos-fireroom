@@ -14,10 +14,10 @@ import java.util.List;
 import java.util.concurrent.Executors;
 
 import tk.andrielson.carrinhos.androidapp.fireroom.firestore.FirestoreQueryLiveData;
-import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.ItemVendaFirestore;
-import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.ProdutoFirestore;
-import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.VendaFirestore;
-import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.VendedorFirestore;
+import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.ItemVendaFire;
+import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.ProdutoFire;
+import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.VendaFire;
+import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.VendedorFire;
 import tk.andrielson.carrinhos.androidapp.fireroom.firestore.dao.FirestoreDao;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.AppDatabase;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.dao.ItemVendaDaoRoom;
@@ -48,7 +48,7 @@ public final class SincronizadorFirestoreRoom {
     }
 
     private void sincronizaProdutos() {
-        FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(firestore.collection(ProdutoFirestore.COLECAO), true);
+        FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(firestore.collection(ProdutoFire.COLECAO), true);
         liveData.observeForever(snapshots -> {
             if (snapshots != null)
                 Executors.newSingleThreadExecutor().execute(() -> {
@@ -57,7 +57,7 @@ public final class SincronizadorFirestoreRoom {
                     List<ProdutoRoom> modificados = null;
                     List<ProdutoRoom> excluidos = null;
                     for (DocumentChange dc : snapshots.getDocumentChanges()) {
-                        ProdutoFirestore produto = dc.getDocument().toObject(ProdutoFirestore.class);
+                        ProdutoFire produto = dc.getDocument().toObject(ProdutoFire.class);
                         switch (dc.getType()) {
                             case ADDED:
                                 if (adicionados == null) adicionados = new ArrayList<>();
@@ -88,7 +88,7 @@ public final class SincronizadorFirestoreRoom {
     }
 
     private void sincronizaVendedores() {
-        FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(firestore.collection(VendedorFirestore.COLECAO), true);
+        FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(firestore.collection(VendedorFire.COLECAO), true);
         liveData.observeForever(snapshots -> {
             if (snapshots != null)
                 Executors.newSingleThreadExecutor().execute(() -> {
@@ -97,7 +97,7 @@ public final class SincronizadorFirestoreRoom {
                     List<VendedorRoom> modificados = null;
                     List<VendedorRoom> excluidos = null;
                     for (DocumentChange dc : snapshots.getDocumentChanges()) {
-                        VendedorFirestore vendedor = dc.getDocument().toObject(VendedorFirestore.class);
+                        VendedorFire vendedor = dc.getDocument().toObject(VendedorFire.class);
                         switch (dc.getType()) {
                             case ADDED:
                                 if (adicionados == null) adicionados = new ArrayList<>();
@@ -128,25 +128,25 @@ public final class SincronizadorFirestoreRoom {
     }
 
     private void sincronizaVendas() {
-        FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(firestore.collection(VendaFirestore.COLECAO), true);
+        FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(firestore.collection(VendaFire.COLECAO), true);
         liveData.observeForever(snapshots -> {
             if (snapshots != null)
                 Executors.newSingleThreadExecutor().execute(() -> {
                     VendaDaoRoom vendaDao = database.vendaDao();
                     ItemVendaDaoRoom itemVendaDao = database.itemVendaDao();
                     for (DocumentChange dc : snapshots.getDocumentChanges()) {
-                        VendaFirestore venda = dc.getDocument().toObject(VendaFirestore.class);
+                        VendaFire venda = dc.getDocument().toObject(VendaFire.class);
                         CollectionReference itens;
                         switch (dc.getType()) {
                             case ADDED:
-                                itens = FirebaseFirestore.getInstance().collection(String.format("/%s/%s/%s", VendaFirestore.COLECAO, FirestoreDao.getIdFromCodigo(venda.codigo), ItemVendaFirestore.COLECAO));
+                                itens = FirebaseFirestore.getInstance().collection(String.format("/%s/%s/%s", VendaFire.COLECAO, FirestoreDao.getIdFromCodigo(venda.codigo), ItemVendaFire.COLECAO));
                                 itens.get().addOnSuccessListener(itemSnapshots -> {
                                     if (itemSnapshots != null) {
                                         Executors.newSingleThreadExecutor().execute(() -> {
                                             vendaDao.insert(new VendaRoom(venda));
                                             List<ItemVendaRoom> lista = new ArrayList<>();
                                             for (DocumentSnapshot doc : itemSnapshots.getDocuments())
-                                                lista.add(new ItemVendaRoom(doc.toObject(ItemVendaFirestore.class), venda.codigo));
+                                                lista.add(new ItemVendaRoom(doc.toObject(ItemVendaFire.class), venda.codigo));
                                             itemVendaDao.insert(lista.toArray(new ItemVendaRoom[0]));
                                             LogUtil.Log(TAG, "Venda adicionada: " + venda.codigo, Log.DEBUG);
                                         });
@@ -154,14 +154,14 @@ public final class SincronizadorFirestoreRoom {
                                 });
                                 break;
                             case MODIFIED:
-                                itens = FirebaseFirestore.getInstance().collection(String.format("/%s/%s/%s", VendaFirestore.COLECAO, FirestoreDao.getIdFromCodigo(venda.codigo), ItemVendaFirestore.COLECAO));
+                                itens = FirebaseFirestore.getInstance().collection(String.format("/%s/%s/%s", VendaFire.COLECAO, FirestoreDao.getIdFromCodigo(venda.codigo), ItemVendaFire.COLECAO));
                                 itens.get().addOnSuccessListener(itemSnapshots -> {
                                     if (itemSnapshots != null) {
                                         Executors.newSingleThreadExecutor().execute(() -> {
                                             vendaDao.update(new VendaRoom(venda));
                                             List<ItemVendaRoom> lista = new ArrayList<>();
                                             for (DocumentSnapshot doc : itemSnapshots.getDocuments())
-                                                lista.add(new ItemVendaRoom(doc.toObject(ItemVendaFirestore.class), venda.codigo));
+                                                lista.add(new ItemVendaRoom(doc.toObject(ItemVendaFire.class), venda.codigo));
                                             itemVendaDao.replace(lista.toArray(new ItemVendaRoom[0]), venda.codigo);
                                             LogUtil.Log(TAG, "Venda modificada: " + venda.codigo, Log.DEBUG);
                                         });

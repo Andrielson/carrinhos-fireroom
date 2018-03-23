@@ -1,29 +1,24 @@
 package tk.andrielson.carrinhos.androidapp.fireroom.firestore.dao;
 
 import android.annotation.SuppressLint;
-import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 import android.support.annotation.NonNull;
 import android.util.ArrayMap;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
 import org.jetbrains.annotations.Contract;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import tk.andrielson.carrinhos.androidapp.fireroom.firestore.FirestoreQueryLiveData;
-import tk.andrielson.carrinhos.androidapp.data.model.AbsEntidadePadrao;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
 /**
@@ -38,11 +33,9 @@ public abstract class FirestoreDao {
     protected final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     protected CollectionReference collection;
-    protected final Query queryPadrao;
 
     protected FirestoreDao(String colecao) {
         collection = db.collection(colecao);
-        queryPadrao = collection;
     }
 
     @NonNull
@@ -51,11 +44,17 @@ public abstract class FirestoreDao {
         return (map != null && map.containsKey(colecao)) ? map.get(colecao) : "0";
     }
 
-    // FIXME: quando não há o campo da coleção, gera erro. Verificar se compensa criar
-    protected WriteBatch setColecaoID(@NonNull String colecao, String novoID) {
+    protected WriteBatch setColecaoID(@NonNull String colecao, @NonNull String novoID) {
         WriteBatch batch = db.batch();
-        DocumentReference doc = db.collection(COLECAOIDS).document(colecao);
-        return batch.update(doc, CAMPOID, novoID);
+        // FIXME: quando não há o campo da coleção, gera erro. Verificar se compensa criar
+        return batch.set(db.collection(COLECAOIDS).document(colecao), mapID(novoID));
+//        return batch.update(db.collection(COLECAOIDS).document(colecao), CAMPOID, novoID);
+    }
+
+    private Map<String, String> mapID(@NonNull String novoID) {
+        Map<String, String> map = new ArrayMap<>(1);
+        map.put(CAMPOID, novoID);
+        return map;
     }
 
     public static String getIdFromCodigo(@NonNull Long codigo) {
@@ -93,33 +92,26 @@ public abstract class FirestoreDao {
         }
     }
 
-    protected class ListaDeserializer<T extends AbsEntidadePadrao> implements Function<QuerySnapshot, List<T>> {
-        private final Class<T> tipo;
+    protected class OnTaskCompleteListenerPadrao implements OnCompleteListener<Void> {
+        private final String msgSucesso;
+        private final String msgFalha;
+        private final String TAG;
 
-        public ListaDeserializer(Class<T> tipo) {
-            this.tipo = tipo;
+        OnTaskCompleteListenerPadrao(String msgSucesso, String msgFalha, String TAG) {
+            this.msgSucesso = msgSucesso;
+            this.msgFalha = msgFalha;
+            this.TAG = TAG;
         }
 
         @Override
-        public List<T> apply(QuerySnapshot input) {
-            List<T> lista = new ArrayList<>();
-            for (DocumentSnapshot doc : input.getDocuments()) {
-                lista.add(doc.toObject(tipo));
+        public void onComplete(@NonNull Task<Void> task) {
+            if (task.isSuccessful())
+                LogUtil.Log(TAG, this.msgSucesso, Log.INFO);
+            else {
+                LogUtil.Log(TAG, this.msgFalha, Log.ERROR);
+                if (task.getException() != null)
+                    LogUtil.Log(TAG, task.getException().getMessage(), Log.ERROR);
             }
-            return lista;
-        }
-    }
-
-    protected class Deserializer<T extends AbsEntidadePadrao> implements Function<QuerySnapshot, T> {
-        private final Class<T> tipo;
-
-        public Deserializer(Class<T> tipo) {
-            this.tipo = tipo;
-        }
-
-        @Override
-        public T apply(QuerySnapshot input) {
-            return input.getDocuments().isEmpty() ? null : input.getDocuments().get(0).toObject(tipo);
         }
     }
 }

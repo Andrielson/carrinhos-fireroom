@@ -4,7 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
-import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.VendedorFirestore;
+import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.VendedorFire;
 import tk.andrielson.carrinhos.androidapp.fireroom.model.VendedorImpl;
 
 @Entity(tableName = "tb_vendedor")
@@ -25,7 +25,7 @@ public final class VendedorRoom {
 
     }
 
-    public VendedorRoom(VendedorFirestore vendedor) {
+    public VendedorRoom(VendedorFire vendedor) {
         this.codigo = vendedor.codigo;
         this.nome = vendedor.nome;
         this.comissao = vendedor.comissao;
