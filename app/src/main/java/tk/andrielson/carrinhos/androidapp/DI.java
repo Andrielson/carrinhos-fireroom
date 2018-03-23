@@ -9,6 +9,7 @@ import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
 import tk.andrielson.carrinhos.androidapp.data.repository.ProdutoRepository;
 import tk.andrielson.carrinhos.androidapp.data.repository.VendaRepository;
 import tk.andrielson.carrinhos.androidapp.data.repository.VendedorRepository;
+import tk.andrielson.carrinhos.androidapp.fireroom.SincronizadorFirestoreRoom;
 import tk.andrielson.carrinhos.androidapp.fireroom.model.ItemVendaImpl;
 import tk.andrielson.carrinhos.androidapp.fireroom.model.ProdutoImpl;
 import tk.andrielson.carrinhos.androidapp.fireroom.model.VendaImpl;
@@ -20,6 +21,11 @@ import tk.andrielson.carrinhos.androidapp.fireroom.repository.VendedorRepoImpl;
 public final class DI {
     private DI() {
         //construtor privado para impedir o instanciamento da classe.
+    }
+
+    public static void inicializaCoisas() {
+        //noinspection ResultOfMethodCallIgnored
+        SincronizadorFirestoreRoom.getInstancia();
     }
 
     @NonNull

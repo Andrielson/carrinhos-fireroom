@@ -82,8 +82,8 @@ public class MainActivity extends AppCompatActivity
 
         if (savedInstanceState != null && savedInstanceState.getSerializable(STATE_FRAGMENTOS) != null)
             carregaFragment((Fragmentos) savedInstanceState.getSerializable(STATE_FRAGMENTOS));
-//        else
-//            carregaFragment(Fragmentos.PRODUTO);
+        else
+            carregaFragment(Fragmentos.VENDA);
 
         LogUtil.Log(TAG, "onCreate", Log.VERBOSE);
     }
@@ -188,7 +188,6 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_atualizar:
                 break;
             case R.id.nav_backup:
-                SincronizadorFirestoreRoom repositorio = SincronizadorFirestoreRoom.getInstancia();
                 break;
             case R.id.nav_sobre:
                 break;

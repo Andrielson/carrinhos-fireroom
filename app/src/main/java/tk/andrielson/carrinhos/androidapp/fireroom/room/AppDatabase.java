@@ -9,25 +9,25 @@ import org.jetbrains.annotations.Contract;
 
 import tk.andrielson.carrinhos.androidapp.CarrinhosApp;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.converters.DateToStringConverter;
-import tk.andrielson.carrinhos.androidapp.fireroom.room.dao.ItemVendaDaoRoom;
-import tk.andrielson.carrinhos.androidapp.fireroom.room.dao.ProdutoDaoRoom;
-import tk.andrielson.carrinhos.androidapp.fireroom.room.dao.VendaDaoRoom;
-import tk.andrielson.carrinhos.androidapp.fireroom.room.dao.VendedorDaoRoom;
+import tk.andrielson.carrinhos.androidapp.fireroom.room.dao.ItemVendaRoomDao;
+import tk.andrielson.carrinhos.androidapp.fireroom.room.dao.ProdutoRoomDao;
+import tk.andrielson.carrinhos.androidapp.fireroom.room.dao.VendaRoomDao;
+import tk.andrielson.carrinhos.androidapp.fireroom.room.dao.VendedorRoomDao;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.entities.ItemVendaRoom;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.entities.ProdutoRoom;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.entities.VendaRoom;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.entities.VendedorRoom;
 
-@Database(entities = {ProdutoRoom.class, VendedorRoom.class, VendaRoom.class, ItemVendaRoom.class}, exportSchema = false, version = 3)
+@Database(entities = {ProdutoRoom.class, VendedorRoom.class, VendaRoom.class, ItemVendaRoom.class}, exportSchema = false, version = 4)
 @TypeConverters(DateToStringConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
-    public abstract ProdutoDaoRoom produtoDao();
+    public abstract ProdutoRoomDao produtoDao();
 
-    public abstract VendedorDaoRoom vendedorDao();
+    public abstract VendedorRoomDao vendedorDao();
 
-    public abstract VendaDaoRoom vendaDao();
+    public abstract VendaRoomDao vendaDao();
 
-    public abstract ItemVendaDaoRoom itemVendaDao();
+    public abstract ItemVendaRoomDao itemVendaDao();
 
     @Contract(pure = true)
     public static AppDatabase getInstancia() {

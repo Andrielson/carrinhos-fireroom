@@ -11,7 +11,7 @@ import android.arch.persistence.room.Update;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.entities.VendaRoom;
 
 @Dao
-public abstract class VendaDaoRoom {
+public abstract class VendaRoomDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void insert(VendaRoom... vendas);
 

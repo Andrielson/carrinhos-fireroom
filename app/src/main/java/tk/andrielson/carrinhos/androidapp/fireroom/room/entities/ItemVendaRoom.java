@@ -13,8 +13,8 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "tb_item_venda",
         foreignKeys = {
-                @ForeignKey(entity = VendaRoom.class, parentColumns = "venda_codigo", childColumns = "venda_codigo", onDelete = CASCADE, deferred = true),
-                @ForeignKey(entity = ProdutoRoom.class, parentColumns = "produto_codigo", childColumns = "produto_codigo", deferred = true)},
+                @ForeignKey(entity = VendaRoom.class, parentColumns = "venda_codigo", childColumns = "venda_codigo", onDelete = CASCADE, onUpdate = CASCADE, deferred = true),
+                @ForeignKey(entity = ProdutoRoom.class, parentColumns = "produto_codigo", childColumns = "produto_codigo", onDelete = CASCADE, onUpdate = CASCADE, deferred = true)},
         indices = {
                 @Index(name = "venda_produto", value = {"venda_codigo", "produto_codigo"}, unique = true),
                 @Index(name = "idx_item_venda", value = {"venda_codigo"}),

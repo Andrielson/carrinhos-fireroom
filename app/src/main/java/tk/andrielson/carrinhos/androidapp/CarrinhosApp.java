@@ -29,6 +29,7 @@ public final class CarrinhosApp extends Application {
         super.onCreate();
         context = getApplicationContext();
         initStetho();
+        DI.inicializaCoisas();
     }
 
     private void initStetho() {

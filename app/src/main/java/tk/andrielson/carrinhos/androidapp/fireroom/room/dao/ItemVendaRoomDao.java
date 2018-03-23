@@ -14,7 +14,7 @@ import java.util.List;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.entities.ItemVendaRoom;
 
 @Dao
-public abstract class ItemVendaDaoRoom {
+public abstract class ItemVendaRoomDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void insert(ItemVendaRoom... itens);
 

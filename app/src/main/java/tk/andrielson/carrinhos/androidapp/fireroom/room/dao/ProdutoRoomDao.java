@@ -11,7 +11,7 @@ import android.arch.persistence.room.Update;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.entities.ProdutoRoom;
 
 @Dao
-public abstract class ProdutoDaoRoom {
+public abstract class ProdutoRoomDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void insert(ProdutoRoom... produtos);
 
@@ -22,5 +22,11 @@ public abstract class ProdutoDaoRoom {
     public abstract void delete(ProdutoRoom... produtos);
 
     @Query("SELECT * FROM tb_produto ORDER BY produto_nome")
-    public abstract LiveData<ProdutoRoom[]> getAll();
+    public abstract LiveData<ProdutoRoom[]> getAllOrderByNome();
+
+    @Query("SELECT * FROM tb_produto ORDER BY produto_codigo")
+    public abstract LiveData<ProdutoRoom[]> getAllOrderByCodigo();
+
+    @Query("SELECT EXISTS (SELECT * FROM tb_item_venda WHERE produto_codigo = :codigo)")
+    public abstract boolean produtoPossuiVendas(Long codigo);
 }

@@ -28,7 +28,7 @@ import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 public abstract class FirestoreDao {
 
     private static final InnerSingleton viewModel = InnerSingleton.getInstance();
-    private static final String COLECAOIDS = "StringIDs";
+    private static final String COLECAOIDS = "_IDS_";
     private static final String CAMPOID = "ultimo_id";
     protected final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -46,9 +46,7 @@ public abstract class FirestoreDao {
 
     protected WriteBatch setColecaoID(@NonNull String colecao, @NonNull String novoID) {
         WriteBatch batch = db.batch();
-        // FIXME: quando não há o campo da coleção, gera erro. Verificar se compensa criar
         return batch.set(db.collection(COLECAOIDS).document(colecao), mapID(novoID));
-//        return batch.update(db.collection(COLECAOIDS).document(colecao), CAMPOID, novoID);
     }
 
     private Map<String, String> mapID(@NonNull String novoID) {
