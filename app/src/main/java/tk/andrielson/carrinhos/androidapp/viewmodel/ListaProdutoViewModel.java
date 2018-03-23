@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tk.andrielson.carrinhos.androidapp.DI;
-import tk.andrielson.carrinhos.androidapp.data.dao.ProdutoDao;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
+import tk.andrielson.carrinhos.androidapp.data.repository.ProdutoRepository;
 import tk.andrielson.carrinhos.androidapp.observable.ProdutoObservable;
 
 public class ListaProdutoViewModel extends ViewModel {
@@ -21,9 +21,9 @@ public class ListaProdutoViewModel extends ViewModel {
         // Set por padrão null, até carregar os dados do repositório
         mediatorLiveDataListaProdutos.setValue(null);
 
-        ProdutoDao produtoDao = DI.newProdutoDao();
+        ProdutoRepository produtoRepository = DI.newProdutoRepository();
         //noinspection unchecked
-        LiveData<List<Produto>> produtos = produtoDao.getAll();
+        LiveData<List<Produto>> produtos = produtoRepository.getAll();
         mediatorLiveDataListaProdutos.addSource(produtos, mediatorLiveDataListaProdutos::setValue);
     }
 

@@ -22,7 +22,7 @@ import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 /**
  * Implementação de ProdutoDao para o banco Firestore.
  */
-public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao<ProdutoImpl> {
+public final class ProdutoDaoImpl extends FirestoreDao {
 
     private static final String COLECAO = ProdutoImpl.COLECAO;
     private static final String TAG = ProdutoDaoImpl.class.getSimpleName();
@@ -40,7 +40,6 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao<Pro
      * @param produto o produto a ser inserido
      * @return o código gerado para o produto
      */
-    @Override
     public long insert(ProdutoImpl produto) {
         String ultimoID = getColecaoID(COLECAO);
         Long novoCodigo = Long.valueOf(ultimoID) + 1;
@@ -62,7 +61,6 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao<Pro
      * @param produto o produto a ser atualizado
      * @return o número de produtos atualizados
      */
-    @Override
     public int update(ProdutoImpl produto) {
         final String id = getIdFromCodigo(produto.getCodigo());
         DocumentReference documento = collection.document(id);
@@ -81,7 +79,6 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao<Pro
      * @param produto o produto a ser removido
      * @return o número de produto removidos
      */
-    @Override
     public int delete(ProdutoImpl produto) {
         final String id = getIdFromCodigo(produto.getCodigo());
         DocumentReference documento = collection.document(id);
@@ -107,7 +104,6 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao<Pro
      * @return o produto encapsulado em uma LiveData
      */
     @NonNull
-    @Override
     public LiveData<ProdutoImpl> getByCodigo(final Long codigo) {
         Query query = queryPadrao.whereEqualTo("codigo", codigo);
         FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(query);
@@ -122,7 +118,6 @@ public final class ProdutoDaoImpl extends FirestoreDao implements ProdutoDao<Pro
      * @return a lista de produtos encapsulada em uma LiveData
      */
     @NonNull
-    @Override
     public LiveData<List<ProdutoImpl>> getAll() {
         Query query = queryPadrao.orderBy(ProdutoImpl.NOME);
         FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(query);

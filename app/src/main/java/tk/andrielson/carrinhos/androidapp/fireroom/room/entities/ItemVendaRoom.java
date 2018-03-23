@@ -6,6 +6,7 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
+import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.ItemVendaFirestore;
 import tk.andrielson.carrinhos.androidapp.fireroom.model.ItemVendaImpl;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
@@ -17,7 +18,7 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
         indices = {
                 @Index(name = "venda_produto", value = {"cod_venda", "cod_produto"}, unique = true),
                 @Index(name = "idx_item_venda", value = {"cod_venda"})})
-public class ItemVendaRoom {
+public final class ItemVendaRoom {
     @PrimaryKey(autoGenerate = true)
     public Long id;
     @ColumnInfo(name = "cod_venda")
@@ -39,5 +40,14 @@ public class ItemVendaRoom {
         this.produto = item.getProduto().getCodigo();
         this.qtSaiu = item.getQtSaiu();
         this.qtVoltou = item.getQtVoltou();
+        this.valor = item.getValor();
+    }
+
+    public ItemVendaRoom(ItemVendaFirestore item, Long venda) {
+        this.venda = venda;
+        this.produto = Long.valueOf(item.produto.getId());
+        this.qtSaiu = item.qt_saiu;
+        this.qtVoltou = item.qt_voltou;
+        this.valor = item.valor;
     }
 }

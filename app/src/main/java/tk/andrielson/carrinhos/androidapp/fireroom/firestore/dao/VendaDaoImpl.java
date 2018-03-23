@@ -27,7 +27,7 @@ import tk.andrielson.carrinhos.androidapp.fireroom.model.VendaImpl;
 import tk.andrielson.carrinhos.androidapp.fireroom.model.VendedorImpl;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
-public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaImpl, ItemVendaImpl> {
+public final class VendaDaoImpl extends FirestoreDao {
     private static final String COLECAO = VendaImpl.COLECAO;
     private static final String TAG = VendaDaoImpl.class.getSimpleName();
 
@@ -35,7 +35,6 @@ public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaIm
         super(COLECAO);
     }
 
-    @Override
     public long insert(@NonNull VendaImpl venda) {
         String ultimoID = getColecaoID(COLECAO);
         Long novoCodigo = Long.valueOf(ultimoID) + 1;
@@ -57,7 +56,6 @@ public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaIm
         return novoCodigo;
     }
 
-    @Override
     public int update(@NonNull VendaImpl venda) {
         final String idVenda = getIdFromCodigo(venda.getCodigo());
         DocumentReference documento = collection.document(idVenda);
@@ -76,7 +74,6 @@ public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaIm
         return 0;
     }
 
-    @Override
     public int delete(@NonNull VendaImpl venda) {
         final String idVenda = getIdFromCodigo(venda.getCodigo());
         final WriteBatch batch = db.batch();
@@ -96,7 +93,6 @@ public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaIm
         return 0;
     }
 
-    @Override
     public LiveData<List<VendaImpl>> getAll() {
         Query query = queryPadrao.orderBy(VendaImpl.DATA, Query.Direction.DESCENDING);
         FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(query);
@@ -145,7 +141,6 @@ public final class VendaDaoImpl extends FirestoreDao implements VendaDao<VendaIm
         return mediatorLiveData;
     }
 
-    @Override
     public LiveData<VendaImpl> getByCodigo(@NonNull Long codigo) {
         Query query = queryPadrao.whereEqualTo(VendaImpl.CODIGO, codigo);
         FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(query);

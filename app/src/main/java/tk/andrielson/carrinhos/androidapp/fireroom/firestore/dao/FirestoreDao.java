@@ -58,7 +58,7 @@ public abstract class FirestoreDao {
         return batch.update(doc, CAMPOID, novoID);
     }
 
-    protected String getIdFromCodigo(@NonNull Long codigo) {
+    public static String getIdFromCodigo(@NonNull Long codigo) {
         return String.format("%018d", codigo);
     }
 

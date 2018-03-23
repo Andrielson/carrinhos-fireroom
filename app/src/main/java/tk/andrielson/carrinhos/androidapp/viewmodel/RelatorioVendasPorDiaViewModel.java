@@ -21,13 +21,12 @@ import tk.andrielson.carrinhos.androidapp.observable.RelatorioVendaPorDia;
 
 public final class RelatorioVendasPorDiaViewModel extends ViewModel {
     private static final String TAG = RelatorioVendasPorDiaViewModel.class.getSimpleName();
-    private final MediatorLiveData<List<RelatorioVendaPorDia>> mediatorLiveData;
+    private final MediatorLiveData<List<RelatorioVendaPorDia>> mediatorLiveData= new MediatorLiveData<>();
 
     public RelatorioVendasPorDiaViewModel() {
-        mediatorLiveData = new MediatorLiveData<>();
         mediatorLiveData.setValue(null);
 
-        RelatoriosDaoImpl relatoriosDao = new RelatoriosDaoImpl();
+        /*RelatoriosDaoImpl relatoriosDao = new RelatoriosDaoImpl();
         LiveData<SimpleArrayMap<Date, SimpleArrayMap<String, Long>>> liveData = relatoriosDao.vendasPorDia();
         mediatorLiveData.addSource(liveData, arrayMap -> {
             if (arrayMap == null) return;
@@ -47,7 +46,7 @@ public final class RelatorioVendasPorDiaViewModel extends ViewModel {
                 return 0;
             });
             mediatorLiveData.setValue(lista);
-        });
+        });*/
     }
 
     @Contract(pure = true)

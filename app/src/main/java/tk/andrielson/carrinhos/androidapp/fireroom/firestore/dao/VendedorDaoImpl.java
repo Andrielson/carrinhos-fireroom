@@ -21,7 +21,7 @@ import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 /**
  * Implementação de VendedorDao para o banco Firestore.
  */
-public final class VendedorDaoImpl extends FirestoreDao implements VendedorDao<VendedorImpl> {
+public final class VendedorDaoImpl extends FirestoreDao {
     private static final String COLECAO = VendedorImpl.COLECAO;
     private static final String TAG = VendedorDaoImpl.class.getSimpleName();
 
@@ -38,7 +38,6 @@ public final class VendedorDaoImpl extends FirestoreDao implements VendedorDao<V
      * @param vendedor o vendedor a ser inserido
      * @return o código gerado para o vendedor
      */
-    @Override
     public long insert(@NonNull VendedorImpl vendedor) {
         String ultimoID = getColecaoID(COLECAO);
         Long novoCodigo = Long.valueOf(ultimoID) + 1;
@@ -60,7 +59,6 @@ public final class VendedorDaoImpl extends FirestoreDao implements VendedorDao<V
      * @param vendedor o vendedor a ser atualizado
      * @return o número de vendedors atualizados
      */
-    @Override
     public int update(@NonNull VendedorImpl vendedor) {
         final String id = getIdFromCodigo(vendedor.getCodigo());
         DocumentReference documento = collection.document(id);
@@ -79,7 +77,6 @@ public final class VendedorDaoImpl extends FirestoreDao implements VendedorDao<V
      * @param vendedor o vendedor a ser removido
      * @return o número de vendedor removidos
      */
-    @Override
     public int delete(@NonNull VendedorImpl vendedor) {
         final String id = getIdFromCodigo(vendedor.getCodigo());
         DocumentReference documento = collection.document(id);
@@ -103,7 +100,6 @@ public final class VendedorDaoImpl extends FirestoreDao implements VendedorDao<V
      *
      * @return a lista de vendedors encapsulada em uma LiveData
      */
-    @Override
     public LiveData<List<VendedorImpl>> getAll() {
         Query query = queryPadrao.orderBy(VendedorImpl.NOME);
         FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(query);
@@ -117,7 +113,6 @@ public final class VendedorDaoImpl extends FirestoreDao implements VendedorDao<V
      * @param codigo o código do vendedor a ser procurado/retornado
      * @return o vendedor encapsulado em uma LiveData
      */
-    @Override
     public LiveData<VendedorImpl> getByCodigo(@NonNull final Long codigo) {
         Query query = queryPadrao.whereEqualTo("codigo", codigo);
         FirestoreQueryLiveData liveData = new FirestoreQueryLiveData(query);

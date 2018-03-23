@@ -14,17 +14,17 @@ import java.util.Collections;
 import java.util.List;
 
 import tk.andrielson.carrinhos.androidapp.DI;
-import tk.andrielson.carrinhos.androidapp.data.dao.ProdutoDao;
-import tk.andrielson.carrinhos.androidapp.data.dao.VendaDao;
 import tk.andrielson.carrinhos.androidapp.data.model.ItemVenda;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.data.model.Venda;
+import tk.andrielson.carrinhos.androidapp.data.repository.ProdutoRepository;
+import tk.andrielson.carrinhos.androidapp.data.repository.VendaRepository;
 import tk.andrielson.carrinhos.androidapp.observable.ItemVendaObservable;
 import tk.andrielson.carrinhos.androidapp.observable.VendaObservable;
 
-import static tk.andrielson.carrinhos.androidapp.DI.newProdutoDao;
+import static tk.andrielson.carrinhos.androidapp.DI.newProdutoRepository;
 import static tk.andrielson.carrinhos.androidapp.DI.newVenda;
-import static tk.andrielson.carrinhos.androidapp.DI.newVendaDao;
+import static tk.andrielson.carrinhos.androidapp.DI.newVendaRepository;
 
 
 @SuppressWarnings("unchecked")
@@ -32,14 +32,14 @@ public class CadastroVendaViewModel extends AndroidViewModel {
     private static final String TAG = CadastroVendaViewModel.class.getSimpleName();
     private final MediatorLiveData<List<ItemVendaObservable>> itensVenda;
     private final VendaObservable vendaObservable = new VendaObservable(newVenda());
-    private final VendaDao vendaDao = newVendaDao();
+    private final VendaRepository vendaRepository = newVendaRepository();
 
     public CadastroVendaViewModel(@NonNull Application application) {
         super(application);
-        ProdutoDao produtoDao = newProdutoDao();
+        ProdutoRepository produtoRepository = newProdutoRepository();
         SimpleArrayMap<String, String> ordenacao = new SimpleArrayMap<>(1);
         ordenacao.put("codigo", "ASC");
-        LiveData<List<ItemVendaObservable>> itensProdutosAtivos = Transformations.map((LiveData<List<Produto>>) produtoDao.getAll(ordenacao), input -> {
+        LiveData<List<ItemVendaObservable>> itensProdutosAtivos = Transformations.map((LiveData<List<Produto>>) produtoRepository.getAll(ordenacao), input -> {
             List<ItemVendaObservable> lista = new ArrayList<>();
             if (input != null)
                 for (Produto p : input)
@@ -56,7 +56,7 @@ public class CadastroVendaViewModel extends AndroidViewModel {
 
     public LiveData<List<ItemVendaObservable>> getItensVenda(@NonNull final String strCodigo) {
         Long codigo = Long.valueOf(strCodigo);
-        LiveData<List<ItemVenda>> liveData = vendaDao.getItens(codigo);
+        LiveData<List<ItemVenda>> liveData = vendaRepository.getItens(codigo);
         itensVenda.addSource(liveData, itensDaVenda -> {
             List<ItemVendaObservable> produtosAtivos = itensVenda.getValue();
             if (produtosAtivos != null && itensDaVenda != null) {
@@ -99,17 +99,17 @@ public class CadastroVendaViewModel extends AndroidViewModel {
         }
 
         if (observable.ehNovo()) {
-            vendaDao.insert(venda);
+            vendaRepository.insert(venda);
             Toast.makeText(this.getApplication(), "Venda adicionada!", Toast.LENGTH_SHORT).show();
         } else {
-            vendaDao.update(venda);
+            vendaRepository.update(venda);
             Toast.makeText(this.getApplication(), "Venda atualizada!", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void excluirVenda(VendaObservable observable) {
         if (!observable.ehNovo()) {
-            vendaDao.delete(observable.getVendaModel());
+            vendaRepository.delete(observable.getVendaModel());
             Toast.makeText(this.getApplication(), "Venda excluída!", Toast.LENGTH_SHORT).show();
         } else
             Toast.makeText(this.getApplication(), "Não é possível excluir uma venda nula/vazia!", Toast.LENGTH_SHORT).show();

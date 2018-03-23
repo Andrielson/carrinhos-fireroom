@@ -9,13 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tk.andrielson.carrinhos.androidapp.DI;
-import tk.andrielson.carrinhos.androidapp.data.dao.VendedorDao;
 import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
+import tk.andrielson.carrinhos.androidapp.data.repository.VendedorRepository;
 import tk.andrielson.carrinhos.androidapp.observable.VendedorObservable;
-
-/**
- * Created by anfesilva on 07/03/2018.
- */
 
 public class ListaVendedorViewModel extends ViewModel {
     private final MediatorLiveData<List<Vendedor>> mediatorLiveDataListaVendedores;
@@ -25,9 +21,9 @@ public class ListaVendedorViewModel extends ViewModel {
         // Set por padrão null, até carregar os dados do repositório
         mediatorLiveDataListaVendedores.setValue(null);
 
-        VendedorDao vendedorDao = DI.newVendedorDao();
+        VendedorRepository vendedorRepository = DI.newVendedorRepository();
         //noinspection unchecked
-        LiveData<List<Vendedor>> vendedores = vendedorDao.getAll();
+        LiveData<List<Vendedor>> vendedores = vendedorRepository.getAll();
         mediatorLiveDataListaVendedores.addSource(vendedores, mediatorLiveDataListaVendedores::setValue);
     }
 
