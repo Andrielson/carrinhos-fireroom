@@ -8,7 +8,7 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
+import android.support.annotation.Nullable;
 
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.Exclude;
@@ -23,7 +23,6 @@ import tk.andrielson.carrinhos.androidapp.data.model.ItemVenda;
 import tk.andrielson.carrinhos.androidapp.data.model.Venda;
 import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
 import tk.andrielson.carrinhos.androidapp.fireroom.firestore.dao.FirestoreDao;
-import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
@@ -100,26 +99,6 @@ public final class VendaImpl extends Venda {
         vendedor = (VendedorImpl) in.readValue(VendedorImpl.class.getClassLoader());
     }
 
-    /*public VendaImpl preparaFire() {
-        if (this.vendedor != null) {
-            this.vendedorNome = vendedor.getNome();
-            this.refVendedor = FirebaseFirestore.getInstance().collection(COLECAO).document(FirestoreDao.getIdFromCodigo(this.vendedor.getCodigo()));
-        }
-        return this;
-    }*/
-
-    public VendaImpl preparaRoom() {
-        if (this.vendedor != null) {
-            this.vendedorCodigo = vendedor.getCodigo();
-        } else if (this.refVendedor != null) {
-            this.vendedorCodigo = Long.valueOf(refVendedor.getId());
-        } else if (this.vendedorCodigo == null) {
-            //TODO: verificar outra forma de lidar com essa situação
-            LogUtil.Log(COLECAO, "Venda sem o código do vendedor!", Log.ERROR);
-        }
-        return this;
-    }
-
     @Override
     public Long getCodigo() {
         return codigo;
@@ -188,18 +167,25 @@ public final class VendaImpl extends Venda {
         this.valorComissao = valor_comissao;
     }
 
+    @Nullable
     @PropertyName("vendedor_nome")
     public String getVendedorNome() {
-        return vendedorNome;
+        if (vendedorNome != null)
+            return vendedorNome;
+        if (vendedor != null && vendedor.getNome() != null)
+            return vendedor.getNome();
+        return null;
     }
 
     @PropertyName("vendedor_nome")
     public void setVendedorNome(String vendedorNome) {
         this.vendedorNome = vendedorNome;
-        if (this.vendedor == null)
-            this.vendedor = new VendedorImpl();
-        if (this.vendedor.getNome() == null)
-            this.vendedor.setNome(vendedorNome);
+        if (vendedorNome == null)
+            return;
+        if (vendedor == null)
+            vendedor = new VendedorImpl();
+        if (vendedor.getNome() == null)
+            vendedor.setNome(vendedorNome);
     }
 
     @Override
@@ -215,41 +201,74 @@ public final class VendaImpl extends Venda {
     @Exclude
     @Override
     public Vendedor getVendedor() {
-        return vendedor;
+        if (vendedor != null)
+            return vendedor;
+        if (refVendedor != null || vendedorNome != null || vendedorCodigo != null) {
+            VendedorImpl vendedor = new VendedorImpl();
+            vendedor.setCodigo(refVendedor != null ? Long.valueOf(refVendedor.getId()) : vendedorCodigo);
+            vendedor.setNome(vendedorNome);
+            return vendedor;
+        }
+        return null;
     }
 
     @Exclude
     @Override
     public void setVendedor(Vendedor vendedor) {
         this.vendedor = (VendedorImpl) vendedor;
-        this.vendedorNome = vendedor.getNome();
-        this.refVendedor = FirebaseFirestore.getInstance().collection(COLECAO).document(FirestoreDao.getIdFromCodigo(this.vendedor.getCodigo()));
-        this.vendedorCodigo = vendedor.getCodigo();
+        if (vendedor != null) {
+            this.vendedorNome = vendedor.getNome();
+            this.vendedorCodigo = vendedor.getCodigo();
+            this.refVendedor = FirebaseFirestore.getInstance().collection(COLECAO).document(FirestoreDao.getIdFromCodigo(vendedor.getCodigo()));
+        }
     }
 
+    @Nullable
     @Exclude
     public Long getVendedorCodigo() {
-        return vendedorCodigo;
+        if (vendedorCodigo != null)
+            return vendedorCodigo;
+        if (refVendedor != null)
+            return Long.valueOf(refVendedor.getId());
+        if (vendedor != null && vendedor.getCodigo() != null)
+            return vendedor.getCodigo();
+        return null;
     }
 
     @Exclude
     public void setVendedorCodigo(Long vendedorCodigo) {
         this.vendedorCodigo = vendedorCodigo;
+        if (vendedorCodigo == null) return;
+        if (refVendedor == null)
+            refVendedor = FirebaseFirestore.getInstance().collection(COLECAO).document(FirestoreDao.getIdFromCodigo(vendedorCodigo));
+        if (vendedor == null)
+            vendedor = new VendedorImpl();
+        if (vendedor.getCodigo() == null)
+            vendedor.setCodigo(vendedorCodigo);
     }
 
+    @Nullable
     @PropertyName("vendedor")
     public DocumentReference getRefVendedor() {
-        return refVendedor;
+        if (refVendedor != null)
+            return refVendedor;
+        if (vendedorCodigo != null)
+            return FirebaseFirestore.getInstance().collection(COLECAO).document(FirestoreDao.getIdFromCodigo(vendedorCodigo));
+        if (vendedor != null && vendedor.getCodigo() != null)
+            return FirebaseFirestore.getInstance().collection(COLECAO).document(FirestoreDao.getIdFromCodigo(vendedor.getCodigo()));
+        return null;
     }
 
     @PropertyName("vendedor")
     public void setRefVendedor(DocumentReference refVendedor) {
         this.refVendedor = refVendedor;
-        this.vendedorCodigo = Long.valueOf(refVendedor.getId());
-        if (this.vendedor == null)
-            this.vendedor = new VendedorImpl();
-        if (this.vendedor.getCodigo() == null)
-            this.vendedor.setCodigo(Long.valueOf(refVendedor.getId()));
+        if (refVendedor == null) return;
+        if (vendedorCodigo == null)
+            vendedorCodigo = Long.valueOf(refVendedor.getId());
+        if (vendedor == null)
+            vendedor = new VendedorImpl();
+        if (vendedor.getCodigo() == null)
+            vendedor.setCodigo(Long.valueOf(refVendedor.getId()));
     }
 
     @Exclude

@@ -104,27 +104,6 @@ public final class ItemVendaImpl extends ItemVenda {
         produto = (ProdutoImpl) in.readValue(ProdutoImpl.class.getClassLoader());
     }
 
-/*    public ItemVendaImpl preparaFire() {
-        if (this.produto != null) {
-            this.produtoNome = this.produto.getNome();
-            this.produtoSigla = this.produto.getSigla();
-            this.refProduto = FirebaseFirestore.getInstance().collection(COLECAO).document(FirestoreDao.getIdFromCodigo(this.produto.getCodigo()));
-        }
-        return this;
-    }*/
-
-    /*public ItemVendaImpl preparaRoom() {
-        if (this.produto != null) {
-            this.produtoCodigo = this.produto.getCodigo();
-        } else if (this.refProduto != null) {
-            this.produtoCodigo = Long.valueOf(this.refProduto.getId());
-        } else if (this.produtoCodigo == null) {
-            //TODO: verificar outra forma de lidar com essa situação
-            LogUtil.Log(COLECAO, "Item venda sem o código do produto!", Log.ERROR);
-        }
-        return this;
-    }*/
-
     @Exclude
     public Long getId() {
         return id;
