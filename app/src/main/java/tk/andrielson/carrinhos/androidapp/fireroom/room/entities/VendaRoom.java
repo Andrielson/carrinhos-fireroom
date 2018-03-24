@@ -61,7 +61,7 @@ public final class VendaRoom {
         venda.setComissao(vcvt.comissao);
         venda.setStatus(vcvt.status);
         venda.setVendedor(vcvt.vendedor.getModel());
-        venda.setTotal(vcvt.total);
+        venda.setValorTotal(vcvt.total);
         return venda;
     }
 

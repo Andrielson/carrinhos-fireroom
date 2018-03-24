@@ -76,20 +76,20 @@ public final class BindingAdapters {
     @BindingAdapter("vendaValorPago")
     public static void setVendaValorPago(TextView view, Venda venda) {
         Long valor;
-        if (venda.getTotal() == null || venda.getComissao() == null)
+        if (venda.getValorTotal() == null || venda.getComissao() == null)
             valor = 0L;
         else
-            valor = venda.getTotal() * (1 - venda.getComissao() / 100);
+            valor = venda.getValorTotal() * (1 - venda.getComissao() / 100);
         setValorRealTextView(view, valor);
     }
 
     @BindingAdapter("vendaValorComissao")
     public static void setVendaValorComissao(TextView view, Venda venda) {
         Long valor;
-        if (venda.getTotal() == null || venda.getComissao() == null)
+        if (venda.getValorTotal() == null || venda.getComissao() == null)
             valor = 0L;
         else
-            valor = venda.getTotal() * venda.getComissao() / 100;
+            valor = venda.getValorTotal() * venda.getComissao() / 100;
         setValorRealTextView(view, valor);
     }
 

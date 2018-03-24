@@ -1,57 +1,140 @@
 package tk.andrielson.carrinhos.androidapp.fireroom.model;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
+
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.IgnoreExtraProperties;
+import com.google.firebase.firestore.PropertyName;
 
 import tk.andrielson.carrinhos.androidapp.data.model.ItemVenda;
+import tk.andrielson.carrinhos.androidapp.fireroom.room.entities.ProdutoRoom;
+import tk.andrielson.carrinhos.androidapp.fireroom.room.entities.VendaRoom;
 
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
+@Entity(tableName = "tb_item_venda",
+        foreignKeys = {
+                @ForeignKey(entity = VendaImpl.class, parentColumns = "venda_codigo", childColumns = "itv_venda_codigo", onDelete = CASCADE, onUpdate = CASCADE, deferred = true),
+                @ForeignKey(entity = ProdutoImpl.class, parentColumns = "produto_codigo", childColumns = "itv_produto_codigo", onDelete = CASCADE, onUpdate = CASCADE, deferred = true)},
+        indices = {
+                @Index(value = {"item_venda_codigo", "item_venda_produto_codigo"}, unique = true)})
+@IgnoreExtraProperties
 public final class ItemVendaImpl extends ItemVenda<ProdutoImpl> {
 
     @SuppressWarnings("unused")
     public static final Parcelable.Creator<ItemVendaImpl> CREATOR = new Parcelable.Creator<ItemVendaImpl>() {
-        @NonNull
         @Override
         public ItemVendaImpl createFromParcel(Parcel in) {
             return new ItemVendaImpl(in);
         }
 
-        @NonNull
         @Override
         public ItemVendaImpl[] newArray(int size) {
             return new ItemVendaImpl[size];
         }
     };
 
-    private ProdutoImpl produto;
+    @PrimaryKey
+    @ColumnInfo(name = "item_venda_id")
+    @Exclude
+    private Long id;
+
+    @Exclude
+    @ColumnInfo(name = "itv_venda_codigo", index = true)
+    private Long codigo;
+
+    @Ignore
+    @PropertyName("produto")
+    private DocumentReference refProduto;
+
+    @Exclude
+    @ColumnInfo(name = "itv_produto_codigo", index = true)
+    private Long produtoCodigo;
+
+    @ColumnInfo(name = "qt_saiu")
+    @PropertyName("qt_saiu")
     private Integer qtSaiu;
+
+    @ColumnInfo(name = "qt_voltou")
+    @PropertyName("qt_voltou")
     private Integer qtVoltou;
+
+    @ColumnInfo(name = "qt_vendeu")
+    @PropertyName("qt_vendeu")
     private Integer qtVendeu;
+
+    @ColumnInfo(name = "item_valor")
     private Long valor;
+
+    @ColumnInfo(name = "item_total")
+    private Long total;
+
+    @Ignore
+    @PropertyName("produto_nome")
+    private String produtoNome;
+
+    @Ignore
+    @PropertyName("produgo_sigla")
+    private String produtoSigla;
+
+    @Exclude
+    @Ignore
+    private ProdutoImpl produto;
 
     public ItemVendaImpl() {
     }
 
-    public ItemVendaImpl(ProdutoImpl produto) {
-        this.produto = produto;
-    }
-
     private ItemVendaImpl(Parcel in) {
-        produto = (ProdutoImpl) in.readValue(ProdutoImpl.class.getClassLoader());
+        id = in.readByte() == 0x00 ? null : in.readLong();
+        codigo = in.readByte() == 0x00 ? null : in.readLong();
         qtSaiu = in.readByte() == 0x00 ? null : in.readInt();
         qtVoltou = in.readByte() == 0x00 ? null : in.readInt();
         qtVendeu = in.readByte() == 0x00 ? null : in.readInt();
         valor = in.readByte() == 0x00 ? null : in.readLong();
+        total = in.readByte() == 0x00 ? null : in.readLong();
+        produtoNome = in.readString();
+        produtoSigla = in.readString();
+        produto = (ProdutoImpl) in.readValue(ProdutoImpl.class.getClassLoader());
     }
 
-    @Override
-    public ProdutoImpl getProduto() {
-        return produto;
+    public Long getId() {
+        return id;
     }
 
-    @Override
-    public void setProduto(ProdutoImpl produto) {
-        this.produto = produto;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(Long codigo) {
+        this.codigo = codigo;
+    }
+
+    public DocumentReference getRefProduto() {
+        return refProduto;
+    }
+
+    public void setRefProduto(DocumentReference refProduto) {
+        this.refProduto = refProduto;
+    }
+
+    public Long getProdutoCodigo() {
+        return produtoCodigo;
+    }
+
+    public void setProdutoCodigo(Long produtoCodigo) {
+        this.produtoCodigo = produtoCodigo;
     }
 
     @Override
@@ -94,32 +177,38 @@ public final class ItemVendaImpl extends ItemVenda<ProdutoImpl> {
         this.valor = valor;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public Long getTotal() {
+        return total;
+    }
 
-        ItemVendaImpl itemVenda = (ItemVendaImpl) o;
+    public void setTotal(Long total) {
+        this.total = total;
+    }
 
-        if (produto != null ? !produto.equals(itemVenda.produto) : itemVenda.produto != null)
-            return false;
-        if (qtSaiu != null ? !qtSaiu.equals(itemVenda.qtSaiu) : itemVenda.qtSaiu != null)
-            return false;
-        if (qtVoltou != null ? !qtVoltou.equals(itemVenda.qtVoltou) : itemVenda.qtVoltou != null)
-            return false;
-        if (qtVendeu != null ? !qtVendeu.equals(itemVenda.qtVendeu) : itemVenda.qtVendeu != null)
-            return false;
-        return valor != null ? valor.equals(itemVenda.valor) : itemVenda.valor == null;
+    public String getProdutoNome() {
+        return produtoNome;
+    }
+
+    public void setProdutoNome(String produtoNome) {
+        this.produtoNome = produtoNome;
+    }
+
+    public String getProdutoSigla() {
+        return produtoSigla;
+    }
+
+    public void setProdutoSigla(String produtoSigla) {
+        this.produtoSigla = produtoSigla;
     }
 
     @Override
-    public int hashCode() {
-        int result = produto != null ? produto.hashCode() : 0;
-        result = 31 * result + (qtSaiu != null ? qtSaiu.hashCode() : 0);
-        result = 31 * result + (qtVoltou != null ? qtVoltou.hashCode() : 0);
-        result = 31 * result + (qtVendeu != null ? qtVendeu.hashCode() : 0);
-        result = 31 * result + (valor != null ? valor.hashCode() : 0);
-        return result;
+    public ProdutoImpl getProduto() {
+        return produto;
+    }
+
+    @Override
+    public void setProduto(ProdutoImpl produto) {
+        this.produto = produto;
     }
 
     @Override
@@ -129,7 +218,18 @@ public final class ItemVendaImpl extends ItemVenda<ProdutoImpl> {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(produto);
+        if (id == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeLong(id);
+        }
+        if (codigo == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeLong(codigo);
+        }
         if (qtSaiu == null) {
             dest.writeByte((byte) (0x00));
         } else {
@@ -154,5 +254,14 @@ public final class ItemVendaImpl extends ItemVenda<ProdutoImpl> {
             dest.writeByte((byte) (0x01));
             dest.writeLong(valor);
         }
+        if (total == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeLong(total);
+        }
+        dest.writeString(produtoNome);
+        dest.writeString(produtoSigla);
+        dest.writeValue(produto);
     }
 }

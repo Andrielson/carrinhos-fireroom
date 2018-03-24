@@ -11,14 +11,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-/**
- * Created by anfesilva on 22/03/2018.
- */
-
 public final class DateToStringConverter {
     private static final DateFormat formato = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
-    @Contract("null -> null")
     @Nullable
     @TypeConverter
     public static Date dateFromString(String value) {
@@ -30,7 +25,6 @@ public final class DateToStringConverter {
         }
     }
 
-    @Contract("null -> null")
     @Nullable
     @TypeConverter
     public static String stringFromDate(Date value) {

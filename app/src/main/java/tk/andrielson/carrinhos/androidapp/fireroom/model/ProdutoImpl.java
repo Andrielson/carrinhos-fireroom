@@ -1,15 +1,20 @@
 package tk.andrielson.carrinhos.androidapp.fireroom.model;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
+
+import com.google.firebase.firestore.IgnoreExtraProperties;
 
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 
+@Entity(tableName = "produtoteste")
+@IgnoreExtraProperties
 public final class ProdutoImpl extends Produto {
 
     @SuppressWarnings("unused")
-//    @Ignore
     public static final Parcelable.Creator<ProdutoImpl> CREATOR = new Parcelable.Creator<ProdutoImpl>() {
         @Override
         public ProdutoImpl createFromParcel(Parcel in) {
@@ -21,21 +26,22 @@ public final class ProdutoImpl extends Produto {
             return new ProdutoImpl[size];
         }
     };
-    private Long codigo = 0L;
+
+    @PrimaryKey
+    @ColumnInfo(name = "produto_codigo")
+    private Long codigo;
+    @ColumnInfo(name = "produto_nome")
     private String nome;
+    @ColumnInfo(name = "produto_sigla")
     private String sigla;
-    private Long preco = 0L;
+    @ColumnInfo(name = "produto_preco")
+    private Long preco;
+    @ColumnInfo(name = "produto_ativo")
     private Boolean ativo = Boolean.TRUE;
+    @ColumnInfo(name = "produto_excluido")
     private Boolean excluido = Boolean.FALSE;
 
     public ProdutoImpl() {
-    }
-
-    public ProdutoImpl(Long codigo, String nome, String sigla, Long preco) {
-        this.codigo = codigo;
-        this.nome = nome;
-        this.sigla = sigla;
-        this.preco = preco;
     }
 
     private ProdutoImpl(Parcel in) {
@@ -46,10 +52,9 @@ public final class ProdutoImpl extends Produto {
         byte ativoVal = in.readByte();
         ativo = ativoVal == 0x02 ? null : ativoVal != 0x00;
         byte excluidoVal = in.readByte();
-        excluido = excluidoVal == 0x02 ? null : ativoVal != 0x00;
+        excluido = excluidoVal == 0x02 ? null : excluidoVal != 0x00;
     }
 
-    @NonNull
     @Override
     public Long getCodigo() {
         return codigo;
@@ -80,7 +85,6 @@ public final class ProdutoImpl extends Produto {
         this.sigla = sigla;
     }
 
-    @NonNull
     @Override
     public Long getPreco() {
         return preco;
@@ -99,6 +103,10 @@ public final class ProdutoImpl extends Produto {
     @Override
     public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
+    }
+
+    public Boolean getExcluido() {
+        return excluido;
     }
 
     public void setExcluido(Boolean excluido) {
@@ -131,31 +139,10 @@ public final class ProdutoImpl extends Produto {
         } else {
             dest.writeByte((byte) (ativo ? 0x01 : 0x00));
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ProdutoImpl produto = (ProdutoImpl) o;
-
-        if (!codigo.equals(produto.codigo)) return false;
-        if (nome != null ? !nome.equals(produto.nome) : produto.nome != null) return false;
-        if (sigla != null ? !sigla.equals(produto.sigla) : produto.sigla != null) return false;
-        if (!preco.equals(produto.preco)) return false;
-        if (!ativo.equals(produto.ativo)) return false;
-        return excluido.equals(produto.excluido);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = codigo.hashCode();
-        result = 31 * result + (nome != null ? nome.hashCode() : 0);
-        result = 31 * result + (sigla != null ? sigla.hashCode() : 0);
-        result = 31 * result + preco.hashCode();
-        result = 31 * result + ativo.hashCode();
-        result = 31 * result + excluido.hashCode();
-        return result;
+        if (excluido == null) {
+            dest.writeByte((byte) (0x02));
+        } else {
+            dest.writeByte((byte) (excluido ? 0x01 : 0x00));
+        }
     }
 }

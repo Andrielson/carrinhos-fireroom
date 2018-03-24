@@ -1,13 +1,26 @@
 package tk.andrielson.carrinhos.androidapp.fireroom.model;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.IgnoreExtraProperties;
+import com.google.firebase.firestore.PropertyName;
+import com.google.firebase.firestore.ServerTimestamp;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import tk.andrielson.carrinhos.androidapp.data.model.Venda;
 
+@IgnoreExtraProperties
+@Entity(tableName = "vendateste")
 public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
 
     @SuppressWarnings("unused")
@@ -22,26 +35,68 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
             return new VendaImpl[size];
         }
     };
-    private Long codigo = 0L;
-    private Integer comissao = 0;
+
+    @PrimaryKey
+    @ColumnInfo(name = "venda_codigo")
+    private Long codigo;
+
+    @ColumnInfo(name = "venda_data")
+    @ServerTimestamp
     private Date data;
-    private Long total = 0L;
-    private VendedorImpl vendedor;
+
+    @ColumnInfo(name = "venda_comissao")
+    private Integer comissao;
+
+    @ColumnInfo(name = "venda_valor_total")
+    private Long valorTotal;
+
+    @ColumnInfo(name = "venda_valor_pago")
+    private Long valorPago;
+
+    @ColumnInfo(name = "venda_valor_comissao")
+    private Long valorComissao;
+
+    @Ignore
+    @PropertyName("vendedor")
+    private DocumentReference refVendedor;
+
+    @ColumnInfo(name = "venda_vendedor_codigo")
+    @Exclude
+    private Long vendedorCodigo;
+
+    @Ignore
+    @PropertyName("vendedor_nome")
+    private String vendedorNome;
+
+    @ColumnInfo(name = "venda_status")
     private String status;
+
+    @Exclude
+    @Ignore
+    private VendedorImpl vendedor;
+
+    @Exclude
+    @Ignore
     private List<ItemVendaImpl> itens;
 
-    public VendaImpl() {
-
-    }
-
-    private VendaImpl(Parcel in) {
+    protected VendaImpl(Parcel in) {
         codigo = in.readByte() == 0x00 ? null : in.readLong();
-        comissao = in.readByte() == 0x00 ? null : in.readInt();
         long tmpData = in.readLong();
         data = tmpData != -1 ? new Date(tmpData) : null;
-        total = in.readByte() == 0x00 ? null : in.readLong();
+        comissao = in.readByte() == 0x00 ? null : in.readInt();
+        valorTotal = in.readByte() == 0x00 ? null : in.readLong();
+        valorPago = in.readByte() == 0x00 ? null : in.readLong();
+        valorComissao = in.readByte() == 0x00 ? null : in.readLong();
+        vendedorCodigo = in.readByte() == 0x00 ? null : in.readLong();
+        vendedorNome = in.readString();
         status = in.readString();
         vendedor = (VendedorImpl) in.readValue(VendedorImpl.class.getClassLoader());
+        if (in.readByte() == 0x01) {
+            itens = new ArrayList<ItemVendaImpl>();
+            in.readList(itens, ItemVendaImpl.class.getClassLoader());
+        } else {
+            itens = null;
+        }
     }
 
     public Long getCodigo() {
@@ -52,14 +107,6 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
         this.codigo = codigo;
     }
 
-    public Integer getComissao() {
-        return comissao;
-    }
-
-    public void setComissao(Integer comissao) {
-        this.comissao = comissao;
-    }
-
     public Date getData() {
         return data;
     }
@@ -68,20 +115,52 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
         this.data = data;
     }
 
-    public Long getTotal() {
-        return total;
+    public Integer getComissao() {
+        return comissao;
     }
 
-    public void setTotal(Long total) {
-        this.total = total;
+    public void setComissao(Integer comissao) {
+        this.comissao = comissao;
     }
 
-    public VendedorImpl getVendedor() {
-        return vendedor;
+    public Long getValorTotal() {
+        return valorTotal;
     }
 
-    public void setVendedor(VendedorImpl vendedor) {
-        this.vendedor = vendedor;
+    public void setValorTotal(Long valor_total) {
+        this.valorTotal = valor_total;
+    }
+
+    public Long getValorPago() {
+        return valorPago;
+    }
+
+    public void setValorPago(Long valor_pago) {
+        this.valorPago = valor_pago;
+    }
+
+    public Long getValorComissao() {
+        return valorComissao;
+    }
+
+    public void setValorComissao(Long valor_comissao) {
+        this.valorComissao = valor_comissao;
+    }
+
+    public DocumentReference getRefVendedor() {
+        return refVendedor;
+    }
+
+    public void setRefVendedor(DocumentReference vendedor_ref) {
+        this.refVendedor = vendedor_ref;
+    }
+
+    public String getVendedorNome() {
+        return vendedorNome;
+    }
+
+    public void setVendedorNome(String vendedor_nome) {
+        this.vendedorNome = vendedor_nome;
     }
 
     public String getStatus() {
@@ -92,36 +171,28 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
         this.status = status;
     }
 
-    @Override
+    public VendedorImpl getVendedor() {
+        return vendedor;
+    }
+
+    public void setVendedor(VendedorImpl vendedor) {
+        this.vendedor = vendedor;
+    }
+
+    public Long getVendedorCodigo() {
+        return vendedorCodigo;
+    }
+
+    public void setVendedorCodigo(Long vendedorCodigo) {
+        this.vendedorCodigo = vendedorCodigo;
+    }
+
     public List<ItemVendaImpl> getItens() {
         return itens;
     }
 
-    @Override
     public void setItens(List<ItemVendaImpl> itens) {
         this.itens = itens;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        VendaImpl venda = (VendaImpl) o;
-
-        return (codigo != null ? codigo.equals(venda.codigo) : venda.codigo == null) && (comissao != null ? comissao.equals(venda.comissao) : venda.comissao == null) && (data != null ? data.equals(venda.data) : venda.data == null) && (total != null ? total.equals(venda.total) : venda.total == null) && (vendedor != null ? vendedor.equals(venda.vendedor) : venda.vendedor == null) && (itens != null ? itens.equals(venda.itens) : venda.itens == null);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = codigo != null ? codigo.hashCode() : 0;
-        result = 31 * result + (comissao != null ? comissao.hashCode() : 0);
-        result = 31 * result + (data != null ? data.hashCode() : 0);
-        result = 31 * result + (total != null ? total.hashCode() : 0);
-        result = 31 * result + (status != null ? status.hashCode() : 0);
-        result = 31 * result + (vendedor != null ? vendedor.hashCode() : 0);
-        result = 31 * result + (itens != null ? itens.hashCode() : 0);
-        return result;
     }
 
     @Override
@@ -137,20 +208,45 @@ public final class VendaImpl extends Venda<ItemVendaImpl, VendedorImpl> {
             dest.writeByte((byte) (0x01));
             dest.writeLong(codigo);
         }
+        dest.writeLong(data != null ? data.getTime() : -1L);
         if (comissao == null) {
             dest.writeByte((byte) (0x00));
         } else {
             dest.writeByte((byte) (0x01));
             dest.writeInt(comissao);
         }
-        dest.writeLong(data != null ? data.getTime() : -1L);
-        if (total == null) {
+        if (valorTotal == null) {
             dest.writeByte((byte) (0x00));
         } else {
             dest.writeByte((byte) (0x01));
-            dest.writeLong(total);
+            dest.writeLong(valorTotal);
         }
+        if (valorPago == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeLong(valorPago);
+        }
+        if (valorComissao == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeLong(valorComissao);
+        }
+        if (vendedorCodigo == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeLong(vendedorCodigo);
+        }
+        dest.writeString(vendedorNome);
         dest.writeString(status);
         dest.writeValue(vendedor);
+        if (itens == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(itens);
+        }
     }
 }

@@ -41,7 +41,7 @@ public final class VendaObservable extends AbsCodigoObservable {
         vendaModel = venda;
         codigoSet(venda.getCodigo());
         data.set(venda.getData() == null ? dateFormat.format(Calendar.getInstance().getTime()) : dateFormat.format(venda.getData()));
-        total.set(Util.longToRS(venda.getTotal()));
+        total.set(Util.longToRS(venda.getValorTotal()));
         status.set(venda.getStatus());
         vendedor.set(venda.getVendedor() == null ? new VendedorObservable(DI.newVendedor()) : new VendedorObservable(venda.getVendedor()));
         if (venda.getComissao() != null)
@@ -70,7 +70,7 @@ public final class VendaObservable extends AbsCodigoObservable {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        vendaModel.setTotal(Util.RStoLong(total.get()));
+        vendaModel.setValorTotal(Util.RStoLong(total.get()));
         vendaModel.setStatus(status.get());
         vendaModel.setVendedor(vendedor.get().getVendedorModel());
         List<ItemVenda> lista = new ArrayList<>();

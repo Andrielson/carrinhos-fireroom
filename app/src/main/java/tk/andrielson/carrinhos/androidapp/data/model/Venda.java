@@ -20,9 +20,9 @@ public abstract class Venda<I extends ItemVenda, V extends Vendedor> extends Abs
 
     public abstract void setData(Date data);
 
-    public abstract Long getTotal();
+    public abstract Long getValorTotal();
 
-    public abstract void setTotal(Long total);
+    public abstract void setValorTotal(Long total);
 
     public abstract V getVendedor();
 

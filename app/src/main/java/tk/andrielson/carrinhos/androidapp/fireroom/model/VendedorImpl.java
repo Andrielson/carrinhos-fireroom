@@ -1,36 +1,44 @@
 package tk.andrielson.carrinhos.androidapp.fireroom.model;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
+
+import com.google.firebase.firestore.IgnoreExtraProperties;
 
 import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
 
-//@Entity(tableName = "tb_vendedor")
+@Entity(tableName = "vendedorteste")
+@IgnoreExtraProperties
 public final class VendedorImpl extends Vendedor {
 
     @SuppressWarnings("unused")
     public static final Parcelable.Creator<VendedorImpl> CREATOR = new Parcelable.Creator<VendedorImpl>() {
-        @NonNull
         @Override
         public VendedorImpl createFromParcel(Parcel in) {
             return new VendedorImpl(in);
         }
 
-        @NonNull
         @Override
         public VendedorImpl[] newArray(int size) {
             return new VendedorImpl[size];
         }
     };
-    private Long codigo = 0L;
+    @PrimaryKey
+    @ColumnInfo(name = "vendedor_codigo")
+    private Long codigo;
+    @ColumnInfo(name = "vendedor_nome")
     private String nome;
+    @ColumnInfo(name = "vendedor_comissao")
     private Integer comissao;
-    private Boolean ativo = Boolean.TRUE;
+    @ColumnInfo(name = "vendedor_ativo")
+    private Boolean ativo;
+    @ColumnInfo(name = "vendedor_excluido")
     private Boolean excluido = Boolean.FALSE;
 
     public VendedorImpl() {
-
     }
 
     private VendedorImpl(Parcel in) {
@@ -39,6 +47,8 @@ public final class VendedorImpl extends Vendedor {
         comissao = in.readByte() == 0x00 ? null : in.readInt();
         byte ativoVal = in.readByte();
         ativo = ativoVal == 0x02 ? null : ativoVal != 0x00;
+        byte excluidoVal = in.readByte();
+        excluido = excluidoVal == 0x02 ? null : excluidoVal != 0x00;
     }
 
     @Override
@@ -81,32 +91,12 @@ public final class VendedorImpl extends Vendedor {
         this.ativo = ativo;
     }
 
+    public Boolean getExcluido() {
+        return excluido;
+    }
+
     public void setExcluido(Boolean excluido) {
         this.excluido = excluido;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        VendedorImpl vendedor = (VendedorImpl) o;
-
-        if (!codigo.equals(vendedor.codigo)) return false;
-        if (nome != null ? !nome.equals(vendedor.nome) : vendedor.nome != null) return false;
-        if (!comissao.equals(vendedor.comissao)) return false;
-        if (!ativo.equals(vendedor.ativo)) return false;
-        return excluido.equals(vendedor.excluido);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = codigo.hashCode();
-        result = 31 * result + (nome != null ? nome.hashCode() : 0);
-        result = 31 * result + (comissao != null ? comissao.hashCode() : 0);
-        result = 31 * result + ativo.hashCode();
-        result = 31 * result + excluido.hashCode();
-        return result;
     }
 
     @Override
@@ -133,6 +123,11 @@ public final class VendedorImpl extends Vendedor {
             dest.writeByte((byte) (0x02));
         } else {
             dest.writeByte((byte) (ativo ? 0x01 : 0x00));
+        }
+        if (excluido == null) {
+            dest.writeByte((byte) (0x02));
+        } else {
+            dest.writeByte((byte) (excluido ? 0x01 : 0x00));
         }
     }
 }
