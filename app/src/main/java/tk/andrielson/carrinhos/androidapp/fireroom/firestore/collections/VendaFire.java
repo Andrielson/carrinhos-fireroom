@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Date;
@@ -35,7 +36,7 @@ public final class VendaFire {
     public DocumentReference vendedor;
     public String vendedor_nome;
     public String status;
-    public CollectionReference itens;
+//    public CollectionReference itens;
 
     public VendaFire() {
     }
@@ -56,6 +57,6 @@ public final class VendaFire {
         }
         valor_comissao = valor_total * comissao / 100;
         valor_pago = valor_total - valor_comissao;
-        this.itens = FirebaseFirestore.getInstance().collection(String.format("/%s/%s/%s", COLECAO, FirestoreDao.getIdFromCodigo(codigo), ItemVendaFire.COLECAO));
+//        this.itens = FirebaseFirestore.getInstance().collection(String.format("/%s/%s/%s", COLECAO, FirestoreDao.getIdFromCodigo(codigo), ItemVendaFire.COLECAO));
     }
 }

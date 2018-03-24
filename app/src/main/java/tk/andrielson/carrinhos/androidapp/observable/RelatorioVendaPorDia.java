@@ -1,6 +1,7 @@
 package tk.andrielson.carrinhos.androidapp.observable;
 
 import android.databinding.ObservableField;
+import android.support.annotation.NonNull;
 import android.support.v4.util.SimpleArrayMap;
 
 import java.text.DateFormat;
@@ -11,15 +12,14 @@ import java.util.Locale;
 import tk.andrielson.carrinhos.androidapp.utils.Util;
 
 public final class RelatorioVendaPorDia {
+    private static final String TAG = RelatorioVendaPorDia.class.getSimpleName();
     public final ObservableField<String> data = new ObservableField<>();
     public final ObservableField<String> diaSemana = new ObservableField<>();
     public final ObservableField<String> valorTotal = new ObservableField<>();
     public final ObservableField<String> valorPago = new ObservableField<>();
     public final ObservableField<String> valorComissao = new ObservableField<>();
 
-    private static final String TAG = RelatorioVendaPorDia.class.getSimpleName();
-
-    public RelatorioVendaPorDia(Date data, SimpleArrayMap<String, Long> dados) {
+    public RelatorioVendaPorDia(@NonNull Date data, @NonNull SimpleArrayMap<String, Long> dados) {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         this.data.set(dateFormat.format(data));
         DateFormat semanaFormat = new SimpleDateFormat("EEEE", Locale.getDefault());

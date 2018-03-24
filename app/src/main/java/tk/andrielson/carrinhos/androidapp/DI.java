@@ -7,6 +7,7 @@ import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.data.model.Venda;
 import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
 import tk.andrielson.carrinhos.androidapp.data.repository.ProdutoRepository;
+import tk.andrielson.carrinhos.androidapp.data.repository.RelatorioRepository;
 import tk.andrielson.carrinhos.androidapp.data.repository.VendaRepository;
 import tk.andrielson.carrinhos.androidapp.data.repository.VendedorRepository;
 import tk.andrielson.carrinhos.androidapp.fireroom.SincronizadorFirestoreRoom;
@@ -15,6 +16,7 @@ import tk.andrielson.carrinhos.androidapp.fireroom.model.ProdutoImpl;
 import tk.andrielson.carrinhos.androidapp.fireroom.model.VendaImpl;
 import tk.andrielson.carrinhos.androidapp.fireroom.model.VendedorImpl;
 import tk.andrielson.carrinhos.androidapp.fireroom.repository.ProdutoRepoImpl;
+import tk.andrielson.carrinhos.androidapp.fireroom.repository.RelatorioRepoImpl;
 import tk.andrielson.carrinhos.androidapp.fireroom.repository.VendaRepoImpl;
 import tk.andrielson.carrinhos.androidapp.fireroom.repository.VendedorRepoImpl;
 
@@ -66,5 +68,10 @@ public final class DI {
     @NonNull
     public static VendaRepository newVendaRepository() {
         return new VendaRepoImpl();
+    }
+
+    @NonNull
+    public static RelatorioRepository newRelatorioRepository() {
+        return new RelatorioRepoImpl();
     }
 }

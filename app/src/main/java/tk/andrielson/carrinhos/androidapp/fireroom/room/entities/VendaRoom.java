@@ -79,4 +79,15 @@ public final class VendaRoom {
         @Embedded
         public VendedorRoom vendedor;
     }
+
+    public static class VendasPorDia {
+        @ColumnInfo(name = "venda_data")
+        public String data;
+        @ColumnInfo(name = "valor_total")
+        public Long valorTotal;
+        @ColumnInfo(name = "valor_pago")
+        public Long valorPago;
+        @ColumnInfo(name = "valor_comissao")
+        public Long valorComissao;
+    }
 }

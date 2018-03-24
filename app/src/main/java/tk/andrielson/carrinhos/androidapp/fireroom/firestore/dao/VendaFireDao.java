@@ -2,6 +2,7 @@ package tk.andrielson.carrinhos.androidapp.fireroom.firestore.dao;
 
 import android.support.annotation.NonNull;
 
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.WriteBatch;
@@ -28,17 +29,15 @@ public final class VendaFireDao extends FirestoreDao {
         WriteBatch batch = setColecaoID(COLECAO, idVenda);
         batch.set(novoDocumento, venda);
         //TODO: o batch possui um limite máximo de 500 operações. Se a venda tiver mais de 495 itens, pode dar ruim.
+        CollectionReference itensRef = db.collection(String.format("/%s/%s/%s", COLECAO, idVenda, ItemVendaFire.COLECAO));
         for (ItemVendaFire itv : itens)
-            batch.set(venda.itens.document(itv.produto.getId()), itv);
+            batch.set(itensRef.document(itv.produto.getId()), itv);
         batch.commit().addOnCompleteListener(new OnTaskCompleteListenerPadrao("Nova venda " + idVenda + " adicionada com sucesso!", "Falha ao adicionar a venda " + idVenda, TAG));
-        /*batch.commit().addOnSuccessListener(aVoid -> LogUtil.Log(TAG, "Nova venda " + idVenda + " adicionada com sucesso!", Log.INFO)).addOnFailureListener(e -> {
-            LogUtil.Log(TAG, "Falha ao adicionar a venda " + idVenda, Log.ERROR);
-            LogUtil.Log(TAG, e.getMessage(), Log.ERROR);
-        });*/
     }
 
     public void update(@NonNull final VendaFire venda, @NonNull final ItemVendaFire[] itens) {
-        venda.itens.get().addOnSuccessListener(Executors.newSingleThreadExecutor(), snapshots -> {
+        CollectionReference itensRef = db.collection(String.format("/%s/%s/%s", COLECAO, FirestoreDao.getIdFromCodigo(venda.codigo), ItemVendaFire.COLECAO));
+        itensRef.get().addOnSuccessListener(Executors.newSingleThreadExecutor(), snapshots -> {
             if (snapshots != null) {
                 WriteBatch batch = db.batch();
                 // Apaga todos os itens
@@ -48,24 +47,16 @@ public final class VendaFireDao extends FirestoreDao {
                 batch.set(collection.document(getIdFromCodigo(venda.codigo)), venda);
                 // Insere os novos itens
                 for (ItemVendaFire itv : itens)
-                    batch.set(venda.itens.document(itv.produto.getId()), itv);
+                    batch.set(itensRef.document(itv.produto.getId()), itv);
                 // Commita o batch
                 batch.commit().addOnCompleteListener(new OnTaskCompleteListenerPadrao("Venda " + venda.codigo + " atualizada com sucesso!", "Falha ao atualizar a venda " + venda.codigo, TAG));
-                /*batch.commit().addOnCompleteListener(task -> {
-                    if (task.isSuccessful())
-                        LogUtil.Log(TAG, "Venda " + venda.codigo + " atualizada com sucesso!", Log.INFO);
-                    else {
-                        LogUtil.Log(TAG, "Falha ao atualizar a venda " + venda.codigo, Log.ERROR);
-                        if (task.getException() != null)
-                            LogUtil.Log(TAG, task.getException().getMessage(), Log.ERROR);
-                    }
-                });*/
             }
         });
     }
 
     public void delete(@NonNull final VendaFire venda) {
-        venda.itens.get().addOnSuccessListener(Executors.newSingleThreadExecutor(), snapshots -> {
+        CollectionReference itensRef = db.collection(String.format("/%s/%s/%s", COLECAO, FirestoreDao.getIdFromCodigo(venda.codigo), ItemVendaFire.COLECAO));
+        itensRef.get().addOnSuccessListener(Executors.newSingleThreadExecutor(), snapshots -> {
             if (snapshots != null) {
                 WriteBatch batch = db.batch();
                 // Remove todos os itens
@@ -75,15 +66,6 @@ public final class VendaFireDao extends FirestoreDao {
                 batch.delete(collection.document(getIdFromCodigo(venda.codigo)));
                 // Commita o batch
                 batch.commit().addOnCompleteListener(new OnTaskCompleteListenerPadrao("Venda " + venda.codigo + " removida com sucesso!", "Falha ao remover a venda " + venda.codigo, TAG));
-                /*batch.commit().addOnCompleteListener(task -> {
-                    if (task.isSuccessful())
-                        LogUtil.Log(TAG, "Venda " + venda.codigo + " removida com sucesso!", Log.INFO);
-                    else {
-                        LogUtil.Log(TAG, "Falha ao remover a venda " + venda.codigo, Log.ERROR);
-                        if (task.getException() != null)
-                            LogUtil.Log(TAG, task.getException().getMessage(), Log.ERROR);
-                    }
-                });*/
             }
         });
     }
