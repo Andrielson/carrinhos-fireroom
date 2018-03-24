@@ -7,8 +7,9 @@ import android.support.v4.util.SimpleArrayMap;
 import java.util.List;
 
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
+import tk.andrielson.carrinhos.androidapp.fireroom.model.ProdutoImpl;
 
-public interface ProdutoRepository {
+public interface ProdutoRepository<T extends Produto> {
     /**
      * Insere um produto no banco de dados e retorna o código gerado.
      *
@@ -37,7 +38,7 @@ public interface ProdutoRepository {
      * @return a lista de produtos encapsulada em uma LiveData
      */
     @NonNull
-    LiveData<List<Produto>> getAll();
+    LiveData<List<T>> getAll();
 
     /**
      * Procura um produto especificado pelo código informado e o retorna encapsulado
@@ -47,7 +48,7 @@ public interface ProdutoRepository {
      * @return o produto encapsulado em uma LiveData
      */
     @NonNull
-    LiveData<Produto> getByCodigo(Long codigo);
+    LiveData<T> getByCodigo(Long codigo);
 
     /**
      * Consulta todos os produtos do banco de dados, ordenando pelos parâmetros de ordenação,
@@ -58,5 +59,5 @@ public interface ProdutoRepository {
      * @return a lista de produtos encapsulada em uma LiveData
      */
     @NonNull
-    LiveData<List<Produto>> getAll(SimpleArrayMap<String, String> ordenacao);
+    LiveData<List<T>> getAll(SimpleArrayMap<String, String> ordenacao);
 }

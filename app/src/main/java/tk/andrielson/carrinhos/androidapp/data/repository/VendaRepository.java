@@ -8,16 +8,16 @@ import java.util.List;
 import tk.andrielson.carrinhos.androidapp.data.model.ItemVenda;
 import tk.andrielson.carrinhos.androidapp.data.model.Venda;
 
-public interface VendaRepository {
+public interface VendaRepository<V extends Venda, I extends ItemVenda> {
     void insert(@NonNull Venda venda);
 
     void update(@NonNull Venda venda);
 
     void delete(@NonNull Venda venda);
 
-    LiveData<List<Venda>> getAll();
+    LiveData<List<V>> getAll();
 
-    LiveData<Venda> getByCodigo(@NonNull Long codigo);
+    LiveData<V> getByCodigo(@NonNull Long codigo);
 
-    LiveData<List<ItemVenda>> getItens(@NonNull Long codigo);
+    LiveData<List<I>> getItens(@NonNull Long codigo);
 }

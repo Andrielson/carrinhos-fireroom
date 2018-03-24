@@ -7,8 +7,9 @@ import android.support.annotation.NonNull;
 import java.util.List;
 
 import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
+import tk.andrielson.carrinhos.androidapp.fireroom.model.VendedorImpl;
 
-public interface VendedorRepository {
+public interface VendedorRepository<T extends Vendedor> {
     /**
      * Insert long.
      *
@@ -35,7 +36,7 @@ public interface VendedorRepository {
      *
      * @return the all
      */
-    LiveData<List<Vendedor>> getAll();
+    LiveData<List<T>> getAll();
 
     /**
      * Gets by codigo.
@@ -43,5 +44,5 @@ public interface VendedorRepository {
      * @param codigo the codigo
      * @return the by codigo
      */
-    LiveData<Vendedor> getByCodigo(@NonNull final Long codigo);
+    LiveData<T> getByCodigo(@NonNull final Long codigo);
 }

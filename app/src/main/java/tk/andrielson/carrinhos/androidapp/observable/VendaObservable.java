@@ -52,7 +52,7 @@ public final class VendaObservable extends AbsCodigoObservable {
             comissao.set("40 %");
         List<ItemVendaObservable> lista = new ArrayList<>();
         if (venda.getItens() != null)
-            for (ItemVenda itv : (List<ItemVenda>) venda.getItens()) {
+            for (ItemVenda itv : venda.getItens()) {
                 ItemVendaObservable ito = new ItemVendaObservable(itv);
                 ito.total.addOnPropertyChangedCallback(new TotalAtualizador(this));
                 lista.add(ito);
@@ -76,7 +76,7 @@ public final class VendaObservable extends AbsCodigoObservable {
         List<ItemVenda> lista = new ArrayList<>();
         for (ItemVendaObservable ito : itens.get())
             lista.add(ito.getItemVendaModel());
-        vendaModel.setItens(lista);
+        vendaModel.setItens(lista.toArray(new ItemVenda[0]));
         return vendaModel;
     }
 

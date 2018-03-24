@@ -1,9 +1,9 @@
 package tk.andrielson.carrinhos.androidapp.data.model;
 
-public abstract class ItemVenda<P extends Produto> extends AbsEntidadePadrao {
-    public abstract P getProduto();
+public abstract class ItemVenda extends AbsEntidadePadrao {
+    public abstract Produto getProduto();
 
-    public abstract void setProduto(P produto);
+    public abstract void setProduto(Produto produto);
 
     public abstract Integer getQtSaiu();
 
@@ -20,5 +20,9 @@ public abstract class ItemVenda<P extends Produto> extends AbsEntidadePadrao {
     public abstract Long getValor();
 
     public abstract void setValor(Long valor);
+
+    public abstract Long getTotal();
+
+    public abstract void setTotal(Long total);
 
 }

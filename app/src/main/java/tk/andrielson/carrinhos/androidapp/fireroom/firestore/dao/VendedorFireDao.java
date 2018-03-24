@@ -6,14 +6,14 @@ import android.util.Log;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.WriteBatch;
 
-import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.VendedorFire;
+import tk.andrielson.carrinhos.androidapp.fireroom.model.VendedorImpl;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
 /**
  * Implementação de VendedorDao para o banco Firestore.
  */
 public final class VendedorFireDao extends FirestoreDao {
-    private static final String COLECAO = VendedorFire.COLECAO;
+    private static final String COLECAO = VendedorImpl.COLECAO;
     private static final String TAG = VendedorFireDao.class.getSimpleName();
 
     /**
@@ -28,11 +28,10 @@ public final class VendedorFireDao extends FirestoreDao {
      *
      * @param vendedor o vendedor a ser inserido
      */
-    public void insert(@NonNull final VendedorFire vendedor) {
+    public void insert(@NonNull final VendedorImpl vendedor) {
         String ultimoID = getColecaoID(COLECAO);
-        Long novoCodigo = Long.valueOf(ultimoID) + 1;
-        vendedor.codigo = novoCodigo;
-        final String id = getIdFromCodigo(novoCodigo);
+        vendedor.setCodigo(Long.valueOf(ultimoID) + 1);
+        final String id = getIdFromCodigo(vendedor.getCodigo());
         DocumentReference novoDocumento = collection.document(id);
         WriteBatch batch = setColecaoID(COLECAO, id);
         batch.set(novoDocumento, vendedor);
@@ -48,8 +47,8 @@ public final class VendedorFireDao extends FirestoreDao {
      *
      * @param vendedor o vendedor a ser atualizado
      */
-    public void update(@NonNull final VendedorFire vendedor) {
-        final String id = getIdFromCodigo(vendedor.codigo);
+    public void update(@NonNull final VendedorImpl vendedor) {
+        final String id = getIdFromCodigo(vendedor.getCodigo());
         DocumentReference documento = collection.document(id);
         WriteBatch batch = db.batch();
         batch.set(documento, vendedor);
@@ -65,13 +64,13 @@ public final class VendedorFireDao extends FirestoreDao {
      *
      * @param vendedor o vendedor a ser removido
      */
-    public void delete(@NonNull final VendedorFire vendedor) {
-        final String id = getIdFromCodigo(vendedor.codigo);
+    public void delete(@NonNull final VendedorImpl vendedor) {
+        final String id = getIdFromCodigo(vendedor.getCodigo());
         DocumentReference documento = collection.document(id);
         WriteBatch batch = db.batch();
-        if (vendedor.excluido)
+        if (vendedor.getExcluido())
             // Exclusão lógica
-            batch.update(documento, VendedorFire.EXCLUIDO, Boolean.TRUE);
+            batch.update(documento, VendedorImpl.EXCLUIDO, Boolean.TRUE);
         else
             // Exclusão física
             batch.delete(documento);

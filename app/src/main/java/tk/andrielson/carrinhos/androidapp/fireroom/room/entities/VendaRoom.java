@@ -19,9 +19,9 @@ import tk.andrielson.carrinhos.androidapp.fireroom.model.VendaImpl;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "tb_venda",
-        foreignKeys = @ForeignKey(entity = VendedorRoom.class, parentColumns = "vendedor_codigo", childColumns = "vendedor_codigo", onDelete = CASCADE, onUpdate = CASCADE, deferred = true),
-        indices = {@Index(name = "idx_venda_vendedor", value = {"vendedor_codigo"})})
+//@Entity(tableName = "tb_venda",
+//        foreignKeys = @ForeignKey(entity = VendedorRoom.class, parentColumns = "vendedor_codigo", childColumns = "vendedor_codigo", onDelete = CASCADE, onUpdate = CASCADE, deferred = true),
+//        indices = {@Index(name = "idx_venda_vendedor", value = {"vendedor_codigo"})})
 public final class VendaRoom {
 
     @Ignore

@@ -92,11 +92,11 @@ public class CadastroVendaViewModel extends AndroidViewModel {
         Venda venda = observable.getVendaModel();
 
         //Remove os itens que não foram levados
-        for (int i = venda.getItens().size() - 1; i >= 0; i--) {
-            ItemVenda itv = (ItemVenda) venda.getItens().get(i);
-            if (itv.getQtSaiu().equals(0))
-                venda.getItens().remove(itv);
-        }
+        List<ItemVenda> itensVenda = new ArrayList<>();
+        for (ItemVenda itv : venda.getItens())
+            if (!itv.getQtSaiu().equals(0))
+                itensVenda.add(itv);
+        venda.setItens(itensVenda.toArray(new ItemVenda[0]));
 
         if (observable.ehNovo()) {
             vendaRepository.insert(venda);

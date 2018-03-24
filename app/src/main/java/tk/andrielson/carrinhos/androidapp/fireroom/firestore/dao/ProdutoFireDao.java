@@ -6,7 +6,7 @@ import android.util.Log;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.WriteBatch;
 
-import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.ProdutoFire;
+import tk.andrielson.carrinhos.androidapp.fireroom.model.ProdutoImpl;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
 /**
@@ -14,7 +14,7 @@ import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
  */
 public final class ProdutoFireDao extends FirestoreDao {
 
-    private static final String COLECAO = ProdutoFire.COLECAO;
+    private static final String COLECAO = ProdutoImpl.COLECAO;
     private static final String TAG = ProdutoFireDao.class.getSimpleName();
 
     /**
@@ -29,11 +29,10 @@ public final class ProdutoFireDao extends FirestoreDao {
      *
      * @param produto o produto a ser inserido
      */
-    public void insert(@NonNull final ProdutoFire produto) {
+    public void insert(@NonNull final ProdutoImpl produto) {
         String ultimoID = getColecaoID(COLECAO);
-        Long novoCodigo = Long.valueOf(ultimoID) + 1;
-        produto.codigo = novoCodigo;
-        final String id = getIdFromCodigo(novoCodigo);
+        produto.setCodigo(Long.valueOf(ultimoID) + 1);
+        final String id = getIdFromCodigo(produto.getCodigo());
         DocumentReference novoDocumento = collection.document(id);
         WriteBatch batch = setColecaoID(COLECAO, id);
         batch.set(novoDocumento, produto);
@@ -49,8 +48,8 @@ public final class ProdutoFireDao extends FirestoreDao {
      *
      * @param produto o produto a ser atualizado
      */
-    public void update(@NonNull final ProdutoFire produto) {
-        final String id = getIdFromCodigo(produto.codigo);
+    public void update(@NonNull final ProdutoImpl produto) {
+        final String id = getIdFromCodigo(produto.getCodigo());
         DocumentReference documento = collection.document(id);
         WriteBatch batch = db.batch();
         batch.set(documento, produto);
@@ -66,13 +65,13 @@ public final class ProdutoFireDao extends FirestoreDao {
      *
      * @param produto o produto a ser removido
      */
-    public void delete(@NonNull final ProdutoFire produto) {
-        final String id = getIdFromCodigo(produto.codigo);
+    public void delete(@NonNull final ProdutoImpl produto) {
+        final String id = getIdFromCodigo(produto.getCodigo());
         DocumentReference documento = collection.document(id);
         WriteBatch batch = db.batch();
-        if (produto.excluido)
+        if (produto.getExcluido())
             // Exclusão lógica
-            batch.update(documento, ProdutoFire.EXCLUIDO, Boolean.TRUE);
+            batch.update(documento, ProdutoImpl.EXCLUIDO, Boolean.TRUE);
         else
             // Exclusão física
             batch.delete(documento);

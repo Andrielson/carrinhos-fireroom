@@ -7,7 +7,7 @@ import android.arch.persistence.room.PrimaryKey;
 import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.VendedorFire;
 import tk.andrielson.carrinhos.androidapp.fireroom.model.VendedorImpl;
 
-@Entity(tableName = "tb_vendedor")
+//@Entity(tableName = "tb_vendedor")
 public final class VendedorRoom {
     @PrimaryKey
     @ColumnInfo(name = "vendedor_codigo")

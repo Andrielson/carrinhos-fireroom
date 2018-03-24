@@ -11,31 +11,31 @@ import android.arch.persistence.room.Update;
 
 import java.util.List;
 
-import tk.andrielson.carrinhos.androidapp.fireroom.room.entities.ItemVendaRoom;
+import tk.andrielson.carrinhos.androidapp.fireroom.model.ItemVendaImpl;
 
 @Dao
 public abstract class ItemVendaRoomDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public abstract void insert(ItemVendaRoom... itens);
+    public abstract void insert(ItemVendaImpl... itens);
 
     @Update
-    public abstract void update(ItemVendaRoom... itens);
+    public abstract void update(ItemVendaImpl... itens);
 
     @Delete
-    public abstract void delete(ItemVendaRoom... itens);
+    public abstract void delete(ItemVendaImpl... itens);
 
-    @Query("DELETE FROM tb_item_venda WHERE venda_codigo = :cod_venda")
+    @Query("DELETE FROM tb_item_venda WHERE itv_venda_codigo = :cod_venda")
     public abstract void delete(Long cod_venda);
 
-    @Query("DELETE FROM tb_item_venda WHERE venda_codigo IN (:vendas)")
+    @Query("DELETE FROM tb_item_venda WHERE itv_venda_codigo IN (:vendas)")
     public abstract void delete(List<Long> vendas);
 
     @Transaction
-    public void replace(ItemVendaRoom[] itens, Long cod_venda) {
+    public void replace(ItemVendaImpl[] itens, Long cod_venda) {
         delete(cod_venda);
         insert(itens);
     }
 
-    @Query("SELECT * FROM tb_item_venda WHERE venda_codigo = :cod_venda")
-    public abstract LiveData<ItemVendaRoom[]> getItensVenda(Long cod_venda);
+    @Query("SELECT * FROM tb_item_venda WHERE itv_venda_codigo = :cod_venda")
+    public abstract LiveData<ItemVendaImpl[]> getItensVenda(Long cod_venda);
 }

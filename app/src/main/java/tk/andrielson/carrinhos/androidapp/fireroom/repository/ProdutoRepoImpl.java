@@ -11,14 +11,13 @@ import java.util.concurrent.Executors;
 
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.data.repository.ProdutoRepository;
-import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.ProdutoFire;
 import tk.andrielson.carrinhos.androidapp.fireroom.firestore.dao.ProdutoFireDao;
 import tk.andrielson.carrinhos.androidapp.fireroom.model.ProdutoImpl;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.AppDatabase;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.dao.ProdutoRoomDao;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.entities.ProdutoRoom;
 
-public final class ProdutoRepoImpl implements ProdutoRepository {
+public final class ProdutoRepoImpl implements ProdutoRepository<ProdutoImpl> {
     private static final String TAG = ProdutoRepoImpl.class.getSimpleName();
     private final AppDatabase database = AppDatabase.getInstancia();
     private final ProdutoRoomDao roomDao = database.produtoDao();
@@ -26,40 +25,39 @@ public final class ProdutoRepoImpl implements ProdutoRepository {
 
     @Override
     public void insert(Produto produto) {
-        fireDao.insert(new ProdutoFire((ProdutoImpl) produto));
+        fireDao.insert((ProdutoImpl) produto);
     }
 
     @Override
     public void update(Produto produto) {
-        fireDao.update(new ProdutoFire((ProdutoImpl) produto));
+        fireDao.update((ProdutoImpl) produto);
     }
 
     @Override
     public void delete(Produto produto) {
         Executors.newSingleThreadExecutor().execute(() -> {
-            ProdutoFire produtoFire = new ProdutoFire((ProdutoImpl) produto);
             if (roomDao.produtoPossuiVendas(produto.getCodigo()))
-                produtoFire.excluido = true;
-            fireDao.delete(produtoFire);
+                ((ProdutoImpl) produto).setExcluido(true);
+            fireDao.delete((ProdutoImpl) produto);
         });
     }
 
     @NonNull
     @Override
-    public LiveData<List<Produto>> getAll() {
-        return listFromRoomArray(roomDao.getAllOrderByNome());
+    public LiveData<List<ProdutoImpl>> getAll() {
+        return roomDao.getAllOrderByNome();
     }
 
     @NonNull
     @Override
-    public LiveData<Produto> getByCodigo(Long codigo) {
+    public LiveData<ProdutoImpl> getByCodigo(Long codigo) {
         return new MediatorLiveData<>();
     }
 
     @NonNull
     @Override
-    public LiveData<List<Produto>> getAll(SimpleArrayMap<String, String> ordenacao) {
-        return listFromRoomArray(roomDao.getAllOrderByCodigo());
+    public LiveData<List<ProdutoImpl>> getAll(SimpleArrayMap<String, String> ordenacao) {
+        return roomDao.getAllOrderByCodigo();
     }
 
     @NonNull

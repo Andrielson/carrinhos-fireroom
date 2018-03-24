@@ -3,11 +3,7 @@ package tk.andrielson.carrinhos.androidapp.data.model;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by anfesilva on 12/03/2018.
- */
-
-public abstract class Venda<I extends ItemVenda, V extends Vendedor> extends AbsEntidadePadrao {
+public abstract class Venda extends AbsEntidadePadrao {
     public abstract Long getCodigo();
 
     public abstract void setCodigo(Long codigo);
@@ -24,15 +20,23 @@ public abstract class Venda<I extends ItemVenda, V extends Vendedor> extends Abs
 
     public abstract void setValorTotal(Long total);
 
-    public abstract V getVendedor();
+    public abstract Long getValorPago();
 
-    public abstract void setVendedor(V vendedor);
+    public abstract void setValorPago(Long valor_pago);
+
+    public abstract Long getValorComissao();
+
+    public abstract void setValorComissao(Long valor_comissao);
+
+    public abstract Vendedor getVendedor();
+
+    public abstract void setVendedor(Vendedor vendedor);
 
     public abstract String getStatus();
 
     public abstract void setStatus(String status);
 
-    public abstract List<I> getItens();
+    public abstract ItemVenda[] getItens();
 
-    public abstract void setItens(List<I> itens);
+    public abstract void setItens(ItemVenda[] itens);
 }

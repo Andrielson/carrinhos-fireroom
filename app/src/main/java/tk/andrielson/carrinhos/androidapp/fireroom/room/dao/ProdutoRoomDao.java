@@ -8,25 +8,27 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import tk.andrielson.carrinhos.androidapp.fireroom.room.entities.ProdutoRoom;
+import java.util.List;
+
+import tk.andrielson.carrinhos.androidapp.fireroom.model.ProdutoImpl;
 
 @Dao
 public abstract class ProdutoRoomDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public abstract void insert(ProdutoRoom... produtos);
+    public abstract void insert(ProdutoImpl... produtos);
 
     @Update
-    public abstract void update(ProdutoRoom... produtos);
+    public abstract void update(ProdutoImpl... produtos);
 
     @Delete
-    public abstract void delete(ProdutoRoom... produtos);
+    public abstract void delete(ProdutoImpl... produtos);
 
     @Query("SELECT * FROM tb_produto ORDER BY produto_nome")
-    public abstract LiveData<ProdutoRoom[]> getAllOrderByNome();
+    public abstract LiveData<List<ProdutoImpl>> getAllOrderByNome();
 
     @Query("SELECT * FROM tb_produto ORDER BY produto_codigo")
-    public abstract LiveData<ProdutoRoom[]> getAllOrderByCodigo();
+    public abstract LiveData<List<ProdutoImpl>> getAllOrderByCodigo();
 
-    @Query("SELECT EXISTS (SELECT * FROM tb_item_venda WHERE produto_codigo = :codigo)")
+    @Query("SELECT EXISTS (SELECT * FROM tb_item_venda WHERE itv_produto_codigo = :codigo)")
     public abstract boolean produtoPossuiVendas(Long codigo);
 }

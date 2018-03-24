@@ -10,7 +10,7 @@ import com.google.firebase.firestore.IgnoreExtraProperties;
 
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 
-@Entity(tableName = "produtoteste")
+@Entity(tableName = "tb_produto")
 @IgnoreExtraProperties
 public final class ProdutoImpl extends Produto {
 
@@ -26,6 +26,9 @@ public final class ProdutoImpl extends Produto {
             return new ProdutoImpl[size];
         }
     };
+
+    public static final String COLECAO = "produtos";
+    public static final String EXCLUIDO = "excluido";
 
     @PrimaryKey
     @ColumnInfo(name = "produto_codigo")

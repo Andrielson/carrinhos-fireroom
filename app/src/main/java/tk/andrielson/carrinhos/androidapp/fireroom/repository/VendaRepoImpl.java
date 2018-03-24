@@ -7,11 +7,8 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import tk.andrielson.carrinhos.androidapp.data.model.ItemVenda;
 import tk.andrielson.carrinhos.androidapp.data.model.Venda;
 import tk.andrielson.carrinhos.androidapp.data.repository.VendaRepository;
-import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.ItemVendaFire;
-import tk.andrielson.carrinhos.androidapp.fireroom.firestore.collections.VendaFire;
 import tk.andrielson.carrinhos.androidapp.fireroom.firestore.dao.VendaFireDao;
 import tk.andrielson.carrinhos.androidapp.fireroom.model.ItemVendaImpl;
 import tk.andrielson.carrinhos.androidapp.fireroom.model.VendaImpl;
@@ -20,7 +17,7 @@ import tk.andrielson.carrinhos.androidapp.fireroom.room.dao.VendaRoomDao;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.entities.VendaRoom;
 
 @SuppressWarnings("unchecked")
-public final class VendaRepoImpl implements VendaRepository {
+public final class VendaRepoImpl implements VendaRepository<VendaImpl, ItemVendaImpl> {
 
     private static final String TAG = ProdutoRepoImpl.class.getSimpleName();
     private final AppDatabase database = AppDatabase.getInstancia();
@@ -29,34 +26,26 @@ public final class VendaRepoImpl implements VendaRepository {
 
     @Override
     public void insert(@NonNull Venda venda) {
-        int qt = venda.getItens().size();
-        ItemVendaFire[] itensVendaFire = new ItemVendaFire[qt];
-        for (int i = 0; i < qt; i++)
-            itensVendaFire[i] = new ItemVendaFire((ItemVendaImpl) venda.getItens().get(i));
-        fireDao.insert(new VendaFire((VendaImpl) venda), itensVendaFire);
+        fireDao.insert((VendaImpl) venda, (ItemVendaImpl[]) venda.getItens());
     }
 
     @Override
     public void update(@NonNull Venda venda) {
-        int qt = venda.getItens().size();
-        ItemVendaFire[] itensVendaFire = new ItemVendaFire[qt];
-        for (int i = 0; i < qt; i++)
-            itensVendaFire[i] = new ItemVendaFire((ItemVendaImpl) venda.getItens().get(i));
-        fireDao.update(new VendaFire((VendaImpl) venda), itensVendaFire);
+        fireDao.update((VendaImpl) venda, (ItemVendaImpl[]) venda.getItens());
     }
 
     @Override
     public void delete(@NonNull Venda venda) {
-        fireDao.delete(new VendaFire((VendaImpl) venda));
+        fireDao.delete((VendaImpl) venda);
     }
 
     @Override
-    public LiveData<List<Venda>> getAll() {
-        final MediatorLiveData<List<Venda>> mediatorLiveData = new MediatorLiveData<>();
+    public LiveData<List<VendaImpl>> getAll() {
+        final MediatorLiveData<List<VendaImpl>> mediatorLiveData = new MediatorLiveData<>();
         mediatorLiveData.setValue(null);
         mediatorLiveData.addSource(roomDao.getAllComVendedor(), vendas -> {
             if (vendas == null) return;
-            List<Venda> lista = new ArrayList<>(vendas.length);
+            List<VendaImpl> lista = new ArrayList<>(vendas.length);
             for (VendaRoom.VendaComVendedorTotal vt : vendas)
                 lista.add(VendaRoom.getModel(vt));
             mediatorLiveData.setValue(lista);
@@ -65,15 +54,15 @@ public final class VendaRepoImpl implements VendaRepository {
     }
 
     @Override
-    public LiveData<Venda> getByCodigo(@NonNull Long codigo) {
-        final MediatorLiveData<Venda> mediatorLiveData = new MediatorLiveData<>();
+    public LiveData<VendaImpl> getByCodigo(@NonNull Long codigo) {
+        final MediatorLiveData<VendaImpl> mediatorLiveData = new MediatorLiveData<>();
         mediatorLiveData.setValue(null);
         return mediatorLiveData;
     }
 
     @Override
-    public LiveData<List<ItemVenda>> getItens(@NonNull Long codigo) {
-        final MediatorLiveData<List<ItemVenda>> mediatorLiveData = new MediatorLiveData<>();
+    public LiveData<List<ItemVendaImpl>> getItens(@NonNull Long codigo) {
+        final MediatorLiveData<List<ItemVendaImpl>> mediatorLiveData = new MediatorLiveData<>();
         mediatorLiveData.setValue(null);
         return mediatorLiveData;
     }

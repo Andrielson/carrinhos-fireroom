@@ -5,10 +5,6 @@ import android.text.Editable;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentItemvendaBinding;
 import tk.andrielson.carrinhos.androidapp.utils.Util;
 
-/**
- * Created by anfesilva on 13/03/2018.
- */
-
 public class ItemVendaHandler {
     private static final String TAG = ItemVendaHandler.class.getSimpleName();
     private final FragmentItemvendaBinding binding;

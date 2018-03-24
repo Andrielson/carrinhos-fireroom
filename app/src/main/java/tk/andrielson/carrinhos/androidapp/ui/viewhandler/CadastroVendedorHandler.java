@@ -11,10 +11,6 @@ import tk.andrielson.carrinhos.androidapp.observable.VendedorObservable;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.CadastroVendedorFragment;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
-/**
- * Created by anfesilva on 09/03/2018.
- */
-
 public class CadastroVendedorHandler {
     private static final String TAG = CadastroVendedorHandler.class.getSimpleName();
     private final CadastroVendedorFragment.OnFragmentInteractionListener listener;

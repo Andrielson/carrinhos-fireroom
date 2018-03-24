@@ -10,9 +10,12 @@ import com.google.firebase.firestore.IgnoreExtraProperties;
 
 import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
 
-@Entity(tableName = "vendedorteste")
+@Entity(tableName = "tb_vendedor")
 @IgnoreExtraProperties
 public final class VendedorImpl extends Vendedor {
+
+    public static final String COLECAO = "vendedores";
+    public static final String EXCLUIDO = "excluido";
 
     @SuppressWarnings("unused")
     public static final Parcelable.Creator<VendedorImpl> CREATOR = new Parcelable.Creator<VendedorImpl>() {
