@@ -10,12 +10,16 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.ArrayMap;
 
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 import com.google.firebase.firestore.PropertyName;
+
+import java.util.Map;
 
 import tk.andrielson.carrinhos.androidapp.data.model.ItemVenda;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
@@ -55,7 +59,8 @@ public final class ItemVendaImpl extends ItemVenda {
     private Long vendaCodigo;
 
     @Ignore
-    private DocumentReference refProduto;
+    @PropertyName("produto")
+    public DocumentReference refProduto;
 
     @ColumnInfo(name = "itv_produto_codigo", index = true)
     private Long produtoCodigo;
@@ -136,7 +141,7 @@ public final class ItemVendaImpl extends ItemVenda {
         return null;
     }
 
-    @SuppressWarnings("unused")
+/*    @SuppressWarnings("unused")
     @PropertyName("produto")
     public void setRefProduto(DocumentReference refProduto) {
         this.refProduto = refProduto;
@@ -148,7 +153,7 @@ public final class ItemVendaImpl extends ItemVenda {
             produto = new ProdutoImpl();
         if (produto.getCodigo() != null)
             produto.setCodigo(Long.valueOf(refProduto.getId()));
-    }
+    }*/
 
     @Nullable
     @Exclude
@@ -301,6 +306,17 @@ public final class ItemVendaImpl extends ItemVenda {
             produtoSigla = produto.getSigla();
             refProduto = FirebaseFirestore.getInstance().collection(COLECAO).document(FirestoreDao.getIdFromCodigo(produto.getCodigo()));
         }
+    }
+
+    //TODO: implementar esse método para deserialização da classe
+    public void fromDocumentSnapshot(DocumentSnapshot doc) {
+
+    }
+
+    //TODO: implementar esse método para serialização da classe
+    public Map<String, Object> toFirestoreMap() {
+        Map<String, Object> map = new ArrayMap<>();
+        return map;
     }
 
     @Override

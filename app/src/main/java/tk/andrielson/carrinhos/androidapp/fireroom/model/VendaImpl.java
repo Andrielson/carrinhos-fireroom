@@ -9,8 +9,10 @@ import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.util.ArrayMap;
 
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.IgnoreExtraProperties;
@@ -18,6 +20,7 @@ import com.google.firebase.firestore.PropertyName;
 import com.google.firebase.firestore.ServerTimestamp;
 
 import java.util.Date;
+import java.util.Map;
 
 import tk.andrielson.carrinhos.androidapp.data.model.ItemVenda;
 import tk.andrielson.carrinhos.androidapp.data.model.Venda;
@@ -46,7 +49,8 @@ public final class VendaImpl extends Venda {
     };
 
     @Ignore
-    private DocumentReference refVendedor;
+    @PropertyName("vendedor")
+    public DocumentReference refVendedor;
 
     @PrimaryKey
     @ColumnInfo(name = "venda_codigo")
@@ -115,7 +119,6 @@ public final class VendaImpl extends Venda {
         return data;
     }
 
-    @ServerTimestamp
     @Override
     public void setData(Date data) {
         this.data = data;
@@ -247,7 +250,7 @@ public final class VendaImpl extends Venda {
             vendedor.setCodigo(vendedorCodigo);
     }
 
-    @Nullable
+    /*@Nullable
     @PropertyName("vendedor")
     public DocumentReference getRefVendedor() {
         if (refVendedor != null)
@@ -257,9 +260,9 @@ public final class VendaImpl extends Venda {
         if (vendedor != null && vendedor.getCodigo() != null)
             return FirebaseFirestore.getInstance().collection(COLECAO).document(FirestoreDao.getIdFromCodigo(vendedor.getCodigo()));
         return null;
-    }
+    }*/
 
-    @PropertyName("vendedor")
+    /*@PropertyName("vendedor")
     public void setRefVendedor(DocumentReference refVendedor) {
         this.refVendedor = refVendedor;
         if (refVendedor == null) return;
@@ -269,6 +272,17 @@ public final class VendaImpl extends Venda {
             vendedor = new VendedorImpl();
         if (vendedor.getCodigo() == null)
             vendedor.setCodigo(Long.valueOf(refVendedor.getId()));
+    }*/
+
+    //TODO: implementar esse método para deserialização da classe
+    public void fromDocumentSnapshot(DocumentSnapshot doc) {
+
+    }
+
+    //TODO: implementar esse método para serialização da classe
+    public Map<String, Object> toFirestoreMap() {
+        Map<String, Object> map = new ArrayMap<>();
+        return map;
     }
 
     @Exclude
