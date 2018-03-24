@@ -8,7 +8,8 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.Exclude;
@@ -19,7 +20,6 @@ import com.google.firebase.firestore.PropertyName;
 import tk.andrielson.carrinhos.androidapp.data.model.ItemVenda;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
 import tk.andrielson.carrinhos.androidapp.fireroom.firestore.dao.FirestoreDao;
-import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
@@ -87,7 +87,7 @@ public final class ItemVendaImpl extends ItemVenda {
     public ItemVendaImpl() {
     }
 
-    public ItemVendaImpl(ProdutoImpl produto) {
+    public ItemVendaImpl(@NonNull ProdutoImpl produto) {
         setProduto(produto);
     }
 
@@ -104,16 +104,16 @@ public final class ItemVendaImpl extends ItemVenda {
         produto = (ProdutoImpl) in.readValue(ProdutoImpl.class.getClassLoader());
     }
 
-    public ItemVendaImpl preparaFire() {
+/*    public ItemVendaImpl preparaFire() {
         if (this.produto != null) {
             this.produtoNome = this.produto.getNome();
             this.produtoSigla = this.produto.getSigla();
             this.refProduto = FirebaseFirestore.getInstance().collection(COLECAO).document(FirestoreDao.getIdFromCodigo(this.produto.getCodigo()));
         }
         return this;
-    }
+    }*/
 
-    public ItemVendaImpl preparaRoom() {
+    /*public ItemVendaImpl preparaRoom() {
         if (this.produto != null) {
             this.produtoCodigo = this.produto.getCodigo();
         } else if (this.refProduto != null) {
@@ -123,7 +123,7 @@ public final class ItemVendaImpl extends ItemVenda {
             LogUtil.Log(COLECAO, "Item venda sem o código do produto!", Log.ERROR);
         }
         return this;
-    }
+    }*/
 
     @Exclude
     public Long getId() {
@@ -145,27 +145,55 @@ public final class ItemVendaImpl extends ItemVenda {
         this.vendaCodigo = vendaCodigo;
     }
 
+    @Nullable
     @PropertyName("produto")
     public DocumentReference getRefProduto() {
-        return refProduto;
+        if (refProduto != null)
+            return refProduto;
+        if (produtoCodigo != null)
+            return FirebaseFirestore.getInstance().collection(COLECAO).document(FirestoreDao.getIdFromCodigo(produtoCodigo));
+        if (produto != null && produto.getCodigo() != null)
+            return FirebaseFirestore.getInstance().collection(COLECAO).document(FirestoreDao.getIdFromCodigo(produto.getCodigo()));
+        return null;
     }
 
     @SuppressWarnings("unused")
     @PropertyName("produto")
     public void setRefProduto(DocumentReference refProduto) {
         this.refProduto = refProduto;
-        if (this.produtoCodigo == null)
-            this.produtoCodigo = Long.valueOf(refProduto.getId());
+        if (refProduto == null)
+            return;
+        if (produtoCodigo == null)
+            produtoCodigo = Long.valueOf(refProduto.getId());
+        if (produto == null)
+            produto = new ProdutoImpl();
+        if (produto.getCodigo() != null)
+            produto.setCodigo(Long.valueOf(refProduto.getId()));
     }
 
+    @Nullable
     @Exclude
     public Long getProdutoCodigo() {
-        return produtoCodigo;
+        if (produtoCodigo != null)
+            return produtoCodigo;
+        if (refProduto != null)
+            return Long.valueOf(refProduto.getId());
+        if (produto != null && produto.getCodigo() != null)
+            return produto.getCodigo();
+        return null;
     }
 
     @Exclude
     public void setProdutoCodigo(Long produtoCodigo) {
         this.produtoCodigo = produtoCodigo;
+        if (produtoCodigo == null)
+            return;
+        if (refProduto == null)
+            refProduto = FirebaseFirestore.getInstance().collection(COLECAO).document(FirestoreDao.getIdFromCodigo(produtoCodigo));
+        if (produto == null)
+            produto = new ProdutoImpl();
+        if (produto.getCodigo() == null)
+            produto.setCodigo(produtoCodigo);
     }
 
     @PropertyName("qt_saiu")
@@ -222,43 +250,78 @@ public final class ItemVendaImpl extends ItemVenda {
         this.total = total;
     }
 
+    @Nullable
     @SuppressWarnings("unused")
     @PropertyName("produto_nome")
     public String getProdutoNome() {
-        return produtoNome;
+        if (produtoNome != null)
+            return produtoNome;
+        if (produto != null && produto.getNome() != null)
+            return produto.getNome();
+        return null;
     }
 
     @SuppressWarnings("unused")
     @PropertyName("produto_nome")
     public void setProdutoNome(String produtoNome) {
         this.produtoNome = produtoNome;
+        if (produtoNome == null)
+            return;
+        if (produto == null)
+            produto = new ProdutoImpl();
+        if (produto.getNome() == null)
+            produto.setNome(produtoNome);
     }
 
+    @Nullable
     @SuppressWarnings("unused")
     @PropertyName("produgo_sigla")
     public String getProdutoSigla() {
-        return produtoSigla;
+        if (produtoSigla != null)
+            return produtoSigla;
+        if (produto != null && produto.getSigla() != null)
+            return produto.getSigla();
+        return null;
     }
 
     @SuppressWarnings("unused")
     @PropertyName("produgo_sigla")
     public void setProdutoSigla(String produtoSigla) {
         this.produtoSigla = produtoSigla;
+        if (produtoSigla == null)
+            return;
+        if (produto == null)
+            produto = new ProdutoImpl();
+        if (produto.getSigla() == null)
+            produto.setSigla(produtoSigla);
     }
 
+    @Nullable
     @Exclude
     @Override
     public Produto getProduto() {
-        return produto;
+        if (produto != null)
+            return produto;
+        if (refProduto != null || produtoNome != null || produtoCodigo != null || produtoSigla != null) {
+            ProdutoImpl produto = new ProdutoImpl();
+            produto.setCodigo(refProduto != null ? Long.valueOf(refProduto.getId()) : produtoCodigo);
+            produto.setNome(produtoNome);
+            produto.setSigla(produtoSigla);
+            return produto;
+        }
+        return null;
     }
 
     @Exclude
     @Override
     public void setProduto(Produto produto) {
         this.produto = (ProdutoImpl) produto;
-        this.produtoCodigo = produto.getCodigo();
-        this.produtoNome = produto.getNome();
-        this.produtoSigla = produto.getSigla();
+        if (produto != null) {
+            produtoCodigo = produto.getCodigo();
+            produtoNome = produto.getNome();
+            produtoSigla = produto.getSigla();
+            refProduto = FirebaseFirestore.getInstance().collection(COLECAO).document(FirestoreDao.getIdFromCodigo(produto.getCodigo()));
+        }
     }
 
     @Override
