@@ -10,16 +10,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.ArrayMap;
 
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 import com.google.firebase.firestore.PropertyName;
-
-import java.util.Map;
 
 import tk.andrielson.carrinhos.androidapp.data.model.ItemVenda;
 import tk.andrielson.carrinhos.androidapp.data.model.Produto;
@@ -60,7 +56,7 @@ public final class ItemVendaImpl extends ItemVenda {
 
     @Ignore
     @PropertyName("produto")
-    public DocumentReference refProduto;
+    private DocumentReference refProduto;
 
     @ColumnInfo(name = "itv_produto_codigo", index = true)
     private Long produtoCodigo;
@@ -130,19 +126,19 @@ public final class ItemVendaImpl extends ItemVenda {
     }
 
     @Nullable
-    @PropertyName("produto")
+    @PropertyName("produto_ref")
     public DocumentReference getRefProduto() {
         if (refProduto != null)
             return refProduto;
         if (produtoCodigo != null)
-            return FirebaseFirestore.getInstance().collection(COLECAO).document(FirestoreDao.getIdFromCodigo(produtoCodigo));
+            return FirebaseFirestore.getInstance().collection(ProdutoImpl.COLECAO).document(FirestoreDao.getIdFromCodigo(produtoCodigo));
         if (produto != null && produto.getCodigo() != null)
-            return FirebaseFirestore.getInstance().collection(COLECAO).document(FirestoreDao.getIdFromCodigo(produto.getCodigo()));
+            return FirebaseFirestore.getInstance().collection(ProdutoImpl.COLECAO).document(FirestoreDao.getIdFromCodigo(produto.getCodigo()));
         return null;
     }
 
-/*    @SuppressWarnings("unused")
-    @PropertyName("produto")
+    @SuppressWarnings("unused")
+    @PropertyName("produto_ref")
     public void setRefProduto(DocumentReference refProduto) {
         this.refProduto = refProduto;
         if (refProduto == null)
@@ -153,7 +149,7 @@ public final class ItemVendaImpl extends ItemVenda {
             produto = new ProdutoImpl();
         if (produto.getCodigo() != null)
             produto.setCodigo(Long.valueOf(refProduto.getId()));
-    }*/
+    }
 
     @Nullable
     @Exclude
@@ -173,7 +169,7 @@ public final class ItemVendaImpl extends ItemVenda {
         if (produtoCodigo == null)
             return;
         if (refProduto == null)
-            refProduto = FirebaseFirestore.getInstance().collection(COLECAO).document(FirestoreDao.getIdFromCodigo(produtoCodigo));
+            refProduto = FirebaseFirestore.getInstance().collection(ProdutoImpl.COLECAO).document(FirestoreDao.getIdFromCodigo(produtoCodigo));
         if (produto == null)
             produto = new ProdutoImpl();
         if (produto.getCodigo() == null)
@@ -234,8 +230,8 @@ public final class ItemVendaImpl extends ItemVenda {
         this.total = total;
     }
 
-    @Nullable
     @SuppressWarnings("unused")
+    @Nullable
     @PropertyName("produto_nome")
     public String getProdutoNome() {
         if (produtoNome != null)
@@ -257,8 +253,8 @@ public final class ItemVendaImpl extends ItemVenda {
             produto.setNome(produtoNome);
     }
 
-    @Nullable
     @SuppressWarnings("unused")
+    @Nullable
     @PropertyName("produgo_sigla")
     public String getProdutoSigla() {
         if (produtoSigla != null)
@@ -304,19 +300,8 @@ public final class ItemVendaImpl extends ItemVenda {
             produtoCodigo = produto.getCodigo();
             produtoNome = produto.getNome();
             produtoSigla = produto.getSigla();
-            refProduto = FirebaseFirestore.getInstance().collection(COLECAO).document(FirestoreDao.getIdFromCodigo(produto.getCodigo()));
+            refProduto = FirebaseFirestore.getInstance().collection(ProdutoImpl.COLECAO).document(FirestoreDao.getIdFromCodigo(produto.getCodigo()));
         }
-    }
-
-    //TODO: implementar esse método para deserialização da classe
-    public void fromDocumentSnapshot(DocumentSnapshot doc) {
-
-    }
-
-    //TODO: implementar esse método para serialização da classe
-    public Map<String, Object> toFirestoreMap() {
-        Map<String, Object> map = new ArrayMap<>();
-        return map;
     }
 
     @Override

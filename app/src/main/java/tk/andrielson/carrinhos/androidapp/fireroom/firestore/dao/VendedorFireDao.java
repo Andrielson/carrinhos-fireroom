@@ -1,13 +1,11 @@
 package tk.andrielson.carrinhos.androidapp.fireroom.firestore.dao;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.WriteBatch;
 
 import tk.andrielson.carrinhos.androidapp.fireroom.model.VendedorImpl;
-import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
 /**
  * Implementação de VendedorDao para o banco Firestore.
@@ -35,11 +33,7 @@ public final class VendedorFireDao extends FirestoreDao {
         DocumentReference novoDocumento = collection.document(id);
         WriteBatch batch = setColecaoID(COLECAO, id);
         batch.set(novoDocumento, vendedor);
-        //TODO: trocar os dois listener por um só OnCompleteListener
-        batch.commit().addOnSuccessListener(aVoid -> LogUtil.Log(TAG, "Novo vendedor " + id + " adicionado com sucesso!", Log.INFO)).addOnFailureListener(e -> {
-            LogUtil.Log(TAG, "Falha ao adicionar o vendedor " + id, Log.ERROR);
-            LogUtil.Log(TAG, e.getMessage(), Log.ERROR);
-        });
+        batch.commit().addOnCompleteListener(new OnTaskCompleteListenerPadrao("Novo vendedor " + id + " adicionado com sucesso!", "Falha ao adicionar o vendedor " + id, TAG));
     }
 
     /**
@@ -52,11 +46,7 @@ public final class VendedorFireDao extends FirestoreDao {
         DocumentReference documento = collection.document(id);
         WriteBatch batch = db.batch();
         batch.set(documento, vendedor);
-        //TODO: trocar os dois listener por um só OnCompleteListener
-        batch.commit().addOnSuccessListener(aVoid -> LogUtil.Log(TAG, "Vendedor " + id + " atualizado com sucesso!", Log.INFO)).addOnFailureListener(e -> {
-            LogUtil.Log(TAG, "Falha ao atualizar o vendedor " + id, Log.ERROR);
-            LogUtil.Log(TAG, e.getMessage(), Log.ERROR);
-        });
+        batch.commit().addOnCompleteListener(new OnTaskCompleteListenerPadrao("Vendedor " + id + " atualizado com sucesso!", "Falha ao atualizar o vendedor " + id, TAG));
     }
 
     /**
@@ -74,12 +64,6 @@ public final class VendedorFireDao extends FirestoreDao {
         else
             // Exclusão física
             batch.delete(documento);
-        //TODO: trocar os dois listener por um só OnCompleteListener
-        batch.commit()
-                .addOnSuccessListener(aVoid -> LogUtil.Log(TAG, "Vendedor " + id + " removido com sucesso!", Log.INFO))
-                .addOnFailureListener(e -> {
-                    LogUtil.Log(TAG, "Falha ao remover o vendedor " + id, Log.ERROR);
-                    LogUtil.Log(TAG, e.getMessage(), Log.ERROR);
-                });
+        batch.commit().addOnCompleteListener(new OnTaskCompleteListenerPadrao("Vendedor " + id + " removido com sucesso!", "Falha ao remover o vendedor " + id, TAG));
     }
 }

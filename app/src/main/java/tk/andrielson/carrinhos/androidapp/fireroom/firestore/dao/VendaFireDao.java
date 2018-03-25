@@ -30,7 +30,8 @@ public final class VendaFireDao extends FirestoreDao {
         //TODO: o batch possui um limite máximo de 500 operações. Se a venda tiver mais de 495 itens, pode dar ruim.
         CollectionReference itensRef = db.collection(String.format("/%s/%s/%s", COLECAO, idVenda, ItemVendaImpl.COLECAO));
         for (ItemVendaImpl itv : itens)
-            batch.set(itensRef.document(itv.getRefProduto().getId()), itv);
+            if (itv.getRefProduto() != null)
+                batch.set(itensRef.document(itv.getRefProduto().getId()), itv);
         batch.commit().addOnCompleteListener(new OnTaskCompleteListenerPadrao("Nova venda " + venda.getCodigo() + " adicionada com sucesso!", "Falha ao adicionar a venda " + venda.getCodigo(), TAG));
     }
 
@@ -46,7 +47,8 @@ public final class VendaFireDao extends FirestoreDao {
                 batch.set(collection.document(getIdFromCodigo(venda.getCodigo())), venda);
                 // Insere os novos itens
                 for (ItemVendaImpl itv : itens)
-                    batch.set(itensRef.document(itv.getRefProduto().getId()), itv);
+                    if (itv.getRefProduto() != null)
+                        batch.set(itensRef.document(itv.getRefProduto().getId()), itv);
                 // Commita o batch
                 batch.commit().addOnCompleteListener(new OnTaskCompleteListenerPadrao("Venda " + venda.getCodigo() + " atualizada com sucesso!", "Falha ao atualizar a venda " + venda.getCodigo(), TAG));
             }

@@ -1,13 +1,11 @@
 package tk.andrielson.carrinhos.androidapp.fireroom.firestore.dao;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.WriteBatch;
 
 import tk.andrielson.carrinhos.androidapp.fireroom.model.ProdutoImpl;
-import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
 /**
  * Implementação de ProdutoDao para o banco Firestore.
@@ -36,11 +34,7 @@ public final class ProdutoFireDao extends FirestoreDao {
         DocumentReference novoDocumento = collection.document(id);
         WriteBatch batch = setColecaoID(COLECAO, id);
         batch.set(novoDocumento, produto);
-        //TODO: trocar os dois listener por um só OnCompleteListener
-        batch.commit().addOnSuccessListener(aVoid -> LogUtil.Log(TAG, "Novo produto " + id + " adicionado com sucesso!", Log.INFO)).addOnFailureListener(e -> {
-            LogUtil.Log(TAG, "Falha ao adicionar o produto " + id, Log.ERROR);
-            LogUtil.Log(TAG, e.getMessage(), Log.ERROR);
-        });
+        batch.commit().addOnCompleteListener(new OnTaskCompleteListenerPadrao("Novo produto " + id + " adicionado com sucesso!", "Falha ao adicionar o produto " + id, TAG));
     }
 
     /**
@@ -53,11 +47,7 @@ public final class ProdutoFireDao extends FirestoreDao {
         DocumentReference documento = collection.document(id);
         WriteBatch batch = db.batch();
         batch.set(documento, produto);
-        //TODO: trocar os dois listener por um só OnCompleteListener
-        batch.commit().addOnSuccessListener(aVoid -> LogUtil.Log(TAG, "Produto " + id + " atualizado com sucesso!", Log.INFO)).addOnFailureListener(e -> {
-            LogUtil.Log(TAG, "Falha ao atualizar o produto " + id, Log.ERROR);
-            LogUtil.Log(TAG, e.getMessage(), Log.ERROR);
-        });
+        batch.commit().addOnCompleteListener(new OnTaskCompleteListenerPadrao("Produto " + id + " atualizado com sucesso!", "Falha ao atualizar o produto " + id, TAG));
     }
 
     /**
@@ -75,13 +65,7 @@ public final class ProdutoFireDao extends FirestoreDao {
         else
             // Exclusão física
             batch.delete(documento);
-        //TODO: trocar os dois listener por um só OnCompleteListener
-        batch.commit()
-                .addOnSuccessListener(aVoid -> LogUtil.Log(TAG, "Produto " + id + " removido com sucesso!", Log.INFO))
-                .addOnFailureListener(e -> {
-                    LogUtil.Log(TAG, "Falha ao remover o produto " + id, Log.ERROR);
-                    LogUtil.Log(TAG, e.getMessage(), Log.ERROR);
-                });
+        batch.commit().addOnCompleteListener(new OnTaskCompleteListenerPadrao("Produto " + id + " removido com sucesso!", "Falha ao remover o produto " + id, TAG));
     }
 
 }

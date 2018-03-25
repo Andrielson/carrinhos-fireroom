@@ -9,10 +9,8 @@ import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.util.ArrayMap;
 
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.IgnoreExtraProperties;
@@ -20,7 +18,6 @@ import com.google.firebase.firestore.PropertyName;
 import com.google.firebase.firestore.ServerTimestamp;
 
 import java.util.Date;
-import java.util.Map;
 
 import tk.andrielson.carrinhos.androidapp.data.model.ItemVenda;
 import tk.andrielson.carrinhos.androidapp.data.model.Venda;
@@ -50,7 +47,7 @@ public final class VendaImpl extends Venda {
 
     @Ignore
     @PropertyName("vendedor")
-    public DocumentReference refVendedor;
+    private DocumentReference refVendedor;
 
     @PrimaryKey
     @ColumnInfo(name = "venda_codigo")
@@ -170,6 +167,7 @@ public final class VendaImpl extends Venda {
         this.valorComissao = valor_comissao;
     }
 
+    @SuppressWarnings("unused")
     @Nullable
     @PropertyName("vendedor_nome")
     public String getVendedorNome() {
@@ -180,6 +178,7 @@ public final class VendaImpl extends Venda {
         return null;
     }
 
+    @SuppressWarnings("unused")
     @PropertyName("vendedor_nome")
     public void setVendedorNome(String vendedorNome) {
         this.vendedorNome = vendedorNome;
@@ -222,7 +221,7 @@ public final class VendaImpl extends Venda {
         if (vendedor != null) {
             this.vendedorNome = vendedor.getNome();
             this.vendedorCodigo = vendedor.getCodigo();
-            this.refVendedor = FirebaseFirestore.getInstance().collection(COLECAO).document(FirestoreDao.getIdFromCodigo(vendedor.getCodigo()));
+            this.refVendedor = FirebaseFirestore.getInstance().collection(VendedorImpl.COLECAO).document(FirestoreDao.getIdFromCodigo(vendedor.getCodigo()));
         }
     }
 
@@ -243,26 +242,28 @@ public final class VendaImpl extends Venda {
         this.vendedorCodigo = vendedorCodigo;
         if (vendedorCodigo == null) return;
         if (refVendedor == null)
-            refVendedor = FirebaseFirestore.getInstance().collection(COLECAO).document(FirestoreDao.getIdFromCodigo(vendedorCodigo));
+            refVendedor = FirebaseFirestore.getInstance().collection(VendedorImpl.COLECAO).document(FirestoreDao.getIdFromCodigo(vendedorCodigo));
         if (vendedor == null)
             vendedor = new VendedorImpl();
         if (vendedor.getCodigo() == null)
             vendedor.setCodigo(vendedorCodigo);
     }
 
-    /*@Nullable
-    @PropertyName("vendedor")
+    @Nullable
+    @SuppressWarnings("unused")
+    @PropertyName("vendedor_ref")
     public DocumentReference getRefVendedor() {
         if (refVendedor != null)
             return refVendedor;
         if (vendedorCodigo != null)
-            return FirebaseFirestore.getInstance().collection(COLECAO).document(FirestoreDao.getIdFromCodigo(vendedorCodigo));
+            return FirebaseFirestore.getInstance().collection(VendedorImpl.COLECAO).document(FirestoreDao.getIdFromCodigo(vendedorCodigo));
         if (vendedor != null && vendedor.getCodigo() != null)
-            return FirebaseFirestore.getInstance().collection(COLECAO).document(FirestoreDao.getIdFromCodigo(vendedor.getCodigo()));
+            return FirebaseFirestore.getInstance().collection(VendedorImpl.COLECAO).document(FirestoreDao.getIdFromCodigo(vendedor.getCodigo()));
         return null;
-    }*/
+    }
 
-    /*@PropertyName("vendedor")
+    @SuppressWarnings("unused")
+    @PropertyName("vendedor_ref")
     public void setRefVendedor(DocumentReference refVendedor) {
         this.refVendedor = refVendedor;
         if (refVendedor == null) return;
@@ -272,17 +273,6 @@ public final class VendaImpl extends Venda {
             vendedor = new VendedorImpl();
         if (vendedor.getCodigo() == null)
             vendedor.setCodigo(Long.valueOf(refVendedor.getId()));
-    }*/
-
-    //TODO: implementar esse método para deserialização da classe
-    public void fromDocumentSnapshot(DocumentSnapshot doc) {
-
-    }
-
-    //TODO: implementar esse método para serialização da classe
-    public Map<String, Object> toFirestoreMap() {
-        Map<String, Object> map = new ArrayMap<>();
-        return map;
     }
 
     @Exclude
@@ -349,6 +339,7 @@ public final class VendaImpl extends Venda {
         dest.writeTypedArray(itens, 0);
     }
 
+    @SuppressWarnings("unused")
     public static class VendaComVendedorTotal {
         @Embedded
         public VendaImpl venda;
