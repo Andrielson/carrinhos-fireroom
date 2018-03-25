@@ -338,12 +338,4 @@ public final class VendaImpl extends Venda {
         dest.writeValue(vendedor);
         dest.writeTypedArray(itens, 0);
     }
-
-    @SuppressWarnings("unused")
-    public static class VendaComVendedorTotal {
-        @Embedded
-        public VendaImpl venda;
-        @Embedded
-        public VendedorImpl vendedor;
-    }
 }

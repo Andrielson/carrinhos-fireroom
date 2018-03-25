@@ -1,9 +1,23 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
 apply plugin: 'com.android.application'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
 apply plugin: 'io.fabric'
 
 ext {
     archRoomVersion = '1.0.0'
-    archLifecycleVersion = '1.1.0'
+    archLifecycleVersion = '1.1.1'
     firebaseVersion = '11.8.0'
     supportLibraryVersion = '27.1.0'
     stethoVersion = '1.5.0'
@@ -86,8 +100,7 @@ dependencies {
     implementation "android.arch.persistence.room:runtime:$archRoomVersion"
     annotationProcessor "android.arch.persistence.room:compiler:$archRoomVersion"
 
-    //Firebase
-    implementation 'com.android.support:support-v4:27.1.0'
+    //Firebase (versão 12.0.0 está com bug na @PropertyName)
     implementation "com.google.firebase:firebase-core:$firebaseVersion"
     implementation "com.google.firebase:firebase-firestore:$firebaseVersion"
     implementation 'com.firebaseui:firebase-ui-firestore:3.2.2'
@@ -97,6 +110,11 @@ dependencies {
 
     // Facebook Stetho
     implementation "com.facebook.stetho:stetho:$stethoVersion"
+
+    // Fabric Answers
+    implementation('com.crashlytics.sdk.android:answers:1.4.1@aar') {
+        transitive = true
+    }
 
     // Ferramentas de teste
     testImplementation 'junit:junit:4.12'

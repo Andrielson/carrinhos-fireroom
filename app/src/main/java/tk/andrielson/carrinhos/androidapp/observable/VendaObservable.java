@@ -71,6 +71,8 @@ public final class VendaObservable extends AbsCodigoObservable {
             e.printStackTrace();
         }
         vendaModel.setValorTotal(Util.RStoLong(total.get()));
+        vendaModel.setValorPago(Util.RStoLong(valorPago.get()));
+        vendaModel.setValorComissao(Util.RStoLong(valorComissao.get()));
         vendaModel.setStatus(status.get());
         vendaModel.setVendedor(vendedor.get().getVendedorModel());
         List<ItemVenda> lista = new ArrayList<>();

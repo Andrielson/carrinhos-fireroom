@@ -38,7 +38,7 @@ public final class RelatorioRepoImpl implements RelatorioRepository {
             if (vendasPorDias == null) return;
             DateFormat formato = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             List<RelatorioVendaPorDia> lista = new ArrayList<>(vendasPorDias.length);
-            for (VendaRoom.VendasPorDia vpd : vendasPorDias) {
+            for (VendaRoomDao.VendasPorDia vpd : vendasPorDias) {
                 Date data;
                 try {
                     data = formato.parse(vpd.data);

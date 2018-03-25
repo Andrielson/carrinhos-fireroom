@@ -2,7 +2,9 @@ package tk.andrielson.carrinhos.androidapp.fireroom.repository;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
+import android.arch.lifecycle.Observer;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,11 +45,12 @@ public final class VendaRepoImpl implements VendaRepository<VendaImpl, ItemVenda
     public LiveData<List<VendaImpl>> getAll() {
         final MediatorLiveData<List<VendaImpl>> mediatorLiveData = new MediatorLiveData<>();
         mediatorLiveData.setValue(null);
+        //TODO: mover essa lógica de conversão pra classe VendaComVendedorTotal
         mediatorLiveData.addSource(roomDao.getAllComVendedor(), vendas -> {
             if (vendas == null) return;
             List<VendaImpl> lista = new ArrayList<>(vendas.length);
-            for (VendaRoom.VendaComVendedorTotal vt : vendas)
-                lista.add(VendaRoom.getModel(vt));
+            for (VendaRoomDao.VendaComVendedorTotal vt : vendas)
+                lista.add(vt.getModel());
             mediatorLiveData.setValue(lista);
         });
         return mediatorLiveData;
@@ -64,6 +67,14 @@ public final class VendaRepoImpl implements VendaRepository<VendaImpl, ItemVenda
     public LiveData<List<ItemVendaImpl>> getItens(@NonNull Long codigo) {
         final MediatorLiveData<List<ItemVendaImpl>> mediatorLiveData = new MediatorLiveData<>();
         mediatorLiveData.setValue(null);
+        //TODO: mover essa lógica de conversão pra classe ItemComProduto
+        mediatorLiveData.addSource(roomDao.getItensComProduto(codigo), itens -> {
+            if (itens == null) return;
+            List<ItemVendaImpl> lista = new ArrayList<>(itens.length);
+            for (VendaRoomDao.ItemComProduto itcp : itens)
+                lista.add(itcp.getModel());
+            mediatorLiveData.setValue(lista);
+        });
         return mediatorLiveData;
     }
 }

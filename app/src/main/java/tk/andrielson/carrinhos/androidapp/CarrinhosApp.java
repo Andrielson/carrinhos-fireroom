@@ -4,9 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 
+import com.crashlytics.android.answers.Answers;
 import com.facebook.stetho.Stetho;
 
 import org.jetbrains.annotations.Contract;
+
+import io.fabric.sdk.android.Fabric;
 
 public final class CarrinhosApp extends Application {
 
@@ -29,15 +32,15 @@ public final class CarrinhosApp extends Application {
         super.onCreate();
         context = getApplicationContext();
         initStetho();
+        initFabric();
         DI.inicializaCoisas();
     }
 
     private void initStetho() {
         if (ehTeste()) Stetho.initializeWithDefaults(this);
     }
-}
-/*FIXME
-https://firebaseopensource.com/projects/firebase/firebaseui-android/firestore/README.md
-https://github.com/firebase/FirebaseUI-Android/tree/master/app/src/main/java/com/firebase/uidemo/database/firestore
 
- */
+    private void initFabric() {
+        if (!ehTeste()) Fabric.with(this, new Answers());
+    }
+}

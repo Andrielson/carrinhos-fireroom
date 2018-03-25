@@ -46,6 +46,7 @@ public final class ItemVendaObservable {
         itemVendaModel.setQtVoltou(Integer.valueOf(qtVoltou.get().isEmpty() ? "0" : qtVoltou.get()));
         itemVendaModel.setQtVendeu(Integer.valueOf(qtVendeu.get()));
         itemVendaModel.setValor(Util.RStoLong(valor.get()));
+        itemVendaModel.setTotal(Util.RStoLong(total.get()));
         return itemVendaModel;
     }
 
