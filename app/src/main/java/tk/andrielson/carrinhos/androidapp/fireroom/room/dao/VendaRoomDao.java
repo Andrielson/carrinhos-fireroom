@@ -34,7 +34,7 @@ public abstract class VendaRoomDao {
 
     @Query("SELECT * " +
             "FROM tb_venda " +
-            "INNER JOIN tb_vendedor ON (venda_vendedor_codigo = vendedor_codigo) " +
+            "JOIN tb_vendedor ON (venda_vendedor_codigo = vendedor_codigo) " +
             "GROUP BY venda_codigo " +
             "ORDER BY venda_status ASC, venda_data DESC, vendedor_nome ASC")
     public abstract LiveData<VendaComVendedorTotal[]> getAllComVendedor();
@@ -46,7 +46,7 @@ public abstract class VendaRoomDao {
     public abstract LiveData<VendasPorDia[]> getVendasDiarias(Date inicio, Date fim);
 
     @Query("SELECT * FROM tb_item_venda " +
-            "JOIN tb_produto ON (itv_produto_codigo=produto_codigo) " +
+            "JOIN tb_produto ON (itv_produto_codigo = produto_codigo) " +
             "WHERE itv_venda_codigo = :codigo " +
             "ORDER BY produto_codigo ASC")
     public abstract LiveData<ItemComProduto[]> getItensComProduto(Long codigo);

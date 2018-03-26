@@ -91,11 +91,6 @@ public final class SincronizadorFirestoreRoom {
                 return;
             Executors.newSingleThreadExecutor().execute(() -> {
                 VendedorRoomDao dao = database.vendedorDao();
-                //TODO: analisar casos em que o objeto foi removido do Firebase e a lista está vazia.
-                /*if (snapshots.isEmpty() && snapshots.getDocumentChanges().isEmpty()) {
-                    dao.deleteAll();
-                    return;
-                }*/
                 List<VendedorImpl> adicionados = null;
                 List<VendedorImpl> modificados = null;
                 List<VendedorImpl> excluidos = null;
