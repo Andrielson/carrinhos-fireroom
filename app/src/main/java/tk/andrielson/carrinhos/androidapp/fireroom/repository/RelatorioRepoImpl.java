@@ -24,7 +24,7 @@ import tk.andrielson.carrinhos.androidapp.observable.RelatorioVendaPorDia;
 
 public final class RelatorioRepoImpl implements RelatorioRepository {
 
-    private static final String TAG = ProdutoRepoImpl.class.getSimpleName();
+    private static final String TAG = RelatorioRepoImpl.class.getSimpleName();
     private final AppDatabase database = AppDatabase.getInstancia();
     private final ProdutoRoomDao produtoDao = database.produtoDao();
     private final VendedorRoomDao vendedorDao = database.vendedorDao();

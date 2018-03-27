@@ -87,4 +87,10 @@
 
     <string name="fragment_relatorios_carregando">Carregando relatório…</string>
     <string name="fragment_relatorios_venda_vazio">Nenhum venda encontrada</string>
+
+    <!--<editor-fold desc="Activity de Backup dos dados">-->
+    <string name="activity_backup_label">Backup</string>
+    <string name="activity_backup_exportar">Exportar backup</string>
+    <string name="activity_backup_importar">Importar backup</string>
+    <!--</editor-fold>-->
 </resources>

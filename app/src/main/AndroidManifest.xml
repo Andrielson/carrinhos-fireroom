@@ -4,6 +4,9 @@
     package="tk.andrielson.carrinhos.androidapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".CarrinhosApp"
@@ -50,6 +53,13 @@
             android:parentActivityName=".ui.activity.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+
+        <activity
+            android:name=".ui.activity.BackupActivity"
+            android:label="@string/activity_backup_label"
+            android:parentActivityName=".ui.activity.MainActivity"
+            android:screenOrientation="portrait"/>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="70b0228170e0d05be167c3eec1b198599863d6b0" />

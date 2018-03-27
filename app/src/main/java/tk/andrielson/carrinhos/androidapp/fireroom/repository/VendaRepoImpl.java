@@ -21,7 +21,7 @@ import tk.andrielson.carrinhos.androidapp.fireroom.room.entities.VendaRoom;
 @SuppressWarnings("unchecked")
 public final class VendaRepoImpl implements VendaRepository<VendaImpl, ItemVendaImpl> {
 
-    private static final String TAG = ProdutoRepoImpl.class.getSimpleName();
+    private static final String TAG = VendaRepoImpl.class.getSimpleName();
     private final AppDatabase database = AppDatabase.getInstancia();
     private final VendaRoomDao roomDao = database.vendaDao();
     private final VendaFireDao fireDao = new VendaFireDao();

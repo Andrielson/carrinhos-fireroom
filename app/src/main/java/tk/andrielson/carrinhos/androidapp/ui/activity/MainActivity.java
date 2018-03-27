@@ -19,7 +19,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import tk.andrielson.carrinhos.androidapp.R;
-import tk.andrielson.carrinhos.androidapp.fireroom.SincronizadorFirestoreRoom;
 import tk.andrielson.carrinhos.androidapp.observable.ProdutoObservable;
 import tk.andrielson.carrinhos.androidapp.observable.VendaObservable;
 import tk.andrielson.carrinhos.androidapp.observable.VendedorObservable;
@@ -188,6 +187,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_atualizar:
                 break;
             case R.id.nav_backup:
+                startActivity(new Intent(this, BackupActivity.class));
                 break;
             case R.id.nav_sobre:
                 break;
