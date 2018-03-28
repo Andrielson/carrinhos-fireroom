@@ -1,6 +1,7 @@
 package tk.andrielson.carrinhos.androidapp.ui.activity;
 
 import android.Manifest;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,6 +18,7 @@ import java.io.File;
 
 import tk.andrielson.carrinhos.androidapp.R;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
+import tk.andrielson.carrinhos.androidapp.viewmodel.BackupViewModel;
 
 public class BackupActivity extends AppCompatActivity {
 
@@ -53,6 +55,31 @@ public class BackupActivity extends AppCompatActivity {
     }
 
     public void onClickExportar(View view) {
+        BackupViewModel viewModel = ViewModelProviders.of(this).get(BackupViewModel.class);
+        viewModel.exportar().observe(this, arrayMap -> {
+            if (arrayMap == null) {
+                LogUtil.Log(TAG, "ArrayMap é nulo!", Log.DEBUG);
+                return;
+            }
+            if (arrayMap.isEmpty()) {
+                LogUtil.Log(TAG, "ArrayMap está vazio!", Log.DEBUG);
+                return;
+            }
+            if (arrayMap.containsKey("PRODUTOS") && arrayMap.get("PRODUTOS") == null) {
+                LogUtil.Log(TAG, "Backup de PRODUTOS iniciado!", Log.DEBUG);
+            }
+            if (arrayMap.containsKey("PRODUTOS") && arrayMap.get("PRODUTOS") != null) {
+                LogUtil.Log(TAG, "ArrayMap contém PRODUTOS!", Log.DEBUG);
+                LogUtil.Log(TAG, arrayMap.get("PRODUTOS").toString(), Log.DEBUG);
+            }
+            if (arrayMap.containsKey("VENDEDORES") && arrayMap.get("VENDEDORES") == null) {
+                LogUtil.Log(TAG, "Backup de VENDEDORES iniciado!", Log.DEBUG);
+            }
+            if (arrayMap.containsKey("VENDEDORES") && arrayMap.get("VENDEDORES") != null) {
+                LogUtil.Log(TAG, "ArrayMap contém VENDEDORES!", Log.DEBUG);
+                LogUtil.Log(TAG, arrayMap.get("VENDEDORES").toString(), Log.DEBUG);
+            }
+        });
         File diretorio;
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
             diretorio = new File(Environment.getExternalStorageDirectory(), "/APP_CARRINHOS/BACKUP"); // External Storage

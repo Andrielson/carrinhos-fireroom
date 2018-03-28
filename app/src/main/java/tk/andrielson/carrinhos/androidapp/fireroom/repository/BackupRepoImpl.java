@@ -30,11 +30,12 @@ public final class BackupRepoImpl implements BackupRepository {
     private final Executor executor = Executors.newFixedThreadPool(5);
 
     @Override
-    public void exportar() {
+    public MediatorLiveData<SimpleArrayMap<String, JSONArray>> exportar() {
         MediatorLiveData<SimpleArrayMap<String, JSONArray>> mediatorLiveData = new MediatorLiveData<>();
         mediatorLiveData.setValue(null);
         mediatorLiveData.addSource(backupProdutos(), new Observador(mediatorLiveData, "PRODUTOS"));
         mediatorLiveData.addSource(backupVendedores(), new Observador(mediatorLiveData, "VENDEDORES"));
+        return mediatorLiveData;
     }
 
     @Override
@@ -44,17 +45,17 @@ public final class BackupRepoImpl implements BackupRepository {
 
     private MutableLiveData<JSONArray> backupProdutos() {
         MutableLiveData<JSONArray> liveData = new MutableLiveData<>();
-        liveData.setValue(null);
+        liveData.postValue(null);
         firestore.collection(ProdutoImpl.COLECAO).get().addOnCompleteListener(executor, task -> {
             if (!task.isSuccessful()) {
                 LogUtil.Log(TAG, "Não foi possível recuperar os produtos!", Log.ERROR);
-                liveData.setValue(null);
+                liveData.postValue(null);
                 return;
             }
             JSONArray jsonArray = new JSONArray();
             if (task.getResult() == null || task.getResult().isEmpty() || task.getResult().getDocuments().isEmpty()) {
                 LogUtil.Log(TAG, "Não há produtos para recuperar!", Log.INFO);
-                liveData.setValue(jsonArray);
+                liveData.postValue(jsonArray);
                 return;
             }
             try {
@@ -72,24 +73,24 @@ public final class BackupRepoImpl implements BackupRepository {
                 LogUtil.Log(TAG, "Erro na conversão de Produto em JSON", Log.ERROR);
                 LogUtil.Log(TAG, e.getLocalizedMessage(), Log.ERROR);
             }
-            liveData.setValue(jsonArray);
+            liveData.postValue(jsonArray);
         });
         return liveData;
     }
 
     private MutableLiveData<JSONArray> backupVendedores() {
         MutableLiveData<JSONArray> liveData = new MutableLiveData<>();
-        liveData.setValue(null);
-        firestore.collection(ProdutoImpl.COLECAO).get().addOnCompleteListener(executor, task -> {
+        liveData.postValue(null);
+        firestore.collection(VendedorImpl.COLECAO).get().addOnCompleteListener(executor, task -> {
             if (!task.isSuccessful()) {
                 LogUtil.Log(TAG, "Não foi possível recuperar os vendedores!", Log.ERROR);
-                liveData.setValue(null);
+                liveData.postValue(null);
                 return;
             }
             JSONArray jsonArray = new JSONArray();
             if (task.getResult() == null || task.getResult().isEmpty() || task.getResult().getDocuments().isEmpty()) {
                 LogUtil.Log(TAG, "Não há vendedores para recuperar!", Log.INFO);
-                liveData.setValue(jsonArray);
+                liveData.postValue(jsonArray);
                 return;
             }
             try {
@@ -106,7 +107,7 @@ public final class BackupRepoImpl implements BackupRepository {
                 LogUtil.Log(TAG, "Erro na conversão de Vendedor em JSON", Log.ERROR);
                 LogUtil.Log(TAG, e.getLocalizedMessage(), Log.ERROR);
             }
-            liveData.setValue(jsonArray);
+            liveData.postValue(jsonArray);
         });
         return liveData;
     }
