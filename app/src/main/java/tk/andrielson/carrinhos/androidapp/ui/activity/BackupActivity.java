@@ -4,7 +4,6 @@ import android.Manifest;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -14,9 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.io.File;
-
 import tk.andrielson.carrinhos.androidapp.R;
+import tk.andrielson.carrinhos.androidapp.data.repository.BackupRepository;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 import tk.andrielson.carrinhos.androidapp.viewmodel.BackupViewModel;
 
@@ -57,6 +55,9 @@ public class BackupActivity extends AppCompatActivity {
     public void onClickExportar(View view) {
         BackupViewModel viewModel = ViewModelProviders.of(this).get(BackupViewModel.class);
         viewModel.exportar().observe(this, arrayMap -> {
+            boolean produtos = false;
+            boolean vendedores = false;
+            boolean vendas = false;
             if (arrayMap == null) {
                 LogUtil.Log(TAG, "ArrayMap é nulo!", Log.DEBUG);
                 return;
@@ -65,38 +66,36 @@ public class BackupActivity extends AppCompatActivity {
                 LogUtil.Log(TAG, "ArrayMap está vazio!", Log.DEBUG);
                 return;
             }
-            if (arrayMap.containsKey("PRODUTOS") && arrayMap.get("PRODUTOS") == null) {
+            if (arrayMap.containsKey(BackupRepository.PRODUTOS) && arrayMap.get(BackupRepository.PRODUTOS) == null) {
                 LogUtil.Log(TAG, "Backup de PRODUTOS iniciado!", Log.DEBUG);
             }
-            if (arrayMap.containsKey("PRODUTOS") && arrayMap.get("PRODUTOS") != null) {
+            if (arrayMap.containsKey(BackupRepository.PRODUTOS) && arrayMap.get(BackupRepository.PRODUTOS) != null) {
                 LogUtil.Log(TAG, "ArrayMap contém PRODUTOS!", Log.DEBUG);
-                LogUtil.Log(TAG, arrayMap.get("PRODUTOS").toString(), Log.DEBUG);
+                LogUtil.Log(TAG, arrayMap.get(BackupRepository.PRODUTOS).toString(), Log.DEBUG);
+                produtos = true;
             }
-            if (arrayMap.containsKey("VENDEDORES") && arrayMap.get("VENDEDORES") == null) {
+            if (arrayMap.containsKey(BackupRepository.VENDEDORES) && arrayMap.get(BackupRepository.VENDEDORES) == null) {
                 LogUtil.Log(TAG, "Backup de VENDEDORES iniciado!", Log.DEBUG);
             }
-            if (arrayMap.containsKey("VENDEDORES") && arrayMap.get("VENDEDORES") != null) {
+            if (arrayMap.containsKey(BackupRepository.VENDEDORES) && arrayMap.get(BackupRepository.VENDEDORES) != null) {
                 LogUtil.Log(TAG, "ArrayMap contém VENDEDORES!", Log.DEBUG);
-                LogUtil.Log(TAG, arrayMap.get("VENDEDORES").toString(), Log.DEBUG);
+                LogUtil.Log(TAG, arrayMap.get(BackupRepository.VENDEDORES).toString(), Log.DEBUG);
+                vendedores = true;
             }
+            if (arrayMap.containsKey(BackupRepository.VENDAS) && arrayMap.get(BackupRepository.VENDAS) == null) {
+                LogUtil.Log(TAG, "Backup de VENDAS iniciado!", Log.DEBUG);
+            }
+            if (arrayMap.containsKey(BackupRepository.VENDAS) && arrayMap.get(BackupRepository.VENDAS) != null) {
+                LogUtil.Log(TAG, "ArrayMap contém VENDAS!", Log.DEBUG);
+                LogUtil.Log(TAG, arrayMap.get(BackupRepository.VENDAS).toString(), Log.DEBUG);
+                vendas = true;
+            }
+            if (produtos && vendedores && vendas)
+                viewModel.salvaBackup();
         });
-        File diretorio;
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
-            diretorio = new File(Environment.getExternalStorageDirectory(), "/APP_CARRINHOS/BACKUP"); // External Storage
-        else
-            diretorio = new File(this.getFilesDir(), "/BACKUP"); // Internal Storage
-        if (!diretorio.exists()) {
-            //noinspection ResultOfMethodCallIgnored
-            diretorio.mkdirs();
-        }
-        LogUtil.Log(TAG, diretorio.getAbsolutePath(), Log.VERBOSE);
-        Toast.makeText(this, diretorio.getAbsolutePath(), Toast.LENGTH_SHORT).show();
     }
 
     public void onClickImportar(View view) {
 
     }
-
-    //      private static class ExportarBackupTask extends AsyncTask
-//      private static class ImportarBackupTask extends AsyncTask
 }

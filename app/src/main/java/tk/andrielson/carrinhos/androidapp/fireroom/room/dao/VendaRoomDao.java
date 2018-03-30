@@ -8,11 +8,13 @@ import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Relation;
 import android.arch.persistence.room.Update;
 
 import java.util.Date;
 import java.util.List;
 
+import tk.andrielson.carrinhos.androidapp.data.model.ItemVenda;
 import tk.andrielson.carrinhos.androidapp.fireroom.model.ItemVendaImpl;
 import tk.andrielson.carrinhos.androidapp.fireroom.model.ProdutoImpl;
 import tk.andrielson.carrinhos.androidapp.fireroom.model.VendaImpl;
@@ -51,6 +53,9 @@ public abstract class VendaRoomDao {
             "ORDER BY produto_codigo ASC")
     public abstract LiveData<ItemComProduto[]> getItensComProduto(Long codigo);
 
+    @Query("SELECT * FROM tb_venda")
+    public abstract VendaBackup[] getVendasBackup();
+
     public static class VendasPorDia {
         @ColumnInfo(name = "venda_data")
         public String data;
@@ -85,6 +90,19 @@ public abstract class VendaRoomDao {
             if (item != null)
                 item.setProduto(produto);
             return item;
+        }
+    }
+
+    public static class VendaBackup {
+        @Relation(parentColumn = "venda_codigo", entityColumn = "itv_venda_codigo")
+        public List<ItemVendaImpl> itens;
+        @Embedded
+        VendaImpl venda;
+
+        public VendaImpl getModel() {
+            if (venda != null)
+                venda.setItens(itens.toArray(new ItemVenda[0]));
+            return venda;
         }
     }
 }
