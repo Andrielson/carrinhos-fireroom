@@ -30,7 +30,7 @@ public final class BackupViewModel extends AndroidViewModel {
 
     private static final String TAG = BackupViewModel.class.getSimpleName();
     private final BackupRepository backupRepo;
-    private LiveData<SimpleArrayMap<String, JSONArray>> liveData = null;
+    private LiveData<SimpleArrayMap<String, JSONArray>> liveDataExportar = null;
 
     public BackupViewModel(@NonNull Application application) {
         super(application);
@@ -38,8 +38,8 @@ public final class BackupViewModel extends AndroidViewModel {
     }
 
     public LiveData<SimpleArrayMap<String, JSONArray>> exportar() {
-        liveData = backupRepo.exportar();
-        return liveData;
+        liveDataExportar = backupRepo.exportar();
+        return liveDataExportar;
     }
 
     public void salvaBackup() {
@@ -48,10 +48,10 @@ public final class BackupViewModel extends AndroidViewModel {
             diretorio = new File(Environment.getExternalStorageDirectory(), "/APP_CARRINHOS/BACKUP"); // External Storage
         else
             diretorio = new File(this.getApplication().getFilesDir(), "/BACKUP"); // Internal Storage
-        if (!diretorio.exists()) {
+        if (!diretorio.exists())
             //noinspection ResultOfMethodCallIgnored
             diretorio.mkdirs();
-        }
+
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault());
         Date hoje = Calendar.getInstance().getTime();
         String nomeArquivo = "Backup_" + dateFormat.format(hoje) + ".json";
@@ -59,8 +59,8 @@ public final class BackupViewModel extends AndroidViewModel {
         LogUtil.Log(TAG, URIArquivo, Log.VERBOSE);
         Toast.makeText(this.getApplication(), URIArquivo, Toast.LENGTH_LONG).show();
 
-        if (liveData == null) return;
-        SimpleArrayMap<String, JSONArray> arrayMap = liveData.getValue();
+        if (liveDataExportar == null) return;
+        SimpleArrayMap<String, JSONArray> arrayMap = liveDataExportar.getValue();
         if (arrayMap == null) return;
         JSONObject backupObject = new JSONObject();
         try {
@@ -75,11 +75,6 @@ public final class BackupViewModel extends AndroidViewModel {
         }
 
         try (FileOutputStream outputStream = new FileOutputStream(URIArquivo)) {
-            /*BufferedInputStream inputStream = new BufferedInputStream(new ByteArrayInputStream(backupObject.toString().getBytes(StandardCharsets.UTF_8)));
-            byte[] data = new byte[1024];
-            int count;
-            while ((count = inputStream.read(data)) != -1)
-                outputStream.write(data, 0, count);*/
             outputStream.write(backupObject.toString().getBytes());
             outputStream.close();
         } catch (IOException e) {

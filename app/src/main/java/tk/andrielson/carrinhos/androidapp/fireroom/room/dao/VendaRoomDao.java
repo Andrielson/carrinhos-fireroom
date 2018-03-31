@@ -54,7 +54,7 @@ public abstract class VendaRoomDao {
     public abstract LiveData<ItemComProduto[]> getItensComProduto(Long codigo);
 
     @Query("SELECT * FROM tb_venda")
-    public abstract VendaBackup[] getVendasBackup();
+    public abstract LiveData<VendaBackup[]> getVendasBackup();
 
     public static class VendasPorDia {
         @ColumnInfo(name = "venda_data")
