@@ -18,7 +18,7 @@ apply plugin: 'io.fabric'
 ext {
     archRoomVersion = '1.0.0'
     archLifecycleVersion = '1.1.1'
-    firebaseVersion = '11.8.0'
+    firebaseVersion = '12.0.1'
     supportLibraryVersion = '27.1.0'
     stethoVersion = '1.5.0'
     uniqueVersionCode = { version, suffix -> Integer.parseInt(String.format("%s%02d", version.replaceAll("[^0-9]", ""), suffix)) }
@@ -90,6 +90,7 @@ dependencies {
     implementation "com.android.support:support-v4:$supportLibraryVersion"
     implementation "com.android.support:recyclerview-v7:$supportLibraryVersion"
     implementation "com.android.support:gridlayout-v7:$supportLibraryVersion"
+    implementation "com.android.support:cardview-v7:$supportLibraryVersion"
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
     // Android Architeture Lifecycle

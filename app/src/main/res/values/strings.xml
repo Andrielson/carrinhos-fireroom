@@ -3,7 +3,7 @@
     <string name="app_label">Carrinhos Fireroom</string>
 
     <!--<editor-fold desc="Activity Main">-->
-    <string name="activity_main_label">MainActivity</string>
+    <string name="activity_main_label">Carrinhos</string>
     <string name="navigation_drawer_open">Abrir menu lateral</string>
     <string name="navigation_drawer_close">Fechar menu lateral</string>
     <string name="action_settings">Configurações</string>
@@ -19,6 +19,18 @@
     <string name="activity_main_drawer_menu_atualizar">Atualizar</string>
     <string name="activity_main_drawer_menu_backup">Backup</string>
     <string name="activity_main_drawer_menu_sobre">Sobre</string>
+    <!--</editor-fold>-->
+
+    <!--<editor-fold desc="Fragment Início">-->
+    <string name="frag_inicio_vendas_abertas">Vendas abertas</string>
+    <string name="frag_inicio_total_hoje">Total hoje</string>
+    <string name="frag_inicio_total_vendido">Total vendido:</string>
+    <string name="frag_inicio_total_pago">Total pago:</string>
+    <string name="frag_inicio_total_comissao">Total comissão:</string>
+    <string name="frag_inicio_total_semana">Total na semana</string>
+    <string name="frag_inicio_total_mes">Total no mês</string>
+    <string name="frag_inicio_vendedor_semana">TOP vendedor da semana</string>
+    <string name="frag_inicio_vendedor_mes">TOP vendedor do mês</string>
     <!--</editor-fold>-->
 
     <!--<editor-fold desc="Fragment Lista de Produtos">-->
@@ -92,5 +104,8 @@
     <string name="activity_backup_label">Backup</string>
     <string name="activity_backup_exportar">Exportar backup</string>
     <string name="activity_backup_importar">Importar backup</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <!--</editor-fold>-->
 </resources>

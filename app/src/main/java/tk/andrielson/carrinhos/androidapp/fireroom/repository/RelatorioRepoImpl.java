@@ -2,24 +2,23 @@ package tk.andrielson.carrinhos.androidapp.fireroom.repository;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
+import android.arch.lifecycle.Observer;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.util.SimpleArrayMap;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import tk.andrielson.carrinhos.androidapp.data.repository.RelatorioRepository;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.AppDatabase;
+import tk.andrielson.carrinhos.androidapp.fireroom.room.converters.DateToStringConverter;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.dao.ProdutoRoomDao;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.dao.VendaRoomDao;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.dao.VendedorRoomDao;
-import tk.andrielson.carrinhos.androidapp.fireroom.room.entities.VendaRoom;
+import tk.andrielson.carrinhos.androidapp.observable.InicioTotais;
 import tk.andrielson.carrinhos.androidapp.observable.RelatorioVendaPorDia;
 
 public final class RelatorioRepoImpl implements RelatorioRepository {
@@ -36,23 +35,28 @@ public final class RelatorioRepoImpl implements RelatorioRepository {
         mediatorLiveData.setValue(null);
         mediatorLiveData.addSource(vendaDao.getVendasDiarias(inicio, fim), vendasPorDias -> {
             if (vendasPorDias == null) return;
-            DateFormat formato = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             List<RelatorioVendaPorDia> lista = new ArrayList<>(vendasPorDias.length);
             for (VendaRoomDao.VendasPorDia vpd : vendasPorDias) {
-                Date data;
-                try {
-                    data = formato.parse(vpd.data);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    data = Calendar.getInstance().getTime();
-                }
+                Date data = DateToStringConverter.dateFromString(vpd.data);
                 SimpleArrayMap<String, Long> dados = new SimpleArrayMap<>(3);
                 dados.put("total", vpd.valorTotal);
                 dados.put("pago", vpd.valorPago);
                 dados.put("comissao", vpd.valorComissao);
-                lista.add(new RelatorioVendaPorDia(data, dados));
+                lista.add(new RelatorioVendaPorDia(data != null ? data : Calendar.getInstance().getTime(), dados));
             }
             mediatorLiveData.setValue(lista);
+        });
+        return mediatorLiveData;
+    }
+
+    @Override
+    public LiveData<InicioTotais> totaisVendas(@NonNull Date inicio, @NonNull Date fim) {
+        MediatorLiveData<InicioTotais> mediatorLiveData = new MediatorLiveData<>();
+        mediatorLiveData.setValue(null);
+        mediatorLiveData.addSource(vendaDao.getTotaisVendas(inicio, fim), totaisVendas -> {
+            if (totaisVendas == null) return;
+            InicioTotais inicioTotais = new InicioTotais(totaisVendas.valorTotal, totaisVendas.valorPago, totaisVendas.valorComissao);
+            mediatorLiveData.setValue(inicioTotais);
         });
         return mediatorLiveData;
     }

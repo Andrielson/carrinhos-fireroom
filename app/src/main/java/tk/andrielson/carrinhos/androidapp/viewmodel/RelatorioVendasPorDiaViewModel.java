@@ -7,16 +7,13 @@ import android.support.annotation.NonNull;
 
 import org.jetbrains.annotations.Contract;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import tk.andrielson.carrinhos.androidapp.DI;
 import tk.andrielson.carrinhos.androidapp.data.repository.RelatorioRepository;
+import tk.andrielson.carrinhos.androidapp.fireroom.room.converters.DateToStringConverter;
 import tk.andrielson.carrinhos.androidapp.observable.RelatorioVendaPorDia;
 
 public final class RelatorioVendasPorDiaViewModel extends ViewModel {
@@ -26,16 +23,9 @@ public final class RelatorioVendasPorDiaViewModel extends ViewModel {
     public RelatorioVendasPorDiaViewModel() {
         mediatorLiveData.setValue(null);
         RelatorioRepository relatorioRepo = DI.newRelatorioRepository();
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         Date fim = Calendar.getInstance().getTime();
-        Date inicio;
-        try {
-            inicio = dateFormat.parse("01/01/2018");
-        } catch (ParseException e) {
-            e.printStackTrace();
-            inicio = Calendar.getInstance().getTime();
-        }
-        mediatorLiveData.addSource(relatorioRepo.vendasDiarias(inicio, fim), mediatorLiveData::setValue);
+        Date inicio = DateToStringConverter.dateFromString("2018-01-01");
+        mediatorLiveData.addSource(relatorioRepo.vendasDiarias(inicio != null ? inicio : fim, fim), mediatorLiveData::setValue);
     }
 
     @Contract(pure = true)

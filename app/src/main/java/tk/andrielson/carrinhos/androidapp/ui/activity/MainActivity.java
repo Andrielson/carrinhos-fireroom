@@ -18,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 import tk.andrielson.carrinhos.androidapp.R;
 import tk.andrielson.carrinhos.androidapp.observable.ProdutoObservable;
 import tk.andrielson.carrinhos.androidapp.observable.VendaObservable;
@@ -80,7 +82,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         if (savedInstanceState != null && savedInstanceState.getSerializable(STATE_FRAGMENTOS) != null)
-            carregaFragment((Fragmentos) savedInstanceState.getSerializable(STATE_FRAGMENTOS));
+            carregaFragment((Fragmentos) Objects.requireNonNull(savedInstanceState.getSerializable(STATE_FRAGMENTOS)));
         else
             carregaFragment(Fragmentos.VENDA);
 

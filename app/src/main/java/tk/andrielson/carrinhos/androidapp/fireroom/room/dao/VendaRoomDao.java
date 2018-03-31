@@ -9,6 +9,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Relation;
+import android.arch.persistence.room.Transaction;
 import android.arch.persistence.room.Update;
 
 import java.util.Date;
@@ -53,18 +54,26 @@ public abstract class VendaRoomDao {
             "ORDER BY produto_codigo ASC")
     public abstract LiveData<ItemComProduto[]> getItensComProduto(Long codigo);
 
+    @Transaction
     @Query("SELECT * FROM tb_venda")
     public abstract LiveData<VendaBackup[]> getVendasBackup();
 
-    public static class VendasPorDia {
-        @ColumnInfo(name = "venda_data")
-        public String data;
+    @Query("SELECT SUM(venda_valor_total) AS valor_total, SUM(venda_valor_comissao) AS valor_comissao, SUM(venda_valor_pago) AS valor_pago " +
+            "FROM tb_venda WHERE venda_data BETWEEN :inicio AND :fim ")
+    public abstract LiveData<TotaisVendas> getTotaisVendas(Date inicio, Date fim);
+
+    public static class TotaisVendas {
         @ColumnInfo(name = "valor_total")
         public Long valorTotal;
         @ColumnInfo(name = "valor_pago")
         public Long valorPago;
         @ColumnInfo(name = "valor_comissao")
         public Long valorComissao;
+    }
+
+    public static class VendasPorDia extends TotaisVendas {
+        @ColumnInfo(name = "venda_data")
+        public String data;
     }
 
     public static class VendaComVendedorTotal {

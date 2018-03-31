@@ -1,0 +1,72 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:grid="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="total"
+            type="tk.andrielson.carrinhos.androidapp.observable.InicioTotais" />
+    </data>
+
+    <android.support.v7.widget.GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        grid:alignmentMode="alignBounds"
+        grid:columnCount="2">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/frag_inicio_total_vendido"
+            android:textColor="@android:color/black"
+            grid:layout_columnWeight="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="6dp"
+            android:drawableStart="@drawable/ic_monetization_on_black_16dp"
+            android:gravity="end"
+            android:text="@={total.vendido}"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            tools:text="R$ 1000,00" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/frag_inicio_total_pago"
+            android:textColor="@android:color/black"
+            grid:layout_columnWeight="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="6dp"
+            android:drawableStart="@drawable/ic_account_balance_black_16dp"
+            android:gravity="end"
+            android:text="@={total.pago}"
+            android:textColor="@color/carrinhoHabilitado"
+            android:textStyle="bold"
+            tools:text="R$ 600,00" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/frag_inicio_total_comissao"
+            android:textColor="@android:color/black"
+            grid:layout_columnWeight="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="6dp"
+            android:drawableStart="@drawable/ic_account_box_black_16dp"
+            android:gravity="end"
+            android:text="@={total.comissao}"
+            android:textColor="@color/carrinhoDesabilitado"
+            android:textStyle="bold"
+            tools:text="R$ 400,00" />
+    </android.support.v7.widget.GridLayout>
+</layout>

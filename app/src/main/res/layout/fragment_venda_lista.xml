@@ -49,6 +49,8 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            android:fadeScrollbars="false"
+            android:scrollbars="vertical"
             app:layoutManager="LinearLayoutManager"
             tools:context="tk.andrielson.carrinhos.androidapp.ui.fragment.ListaVendaFragment"
             tools:listitem="@layout/fragment_venda_lista_item"
