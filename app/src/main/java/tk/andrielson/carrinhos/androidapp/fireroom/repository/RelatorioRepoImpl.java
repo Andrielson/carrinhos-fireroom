@@ -2,9 +2,8 @@ package tk.andrielson.carrinhos.androidapp.fireroom.repository;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
-import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.Transformations;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.util.SimpleArrayMap;
 
 import java.util.ArrayList;
@@ -20,6 +19,7 @@ import tk.andrielson.carrinhos.androidapp.fireroom.room.dao.VendaRoomDao;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.dao.VendedorRoomDao;
 import tk.andrielson.carrinhos.androidapp.observable.InicioTotais;
 import tk.andrielson.carrinhos.androidapp.observable.RelatorioVendaPorDia;
+import tk.andrielson.carrinhos.androidapp.utils.Util;
 
 public final class RelatorioRepoImpl implements RelatorioRepository {
 
@@ -59,5 +59,19 @@ public final class RelatorioRepoImpl implements RelatorioRepository {
             mediatorLiveData.setValue(inicioTotais);
         });
         return mediatorLiveData;
+    }
+
+    public LiveData<SimpleArrayMap<String, String>> getTopVendedor(@NonNull Date inicio, @NonNull Date fim) {
+        return Transformations.map(vendaDao.getTotaisVendasComVendedor(inicio, fim), input -> {
+            SimpleArrayMap<String, String> arrayMap = null;
+            if (input != null) {
+                arrayMap = new SimpleArrayMap<>(4);
+                arrayMap.put("vendedor", input.vendedor.getNome());
+                arrayMap.put("vendido", Util.longToRS(input.valorTotal));
+                arrayMap.put("pago", Util.longToRS(input.valorPago));
+                arrayMap.put("comissao", Util.longToRS(input.valorComissao));
+            }
+            return arrayMap;
+        });
     }
 }

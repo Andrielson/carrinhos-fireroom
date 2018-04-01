@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.Objects;
@@ -24,6 +25,7 @@ import tk.andrielson.carrinhos.androidapp.R;
 import tk.andrielson.carrinhos.androidapp.observable.ProdutoObservable;
 import tk.andrielson.carrinhos.androidapp.observable.VendaObservable;
 import tk.andrielson.carrinhos.androidapp.observable.VendedorObservable;
+import tk.andrielson.carrinhos.androidapp.ui.fragment.InicioFragment;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaProdutoFragment;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaVendaFragment;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaVendedorFragment;
@@ -42,16 +44,17 @@ public class MainActivity extends AppCompatActivity
     private Fragmentos fragmentoAtivo;
     private DrawerLayout drawer;
     private Toolbar toolbar;
+    private NavigationView navigationView;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        encontraViews();
 
-        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
             Intent intent;
             switch (fragmentoAtivo) {
@@ -72,21 +75,26 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         if (savedInstanceState != null && savedInstanceState.getSerializable(STATE_FRAGMENTOS) != null)
             carregaFragment((Fragmentos) Objects.requireNonNull(savedInstanceState.getSerializable(STATE_FRAGMENTOS)));
         else
-            carregaFragment(Fragmentos.VENDA);
+            carregaFragment(Fragmentos.INICIO);
 
         LogUtil.Log(TAG, "onCreate", Log.VERBOSE);
+    }
+
+    private void encontraViews() {
+        toolbar = findViewById(R.id.toolbar);
+        fab = findViewById(R.id.fab);
+        drawer = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
     }
 
     @Override
@@ -172,7 +180,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         switch (id) {
             case R.id.nav_inicio:
-                fragmentoAtivo = Fragmentos.INICIO;
+                carregaFragment(Fragmentos.INICIO);
                 break;
             case R.id.nav_vendas:
                 carregaFragment(Fragmentos.VENDA);
@@ -238,25 +246,35 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
         fragmentoAtivo = frag;
         switch (frag) {
+            case INICIO:
+                fragment = new InicioFragment();
+                toolbar.setTitle(R.string.activity_main_label);
+                fab.setVisibility(View.GONE);
+                break;
             case VENDA:
                 fragment = ListaVendaFragment.newInstance();
                 toolbar.setTitle(R.string.activity_venda_label);
+                fab.setVisibility(View.VISIBLE);
                 break;
             case PRODUTO:
                 fragment = ListaProdutoFragment.newInstance();
                 toolbar.setTitle(R.string.activity_produto_label);
+                fab.setVisibility(View.VISIBLE);
                 break;
             case VENDEDOR:
                 fragment = ListaVendedorFragment.newInstance();
                 toolbar.setTitle(R.string.activity_vendedor_label);
+                fab.setVisibility(View.VISIBLE);
                 break;
             case RELATORIOS:
                 fragment = new RelatoriosFragment();
                 toolbar.setTitle("Relatórios");
+                fab.setVisibility(View.GONE);
                 break;
             case RELATORIO_VENDAS_POR_DIA:
                 fragment = new RelatorioVendasPorDiaFragment();
                 toolbar.setTitle("Relatório de Vendas");
+                fab.setVisibility(View.GONE);
                 break;
             default:
         }

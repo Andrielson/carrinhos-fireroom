@@ -5,6 +5,10 @@ import android.widget.EditText;
 
 import org.jetbrains.annotations.Contract;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.util.Currency;
 import java.util.Locale;
 
 /**
@@ -12,9 +16,12 @@ import java.util.Locale;
  */
 
 public final class Util {
+
+    private static NumberFormat numberFormat = NumberFormat.getCurrencyInstance();
+
     @Contract("null -> !null")
     public static String longToRS(Long valor) {
-        return valor == null ? "R$ 0,00" : String.format(Locale.getDefault(), "R$ %.2f", (double) valor / 100);
+        return valor == null ? "R$ 0,00" : numberFormat.format((double) valor / 100).replaceAll("(^\\D+)","$1 ");
     }
 
     @Contract("null -> null")

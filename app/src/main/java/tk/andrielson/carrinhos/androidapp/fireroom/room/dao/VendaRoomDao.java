@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 import tk.andrielson.carrinhos.androidapp.data.model.ItemVenda;
+import tk.andrielson.carrinhos.androidapp.data.model.Vendedor;
 import tk.andrielson.carrinhos.androidapp.fireroom.model.ItemVendaImpl;
 import tk.andrielson.carrinhos.androidapp.fireroom.model.ProdutoImpl;
 import tk.andrielson.carrinhos.androidapp.fireroom.model.VendaImpl;
@@ -62,6 +63,13 @@ public abstract class VendaRoomDao {
             "FROM tb_venda WHERE venda_data BETWEEN :inicio AND :fim ")
     public abstract LiveData<TotaisVendas> getTotaisVendas(Date inicio, Date fim);
 
+    @Query("SELECT SUM(venda_valor_total) AS valor_total, SUM(venda_valor_comissao) AS valor_comissao, SUM(venda_valor_pago) AS valor_pago, b.* " +
+            "FROM tb_venda a JOIN tb_vendedor b ON (a.venda_vendedor_codigo = b.vendedor_codigo) " +
+            "WHERE venda_data BETWEEN :inicio AND :fim " +
+            "GROUP BY a.venda_vendedor_codigo " +
+            "ORDER BY valor_total DESC LIMIT 1")
+    public abstract LiveData<TotaisVendasComVendedor> getTotaisVendasComVendedor(Date inicio, Date fim);
+
     public static class TotaisVendas {
         @ColumnInfo(name = "valor_total")
         public Long valorTotal;
@@ -74,6 +82,11 @@ public abstract class VendaRoomDao {
     public static class VendasPorDia extends TotaisVendas {
         @ColumnInfo(name = "venda_data")
         public String data;
+    }
+
+    public static class TotaisVendasComVendedor extends TotaisVendas {
+        @Embedded
+        public VendedorImpl vendedor;
     }
 
     public static class VendaComVendedorTotal {
