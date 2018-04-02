@@ -33,6 +33,7 @@ android {
         versionCode 4
         versionName "0.0.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     flavorDimensions "CLIENTE", "VERSAO"
     productFlavors {

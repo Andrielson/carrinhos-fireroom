@@ -26,7 +26,7 @@
             android:title="@string/activity_main_drawer_menu_relatorios" />
     </group>
 
-    <item android:title="@string/activity_main_drawer_menu_aplicativo">
+    <!--<item android:title="@string/activity_main_drawer_menu_aplicativo">
         <menu>
             <item
                 android:id="@+id/nav_atualizar"
@@ -41,6 +41,6 @@
                 android:icon="@drawable/ic_menu_send"
                 android:title="@string/activity_main_drawer_menu_sobre" />
         </menu>
-    </item>
+    </item>-->
 
 </menu>

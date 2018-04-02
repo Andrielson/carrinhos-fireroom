@@ -22,20 +22,34 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/colorAccent"
                 android:onClick="@{() -> listener.onClickVendas()}"
-                android:text="Vendas" />
+                android:text="@string/frag_relatorios_vendas"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_margin"
+                android:background="@color/colorAccent"
                 android:onClick="@{() -> listener.onClickProdutos()}"
-                android:text="Produtos" />
+                android:text="@string/frag_relatorios_produtos"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_margin"
+                android:background="@color/colorAccent"
                 android:onClick="@{() -> listener.onClickVendedores()}"
-                android:text="Vendedores" />
+                android:text="@string/frag_relatorios_vendedores"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
     </android.support.design.widget.CoordinatorLayout>

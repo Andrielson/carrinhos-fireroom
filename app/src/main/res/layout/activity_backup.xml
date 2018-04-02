@@ -15,9 +15,13 @@
             android:id="@+id/btn_exportar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
             android:enabled="false"
             android:onClick="onClickExportar"
-            android:text="@string/activity_backup_exportar" />
+            android:text="@string/activity_backup_exportar"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btn_importar"
@@ -25,7 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:onClick="onClickImportar"
-            android:text="@string/activity_backup_importar" />
+            android:text="@string/activity_backup_importar"
+            android:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout
@@ -36,7 +41,7 @@
         android:orientation="vertical"
         android:padding="32dp"
         android:visibility="gone"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <ProgressBar
             android:id="@+id/loading_progress_bar"
@@ -52,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/text_margin"
-            android:text="CANCELAR"
+            android:text="@string/loading_cancelar"
             android:textColor="@android:color/holo_red_dark"
             android:textSize="20sp" />
     </LinearLayout>

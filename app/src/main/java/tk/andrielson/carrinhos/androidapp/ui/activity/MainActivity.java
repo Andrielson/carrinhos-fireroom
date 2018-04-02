@@ -145,21 +145,21 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+        if (drawer.isDrawerOpen(GravityCompat.START))
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        //"Voltar" não vai sair do aplicativo
+        /*else
+            super.onBackPressed();*/
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
-    }
+    }*/
 
-    @Override
+    /*@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -194,13 +194,13 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_relatorios:
                 carregaFragment(Fragmentos.RELATORIOS);
                 break;
-            case R.id.nav_atualizar:
+            /*case R.id.nav_atualizar:
                 break;
             case R.id.nav_backup:
                 startActivity(new Intent(this, BackupActivity.class));
                 break;
             case R.id.nav_sobre:
-                break;
+                break;*/
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;

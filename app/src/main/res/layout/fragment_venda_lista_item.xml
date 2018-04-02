@@ -49,6 +49,7 @@
             android:drawableStart="@drawable/ic_monetization_on_black_16dp"
             android:text="@{venda.total}"
             android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@color/colorPrimaryDark"
             android:textStyle="bold"
             grid:layout_columnWeight="1"
             tools:text="R$ 100,00" />
@@ -75,6 +76,7 @@
             android:drawableStart="@drawable/ic_account_balance_black_16dp"
             android:text="@{venda.valorPago}"
             android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@color/carrinhoHabilitado"
             grid:layout_columnWeight="1"
             tools:text="R$ 60,00" />
 
@@ -100,6 +102,7 @@
             android:drawableStart="@drawable/ic_account_box_black_16dp"
             android:text="@{venda.valorComissao}"
             android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@color/carrinhoDesabilitado"
             grid:layout_columnWeight="1"
             tools:text="R$ 40,00" />
 

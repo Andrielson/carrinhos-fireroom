@@ -97,15 +97,17 @@
     <string name="fragment_cadastro_venda_label_excluir">Excluir venda</string>
     <!--</editor-fold>-->
 
+    <!--<editor-fold desc="Fragment Relatórios">-->
+    <string name="frag_relatorios_vendas">Vendas</string>
+    <string name="frag_relatorios_produtos">Produtos</string>
+    <string name="frag_relatorios_vendedores">Vendedores</string>
     <string name="fragment_relatorios_carregando">Carregando relatório…</string>
     <string name="fragment_relatorios_venda_vazio">Nenhum venda encontrada</string>
-
+    <!--</editor-fold>-->
     <!--<editor-fold desc="Activity de Backup dos dados">-->
     <string name="activity_backup_label">Backup</string>
     <string name="activity_backup_exportar">Exportar backup</string>
     <string name="activity_backup_importar">Importar backup</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <!--</editor-fold>-->
+    <string name="loading_cancelar">Cancelar</string>
 </resources>
