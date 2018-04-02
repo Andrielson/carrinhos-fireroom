@@ -104,6 +104,30 @@
     <string name="fragment_relatorios_carregando">Carregando relatório…</string>
     <string name="fragment_relatorios_venda_vazio">Nenhum venda encontrada</string>
     <!--</editor-fold>-->
+
+    <!--<editor-fold desc="Fragment Relatório Vendas Por Dia">-->
+    <string name="frag_relat_vendas_spinner_agrupamento_prompt">Agrupamento:</string>
+    <string-array name="frag_relat_vendas_spinner_agrupamento">
+        <item>Agrupamento:</item>
+        <item>Dia</item>
+        <item>Mês</item>
+    </string-array>
+
+    <string name="frag_relat_vendas_spinner_periodo_prompt">Período:</string>
+    <string-array name="frag_relat_vendas_spinner_periodo_dia">
+        <item>Esta semana</item>
+        <item>Últimos 15 dias</item>
+        <item>Este mês</item>
+        <item>Personalizado</item>
+    </string-array>
+
+    <string-array name="frag_relat_vendas_spinner_periodo_mes">
+        <item>Últimos seis meses</item>
+        <item>Este ano</item>
+        <item>Personalizado</item>
+    </string-array>
+    <!--</editor-fold>-->
+
     <!--<editor-fold desc="Activity de Backup dos dados">-->
     <string name="activity_backup_label">Backup</string>
     <string name="activity_backup_exportar">Exportar backup</string>
