@@ -14,7 +14,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -29,7 +28,7 @@ import tk.andrielson.carrinhos.androidapp.ui.fragment.InicioFragment;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaProdutoFragment;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaVendaFragment;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.ListaVendedorFragment;
-import tk.andrielson.carrinhos.androidapp.ui.fragment.RelatorioVendasPorDiaFragment;
+import tk.andrielson.carrinhos.androidapp.ui.fragment.RelatorioVendasFragment;
 import tk.andrielson.carrinhos.androidapp.ui.fragment.RelatoriosFragment;
 import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
 
@@ -272,7 +271,7 @@ public class MainActivity extends AppCompatActivity
                 fab.setVisibility(View.GONE);
                 break;
             case RELATORIO_VENDAS_POR_DIA:
-                fragment = new RelatorioVendasPorDiaFragment();
+                fragment = new RelatorioVendasFragment();
                 toolbar.setTitle("Relatório de Vendas");
                 fab.setVisibility(View.GONE);
                 break;

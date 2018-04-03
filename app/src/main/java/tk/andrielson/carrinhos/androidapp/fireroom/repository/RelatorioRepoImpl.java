@@ -36,7 +36,27 @@ public final class RelatorioRepoImpl implements RelatorioRepository {
         mediatorLiveData.addSource(vendaDao.getVendasDiarias(inicio, fim), vendasPorDias -> {
             if (vendasPorDias == null) return;
             List<RelatorioVendaPorDia> lista = new ArrayList<>(vendasPorDias.length);
-            for (VendaRoomDao.VendasPorDia vpd : vendasPorDias) {
+            for (VendaRoomDao.VendasPorData vpd : vendasPorDias) {
+                Date data = DateToStringConverter.dateFromString(vpd.data);
+                SimpleArrayMap<String, Long> dados = new SimpleArrayMap<>(3);
+                dados.put("total", vpd.valorTotal);
+                dados.put("pago", vpd.valorPago);
+                dados.put("comissao", vpd.valorComissao);
+                lista.add(new RelatorioVendaPorDia(data != null ? data : Calendar.getInstance().getTime(), dados));
+            }
+            mediatorLiveData.setValue(lista);
+        });
+        return mediatorLiveData;
+    }
+
+    @Override
+    public LiveData<List<RelatorioVendaPorDia>> vendasMensais(@NonNull Date inicio, @NonNull Date fim) {
+        MediatorLiveData<List<RelatorioVendaPorDia>> mediatorLiveData = new MediatorLiveData<>();
+        mediatorLiveData.setValue(null);
+        mediatorLiveData.addSource(vendaDao.getVendasMensais(inicio, fim), vendasPorDias -> {
+            if (vendasPorDias == null) return;
+            List<RelatorioVendaPorDia> lista = new ArrayList<>(vendasPorDias.length);
+            for (VendaRoomDao.VendasPorData vpd : vendasPorDias) {
                 Date data = DateToStringConverter.dateFromString(vpd.data);
                 SimpleArrayMap<String, Long> dados = new SimpleArrayMap<>(3);
                 dados.put("total", vpd.valorTotal);

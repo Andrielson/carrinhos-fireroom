@@ -4,19 +4,16 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
 import android.support.v4.util.SimpleArrayMap;
-import android.util.Log;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 import tk.andrielson.carrinhos.androidapp.DI;
 import tk.andrielson.carrinhos.androidapp.data.repository.RelatorioRepository;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.converters.DateToStringConverter;
 import tk.andrielson.carrinhos.androidapp.observable.InicioTotais;
-import tk.andrielson.carrinhos.androidapp.utils.LogUtil;
+
+import static tk.andrielson.carrinhos.androidapp.utils.Util.inicioMes;
+import static tk.andrielson.carrinhos.androidapp.utils.Util.inicioSemana;
 
 public final class InicioViewModel extends ViewModel {
     private static final String TAG = InicioViewModel.class.getSimpleName();
@@ -48,7 +45,7 @@ public final class InicioViewModel extends ViewModel {
     public LiveData<SimpleArrayMap<String, String>> getTopVendedorMes() {
         return relatorioRepo.getTopVendedor(inicioMes(), DateToStringConverter.dateFromString("2018-01-26"));
     }
-
+/*
     private Date inicioSemana() {
         Calendar calendar = Calendar.getInstance();
         Date hoje = DateToStringConverter.dateFromString("2018-01-26");
@@ -68,5 +65,5 @@ public final class InicioViewModel extends ViewModel {
         calendar.add(Calendar.DATE, -1 * dom + 1);
         LogUtil.Log(TAG, DateToStringConverter.stringFromDate(calendar.getTime()), Log.DEBUG);
         return calendar.getTime();
-    }
+    }*/
 }

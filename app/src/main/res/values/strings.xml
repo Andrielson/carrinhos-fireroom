@@ -108,7 +108,6 @@
     <!--<editor-fold desc="Fragment Relatório Vendas Por Dia">-->
     <string name="frag_relat_vendas_spinner_agrupamento_prompt">Agrupamento:</string>
     <string-array name="frag_relat_vendas_spinner_agrupamento">
-        <item>Agrupamento:</item>
         <item>Dia</item>
         <item>Mês</item>
     </string-array>

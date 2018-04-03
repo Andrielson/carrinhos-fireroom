@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import tk.andrielson.carrinhos.androidapp.databinding.FragmentRelatorioVendasPorDiaItemBinding;
+import tk.andrielson.carrinhos.androidapp.databinding.FragmentRelatorioVendasMensalItemBinding;
 import tk.andrielson.carrinhos.androidapp.observable.RelatorioVendaPorDia;
 
-public final class RelatorioVendaPorDiaRecyclerViewAdapter extends RecyclerView.Adapter<RelatorioVendaPorDiaRecyclerViewAdapter.ViewHolder> {
+public final class RelatorioVendaMensalRecyclerViewAdapter extends RecyclerView.Adapter<RelatorioVendaMensalRecyclerViewAdapter.ViewHolder> {
 
     private List<RelatorioVendaPorDia> lista = new ArrayList<>();
 
@@ -21,7 +21,7 @@ public final class RelatorioVendaPorDiaRecyclerViewAdapter extends RecyclerView.
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        FragmentRelatorioVendasPorDiaItemBinding binding = FragmentRelatorioVendasPorDiaItemBinding.inflate(layoutInflater, parent, false);
+        FragmentRelatorioVendasMensalItemBinding binding = FragmentRelatorioVendasMensalItemBinding.inflate(layoutInflater, parent, false);
         return new ViewHolder(binding);
     }
 
@@ -47,9 +47,9 @@ public final class RelatorioVendaPorDiaRecyclerViewAdapter extends RecyclerView.
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private final FragmentRelatorioVendasPorDiaItemBinding binding;
+        private final FragmentRelatorioVendasMensalItemBinding binding;
 
-        public ViewHolder(FragmentRelatorioVendasPorDiaItemBinding binding) {
+        public ViewHolder(FragmentRelatorioVendasMensalItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

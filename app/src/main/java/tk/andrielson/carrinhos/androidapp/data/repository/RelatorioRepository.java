@@ -13,6 +13,8 @@ import tk.andrielson.carrinhos.androidapp.observable.RelatorioVendaPorDia;
 public interface RelatorioRepository {
     LiveData<List<RelatorioVendaPorDia>> vendasDiarias(@NonNull Date inicio, @NonNull Date fim);
 
+    LiveData<List<RelatorioVendaPorDia>> vendasMensais(@NonNull Date inicio, @NonNull Date fim);
+
     LiveData<InicioTotais> totaisVendas(@NonNull Date inicio, @NonNull Date fim);
 
     LiveData<SimpleArrayMap<String, String>> getTopVendedor(@NonNull Date inicio, @NonNull Date fim);
