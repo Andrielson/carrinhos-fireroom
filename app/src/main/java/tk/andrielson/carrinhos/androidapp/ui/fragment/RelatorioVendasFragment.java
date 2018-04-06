@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,13 +20,13 @@ import java.util.Objects;
 import tk.andrielson.carrinhos.androidapp.R;
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentRelatorioVendasPorDiaBinding;
 import tk.andrielson.carrinhos.androidapp.observable.RelatorioVendaPorDia;
+import tk.andrielson.carrinhos.androidapp.observable.RelatorioVendaPorMes;
 import tk.andrielson.carrinhos.androidapp.ui.adapter.RelatorioVendaDiariaRecyclerViewAdapter;
 import tk.andrielson.carrinhos.androidapp.ui.adapter.RelatorioVendaMensalRecyclerViewAdapter;
 import tk.andrielson.carrinhos.androidapp.viewmodel.RelatorioVendasViewModel;
 
 public class RelatorioVendasFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
-    private RecyclerView.Adapter adapter;
     private FragmentRelatorioVendasPorDiaBinding binding;
     private RelatorioVendasViewModel viewModel;
 
@@ -57,14 +56,11 @@ public class RelatorioVendasFragment extends Fragment implements AdapterView.OnI
                 ArrayAdapter<CharSequence> periodoAdapter;
                 switch (position) {
                     case 1:
-                        adapter = new RelatorioVendaMensalRecyclerViewAdapter();
                         periodoAdapter = ArrayAdapter.createFromResource(Objects.requireNonNull(getActivity()), R.array.frag_relat_vendas_spinner_periodo_mes, R.layout.layout_spinner_item);
                         break;
                     default:
-                        adapter = new RelatorioVendaDiariaRecyclerViewAdapter();
                         periodoAdapter = ArrayAdapter.createFromResource(Objects.requireNonNull(getActivity()), R.array.frag_relat_vendas_spinner_periodo_dia, R.layout.layout_spinner_item);
                 }
-                binding.list.setAdapter(adapter);
                 periodoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 binding.spinnerPeriodo.setAdapter(periodoAdapter);
                 binding.spinnerPeriodo.setOnItemSelectedListener(this);
@@ -128,6 +124,7 @@ public class RelatorioVendasFragment extends Fragment implements AdapterView.OnI
             if (relatorio != null) {
                 binding.setCarregando(false);
                 adapter.setLista(relatorio);
+                binding.list.setAdapter(adapter);
                 binding.setListaVazia(relatorio.isEmpty());
             } else {
                 binding.setCarregando(true);
@@ -136,15 +133,16 @@ public class RelatorioVendasFragment extends Fragment implements AdapterView.OnI
         }
     }
 
-    private class RelatorioMensalObserver implements Observer<List<RelatorioVendaPorDia>> {
+    private class RelatorioMensalObserver implements Observer<List<RelatorioVendaPorMes>> {
 
         private final RelatorioVendaMensalRecyclerViewAdapter adapter = new RelatorioVendaMensalRecyclerViewAdapter();
 
         @Override
-        public void onChanged(@Nullable List<RelatorioVendaPorDia> relatorio) {
+        public void onChanged(@Nullable List<RelatorioVendaPorMes> relatorio) {
             if (relatorio != null) {
                 binding.setCarregando(false);
                 adapter.setLista(relatorio);
+                binding.list.setAdapter(adapter);
                 binding.setListaVazia(relatorio.isEmpty());
             } else {
                 binding.setCarregando(true);

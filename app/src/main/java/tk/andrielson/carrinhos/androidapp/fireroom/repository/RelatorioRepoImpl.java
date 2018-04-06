@@ -19,6 +19,7 @@ import tk.andrielson.carrinhos.androidapp.fireroom.room.dao.VendaRoomDao;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.dao.VendedorRoomDao;
 import tk.andrielson.carrinhos.androidapp.observable.InicioTotais;
 import tk.andrielson.carrinhos.androidapp.observable.RelatorioVendaPorDia;
+import tk.andrielson.carrinhos.androidapp.observable.RelatorioVendaPorMes;
 import tk.andrielson.carrinhos.androidapp.utils.Util;
 
 public final class RelatorioRepoImpl implements RelatorioRepository {
@@ -50,19 +51,19 @@ public final class RelatorioRepoImpl implements RelatorioRepository {
     }
 
     @Override
-    public LiveData<List<RelatorioVendaPorDia>> vendasMensais(@NonNull Date inicio, @NonNull Date fim) {
-        MediatorLiveData<List<RelatorioVendaPorDia>> mediatorLiveData = new MediatorLiveData<>();
+    public LiveData<List<RelatorioVendaPorMes>> vendasMensais(@NonNull Date inicio, @NonNull Date fim) {
+        MediatorLiveData<List<RelatorioVendaPorMes>> mediatorLiveData = new MediatorLiveData<>();
         mediatorLiveData.setValue(null);
         mediatorLiveData.addSource(vendaDao.getVendasMensais(inicio, fim), vendasPorDias -> {
             if (vendasPorDias == null) return;
-            List<RelatorioVendaPorDia> lista = new ArrayList<>(vendasPorDias.length);
+            List<RelatorioVendaPorMes> lista = new ArrayList<>(vendasPorDias.length);
             for (VendaRoomDao.VendasPorData vpd : vendasPorDias) {
-                Date data = DateToStringConverter.dateFromString(vpd.data);
+                Date data = DateToStringConverter.dateFromString(vpd.data + "-01");
                 SimpleArrayMap<String, Long> dados = new SimpleArrayMap<>(3);
                 dados.put("total", vpd.valorTotal);
                 dados.put("pago", vpd.valorPago);
                 dados.put("comissao", vpd.valorComissao);
-                lista.add(new RelatorioVendaPorDia(data != null ? data : Calendar.getInstance().getTime(), dados));
+                lista.add(new RelatorioVendaPorMes(data != null ? data : Calendar.getInstance().getTime(), dados));
             }
             mediatorLiveData.setValue(lista);
         });

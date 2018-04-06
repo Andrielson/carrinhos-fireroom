@@ -8,7 +8,7 @@
 
         <variable
             name="relatorio"
-            type="tk.andrielson.carrinhos.androidapp.observable.RelatorioVendaPorDia" />
+            type="tk.andrielson.carrinhos.androidapp.observable.RelatorioVendaPorMes" />
     </data>
 
     <android.support.v7.widget.GridLayout
@@ -34,6 +34,7 @@
             tools:text="Janeiro/2018" />
 
         <TextView
+            android:id="@+id/text_valor_total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="6dp"
@@ -46,6 +47,7 @@
             tools:text="R$ 320,18" />
 
         <TextView
+            android:id="@+id/text_valor_pago"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="6dp"
@@ -57,6 +59,7 @@
             tools:text="R$ 192,11" />
 
         <TextView
+            android:id="@+id/text_valor_comissao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="6dp"

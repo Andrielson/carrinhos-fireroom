@@ -12,10 +12,11 @@ import java.util.Objects;
 
 import tk.andrielson.carrinhos.androidapp.databinding.FragmentRelatorioVendasMensalItemBinding;
 import tk.andrielson.carrinhos.androidapp.observable.RelatorioVendaPorDia;
+import tk.andrielson.carrinhos.androidapp.observable.RelatorioVendaPorMes;
 
 public final class RelatorioVendaMensalRecyclerViewAdapter extends RecyclerView.Adapter<RelatorioVendaMensalRecyclerViewAdapter.ViewHolder> {
 
-    private List<RelatorioVendaPorDia> lista = new ArrayList<>();
+    private List<RelatorioVendaPorMes> lista = new ArrayList<>();
 
     @NonNull
     @Override
@@ -35,7 +36,7 @@ public final class RelatorioVendaMensalRecyclerViewAdapter extends RecyclerView.
         return lista.size();
     }
 
-    public void setLista(final List<RelatorioVendaPorDia> novaLista) {
+    public void setLista(final List<RelatorioVendaPorMes> novaLista) {
         if (this.lista == null) {
             this.lista = novaLista;
             notifyItemRangeInserted(0, novaLista.size());
@@ -54,17 +55,17 @@ public final class RelatorioVendaMensalRecyclerViewAdapter extends RecyclerView.
             this.binding = binding;
         }
 
-        public void bind(final RelatorioVendaPorDia item) {
+        public void bind(final RelatorioVendaPorMes item) {
             binding.setRelatorio(item);
             binding.executePendingBindings();
         }
     }
 
     private static final class DiffCallback extends DiffUtil.Callback {
-        private final List<RelatorioVendaPorDia> listaNova;
-        private final List<RelatorioVendaPorDia> listaAntiga;
+        private final List<RelatorioVendaPorMes> listaNova;
+        private final List<RelatorioVendaPorMes> listaAntiga;
 
-        DiffCallback(List<RelatorioVendaPorDia> listaNova, List<RelatorioVendaPorDia> listaAntiga) {
+        DiffCallback(List<RelatorioVendaPorMes> listaNova, List<RelatorioVendaPorMes> listaAntiga) {
             this.listaNova = listaNova;
             this.listaAntiga = listaAntiga;
         }
@@ -86,8 +87,8 @@ public final class RelatorioVendaMensalRecyclerViewAdapter extends RecyclerView.
 
         @Override
         public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-            RelatorioVendaPorDia v1 = listaAntiga.get(oldItemPosition);
-            RelatorioVendaPorDia v2 = listaNova.get(newItemPosition);
+            RelatorioVendaPorMes v1 = listaAntiga.get(oldItemPosition);
+            RelatorioVendaPorMes v2 = listaNova.get(newItemPosition);
             return v1.hashCode() == v2.hashCode();
         }
     }

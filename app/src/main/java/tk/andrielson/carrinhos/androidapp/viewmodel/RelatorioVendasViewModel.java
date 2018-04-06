@@ -13,6 +13,7 @@ import tk.andrielson.carrinhos.androidapp.DI;
 import tk.andrielson.carrinhos.androidapp.data.repository.RelatorioRepository;
 import tk.andrielson.carrinhos.androidapp.fireroom.room.converters.DateToStringConverter;
 import tk.andrielson.carrinhos.androidapp.observable.RelatorioVendaPorDia;
+import tk.andrielson.carrinhos.androidapp.observable.RelatorioVendaPorMes;
 
 import static tk.andrielson.carrinhos.androidapp.utils.Util.inicioMes;
 import static tk.andrielson.carrinhos.androidapp.utils.Util.inicioSemana;
@@ -56,7 +57,7 @@ public final class RelatorioVendasViewModel extends ViewModel {
     }
 
     @NonNull
-    public LiveData<List<RelatorioVendaPorDia>> getRelatorioMensal(@NonNull RelatorioMensal rel) {
+    public LiveData<List<RelatorioVendaPorMes>> getRelatorioMensal(@NonNull RelatorioMensal rel) {
         Calendar calendar = Calendar.getInstance();
         Date inicio;
         Date hoje = calendar.getTime();

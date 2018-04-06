@@ -50,7 +50,7 @@ public final class SincronizadorFirestoreRoom {
         liveData.observeForever(snapshots -> {
             if (snapshots == null)
                 return;
-            executor.execute(() -> {
+            Executors.newSingleThreadExecutor().execute(() -> {
                 ProdutoRoomDao dao = database.produtoDao();
                 List<ProdutoImpl> adicionados = null;
                 List<ProdutoImpl> modificados = null;
@@ -91,7 +91,7 @@ public final class SincronizadorFirestoreRoom {
         liveData.observeForever(snapshots -> {
             if (snapshots == null)
                 return;
-            executor.execute(() -> {
+            Executors.newSingleThreadExecutor().execute(() -> {
                 VendedorRoomDao dao = database.vendedorDao();
                 List<VendedorImpl> adicionados = null;
                 List<VendedorImpl> modificados = null;
@@ -132,7 +132,7 @@ public final class SincronizadorFirestoreRoom {
         liveData.observeForever(snapshots -> {
             if (snapshots == null)
                 return;
-            executor.execute(() -> {
+            Executors.newSingleThreadExecutor().execute(() -> {
                 VendaRoomDao vendaDao = database.vendaDao();
                 ItemVendaRoomDao itemVendaDao = database.itemVendaDao();
                 for (DocumentChange dc : snapshots.getDocumentChanges()) {
@@ -143,7 +143,7 @@ public final class SincronizadorFirestoreRoom {
                             itens = firestore.collection(String.format("/%s/%s/%s", VendaImpl.COLECAO, FirestoreDao.getIdFromCodigo(venda.getCodigo()), ItemVendaImpl.COLECAO));
                             itens.get().addOnSuccessListener(itemSnapshots -> {
                                 if (itemSnapshots != null) {
-                                    executor.execute(() -> {
+                                    Executors.newSingleThreadExecutor().execute(() -> {
                                         vendaDao.insert(venda);
                                         List<ItemVendaImpl> lista = new ArrayList<>();
                                         for (DocumentSnapshot doc : itemSnapshots.getDocuments()) {
@@ -161,7 +161,7 @@ public final class SincronizadorFirestoreRoom {
                             itens = firestore.collection(String.format("/%s/%s/%s", VendaImpl.COLECAO, FirestoreDao.getIdFromCodigo(venda.getCodigo()), ItemVendaImpl.COLECAO));
                             itens.get().addOnSuccessListener(itemSnapshots -> {
                                 if (itemSnapshots != null) {
-                                    executor.execute(() -> {
+                                    Executors.newSingleThreadExecutor().execute(() -> {
                                         vendaDao.update(venda);
                                         List<ItemVendaImpl> lista = new ArrayList<>();
                                         for (DocumentSnapshot doc : itemSnapshots.getDocuments()) {

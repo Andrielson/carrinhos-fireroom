@@ -73,6 +73,15 @@
     <!--<editor-fold desc="Fragment Lista de Vendas">-->
     <string name="fragment_venda_lista_carregando_vendas">Carregando vendas…</string>
     <string name="fragment_venda_lista_vazia">Nenhum venda adicionada</string>
+    <string-array name="frag_venda_lista_array_filtros">
+        <item>Situação</item>
+        <item>Vendedor</item>
+        <item>Periodo</item>
+    </string-array>
+    <string-array name="frag_venda_lista_array_situacoes">
+        <item>Aberta</item>
+        <item>Finalizada</item>
+    </string-array>
     <!--</editor-fold>-->
 
     <!--Activity Venda-->
@@ -117,13 +126,13 @@
         <item>Esta semana</item>
         <item>Últimos 15 dias</item>
         <item>Este mês</item>
-        <item>Personalizado</item>
+        <!--<item>Personalizado</item>-->
     </string-array>
 
     <string-array name="frag_relat_vendas_spinner_periodo_mes">
         <item>Últimos seis meses</item>
         <item>Este ano</item>
-        <item>Personalizado</item>
+        <!--<item>Personalizado</item>-->
     </string-array>
     <!--</editor-fold>-->
 

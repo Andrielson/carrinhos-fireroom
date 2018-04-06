@@ -9,11 +9,12 @@ import java.util.List;
 
 import tk.andrielson.carrinhos.androidapp.observable.InicioTotais;
 import tk.andrielson.carrinhos.androidapp.observable.RelatorioVendaPorDia;
+import tk.andrielson.carrinhos.androidapp.observable.RelatorioVendaPorMes;
 
 public interface RelatorioRepository {
     LiveData<List<RelatorioVendaPorDia>> vendasDiarias(@NonNull Date inicio, @NonNull Date fim);
 
-    LiveData<List<RelatorioVendaPorDia>> vendasMensais(@NonNull Date inicio, @NonNull Date fim);
+    LiveData<List<RelatorioVendaPorMes>> vendasMensais(@NonNull Date inicio, @NonNull Date fim);
 
     LiveData<InicioTotais> totaisVendas(@NonNull Date inicio, @NonNull Date fim);
 
