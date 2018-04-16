@@ -31,40 +31,41 @@
             android:baselineAligned="false"
             android:orientation="horizontal">
 
-            <FrameLayout
+            <!--<FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:background="@android:color/black"
-                android:padding="2dp">
+                android:padding="2dp">-->
 
                 <Spinner
                     android:id="@+id/spinner_agrupamento"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/white"
-                    android:prompt="@string/frag_relat_vendas_spinner_agrupamento_prompt"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/borda_retangulo"
                     android:spinnerMode="dropdown"
                     android:textSize="20sp" />
-            </FrameLayout>
+            <!--</FrameLayout>-->
 
-            <FrameLayout
+            <!--<FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@android:color/black"
-                android:padding="2dp">
+                android:padding="2dp">-->
 
                 <Spinner
                     android:id="@+id/spinner_periodo"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/white"
-                    android:prompt="@string/frag_relat_vendas_spinner_periodo_prompt"
+                    android:layout_weight="1"
+                    android:background="@drawable/borda_retangulo"
                     android:spinnerMode="dropdown"
                     android:textSize="20sp" />
-            </FrameLayout>
+            <!--</FrameLayout>-->
 
         </LinearLayout>
 
