@@ -75,7 +75,6 @@
     <string name="fragment_venda_lista_vazia">Nenhum venda adicionada</string>
     <string-array name="frag_venda_lista_array_filtros">
         <item>Situação</item>
-        <item>Vendedor</item>
         <item>Periodo</item>
     </string-array>
     <string-array name="frag_venda_lista_array_situacoes">
